@@ -1,6 +1,6 @@
 # Prediction Hero
 
-# Run /fe
+## Run /fe
 
 * `npm install`
 * `npm start`
