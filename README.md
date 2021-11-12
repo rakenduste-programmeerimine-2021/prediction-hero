@@ -9,5 +9,10 @@
 ## Run /be
 
 * `npm install`
+* `node ./main.js`
+
+## for development purposes
+
+* `npm install nodemon -g`
 * `nodemon ./main.js`
 
