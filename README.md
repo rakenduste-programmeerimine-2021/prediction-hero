@@ -15,4 +15,3 @@
 
 * `npm install nodemon -g`
 * `nodemon ./main.js`
-
