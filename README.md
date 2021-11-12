@@ -1,6 +1,6 @@
 # Prediction Hero
 
-# Run /fe
+## Run /fe
 
 * `npm install`
 * `npm start`
@@ -15,5 +15,4 @@
 
 * `npm install nodemon -g`
 * `nodemon ./main.js`
-
 
