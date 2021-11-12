@@ -1,10 +1,10 @@
 # Run /fe
 
-`npm install`
-`npm start`
+* `npm install`
+* `npm start`
 
 
 ## Run /be
 
-`npm install`
-`nodemon ./main.js`
+* `npm install`
+* `nodemon ./main.js`
