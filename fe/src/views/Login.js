@@ -39,10 +39,14 @@ function Login() {
         setLogInData(response);
         navigate('/', {state: response})
     }
+    const fbLoginFail = () => {
+        console.log("FB login failed");
+    }
 
     return (
         <div>
             {logInData && JSON.stringify(logInData)}
+            
             <form>
                 <input type="text" placeholder="Kasutajanimi" onChange={(v) => {setUsername(v.target.value)}}/>
                 <input type="password" placeholder="Parool"  onChange={(v) => {setPassword(v.target.value)}}/>
@@ -54,7 +58,10 @@ function Login() {
                 autoLoad={false}
                 fields="name,email,picture"
                 onClick={() => {console.log('clicked')}}
-                callback={responseFacebook} />
+                callback={responseFacebook}
+                onFailure={fbLoginFail}
+                icon="fa-facebook"
+                />
 
             
             
