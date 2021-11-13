@@ -29,6 +29,7 @@ function Login() {
             console.log(JSON.stringify(data))
             setLogInData(JSON.stringify(data))
             setLoading(false)
+            //TODO parse json and check is OK or NOK
         })
     }
 
