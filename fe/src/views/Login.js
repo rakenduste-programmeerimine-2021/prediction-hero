@@ -6,6 +6,7 @@ const { Paragraph } = Typography;
 
 function Login() {
     const [loggedIn, setLoggedIn] = useState(false)
+    const [logInData, setLogInData] = useState('')
     const [loading, setLoading] = useState(false)
     
     const [username, setUsername] = useState('')
@@ -22,20 +23,24 @@ function Login() {
             headers: { 'Content-Type': 'application/json' },
             body: test
         };
-        fetch('http://localhost:3001/login',requestOptions)
+        fetch('http://localhost:3001/login', requestOptions)
         .then(response => response.json())
         .then(data => {
             console.log(JSON.stringify(data))
+            setLogInData(JSON.stringify(data))
             setLoading(false)
         })
     }
 
     return (
         <div>
+            {logInData && logInData}
+            <form>
+                <input type="text" placeholder="Kasutajanimi" onChange={(v) => {setUsername(v.target.value)}}/>
+                <input type="password" placeholder="Parool"  onChange={(v) => {setPassword(v.target.value)}}/>
+                <button onClick={submit} type="submit" disabled={loading ? true : false}>Logi sisse</button>
+            </form>
             
-            <input type="text" placeholder="Kasutajanimi" onChange={(v) => {setUsername(v)}}/>
-            <input type="password" placeholder="Parool"  onChange={(v) => {setPassword(v)}}/>
-            <button onClick={submit} disabled={loading ? true : false}>Logi sisse</button>
         </div>
     )
 }
