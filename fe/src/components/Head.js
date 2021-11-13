@@ -32,12 +32,5 @@ function Head() {
       </Box>
     )
 }
-const Styles = {
-    navbar: {
-        backgroundColor: "navy",
-        height: 50,
-        color: "white"
-    }
-}
 
 export default Head;

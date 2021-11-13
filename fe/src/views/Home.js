@@ -27,7 +27,7 @@ function Home() {
                 </div>
                 <div>
                     <h3>{state?.name || "kasutaja"}</h3>
-                    <h4>{state.email || "email"}</h4>
+                    <h4>{state?.email || "email"}</h4>
                 </div>
             </div>
             
