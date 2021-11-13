@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes, useNavigate } from "react-router-dom";
 import { Button, Typography } from 'antd';
 
 const { Paragraph } = Typography;
@@ -7,8 +7,17 @@ const { Paragraph } = Typography;
 function Head() {
 
     return (
-        <div>Head - always here</div>
+        <div style={Styles.navbar}>
+            <div>Prediction Hero</div>
+        </div>
     )
+}
+const Styles = {
+    navbar: {
+        backgroundColor: "navy",
+        height: 50,
+        color: "white"
+    }
 }
 
 export default Head;

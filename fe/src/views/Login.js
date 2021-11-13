@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Button, Typography } from 'antd';
+import FacebookLogin from 'react-facebook-login';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 
-const { Paragraph } = Typography;
 
 function Login() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [logInData, setLogInData] = useState('')
     const [loading, setLoading] = useState(false)
-    
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    const navigate = useNavigate();
+
 
     const submit = () => {  
         setLoading(true)
@@ -33,14 +34,29 @@ function Login() {
         })
     }
 
+    const responseFacebook = (response) => {
+        console.log(response);
+        setLogInData(response);
+        navigate('/', {state: response})
+    }
+
     return (
         <div>
-            {logInData && logInData}
+            {logInData && JSON.stringify(logInData)}
             <form>
                 <input type="text" placeholder="Kasutajanimi" onChange={(v) => {setUsername(v.target.value)}}/>
                 <input type="password" placeholder="Parool"  onChange={(v) => {setPassword(v.target.value)}}/>
                 <button onClick={submit} type="submit" disabled={loading ? true : false}>Logi sisse</button>
             </form>
+
+            <FacebookLogin
+                appId="289181049760112"
+                autoLoad={false}
+                fields="name,email,picture"
+                onClick={() => {console.log('clicked')}}
+                callback={responseFacebook} />
+
+            
             
         </div>
     )
