@@ -31,7 +31,6 @@ app.get('/', (req, res) => {
     res.send("OK - toimib !!!");
 });
 app.get('/test',async(req,res)=>{
-  await sleep(1500);
   res.json({data: "Greetings from node.js"});
 })
 
@@ -75,7 +74,9 @@ app.post('/login', async(req, res) => {
       [username,hash]
     );
 
-    resp.rows.length ? res.json("logged in successfully") : res.json("invalid username or password");
+    resp.rows.length 
+      ? res.json({status: "OK", message:"logged in successfully"}) 
+      : res.json({status: "NOK", message:"invalid username or password"});
       
   } catch (err) {
     console.error(err)
