@@ -11,7 +11,6 @@ import '@fontsource/roboto/700.css';
 
 
 function App() {
-  const [testData, setData] = useState("")
 
   return ( 
     <>
