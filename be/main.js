@@ -31,7 +31,6 @@ app.get('/', (req, res) => {
     res.send("OK - toimib !!!");
 });
 app.get('/test',async(req,res)=>{
-  await sleep(1500);
   res.json({data: "Greetings from node.js"});
 })
 
