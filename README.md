@@ -4,19 +4,31 @@
 
 #### Run /fe
 
-* `npm install`
-* `npm start`
+```
+npm install
+```
+```
+npm start
+```
 
 
 #### Run /be
 
-* `npm install`
-* `node ./main.js`
+```
+npm install
+```
+```
+node ./main.js
+```
 
 #### /be for development purposes
 
-* `npm install nodemon -g`
-* `nodemon ./main.js`
+```
+npm install nodemon -g
+```
+```
+nodemon ./main.js
+```
 
 #### wireframe
 
