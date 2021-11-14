@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import FacebookLogin from 'react-facebook-login';
 import { useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { Context } from "../store";
+import { loginUser } from "../store/actions";
 
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -17,13 +19,20 @@ function Login() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [state, dispatch] = useContext(Context);
 
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
 
+    useEffect(()=>{
+        if(state.auth.user) navigate('/', {state: state.auth})
+        console.log(state.auth)
+    },[])
+
     const openSnacbar = () => {
         setOpen(true);
     };
+
 
     const closeSnacbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -32,6 +41,8 @@ function Login() {
 
         setOpen(false);
     };
+
+    
 
 
     const submit = () => {  
@@ -55,6 +66,9 @@ function Login() {
             if(data.status == "NOK"){
                 openSnacbar()
             }else{
+                data.name=username;
+                data.email="ee@ee.ee";
+                dispatch(loginUser({token: data, user: username}));
                 navigate('/', {state: data})
             }
             //TODO parse json and check is OK or NOK
@@ -64,6 +78,7 @@ function Login() {
     const responseFacebook = (response) => {
         console.log(response);
         setLogInData(response);
+        dispatch(loginUser({token: response, user: response.name}));
         navigate('/', {state: response})
     }
     const fbLoginFail = () => {
