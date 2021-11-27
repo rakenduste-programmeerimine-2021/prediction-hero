@@ -44,6 +44,14 @@ function Head() {
       "Seaded": <SettingsIcon/>
     }
 
+    const navigationMapping = {
+      "Avaleht": "/",
+      "Alagrupid": "/",
+      "Edetabel":  "/leaderboard",
+      "Minu andmed":  "/",
+      "Seaded":  "/",
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
         <Drawer
@@ -60,7 +68,7 @@ function Head() {
           >
             <List>
               {['Avaleht', 'Alagrupid', 'Edetabel'].map((text) => (
-                <ListItem button key={text}>
+                <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
                   <ListItemIcon>
                     {iconsMapping[text]}
                   </ListItemIcon>
@@ -71,7 +79,7 @@ function Head() {
             <Divider />
             <List>
               {['Minu andmed', 'Seaded'].map((text) => (
-                <ListItem button key={text}>
+                <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
                   <ListItemIcon>
                     {iconsMapping[text]}
                   </ListItemIcon>
