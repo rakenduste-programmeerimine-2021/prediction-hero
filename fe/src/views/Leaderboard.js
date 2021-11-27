@@ -3,50 +3,38 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
 
 function Leaderboard() {
+    const [rows, setAllUsers] = useState([])
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'firstName', headerName: 'First name', width: 130 },
-        { field: 'lastName', headerName: 'Last name', width: 130 },
-        {
-          field: 'age',
-          headerName: 'Age',
-          type: 'number',
-          width: 120,
-        },
+        { field: 'username', headerName: 'Name', width: 130 },
+        { field: 'pwhash', headerName: 'pwhash', width: 130 },
+        // {
+        //   field: 'age',
+        //   headerName: 'Age',
+        //   type: 'number',
+        //   width: 120,
+        // },
         {
             field: 'points',
             headerName: 'Points',
             type: 'number',
             width: 150,
         },
-        {
-          field: 'fullName',
-          headerName: 'Full name',
-          description: 'This column has a value getter and is not sortable.',
-          sortable: false,
-          width: 160,
-          valueGetter: (params) =>
-            `${params.getValue(params.id, 'firstName') || ''} ${
-              params.getValue(params.id, 'lastName') || ''
-            }`,
-        },
-      ];
-      
-      const rows = [
-        { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-        { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-        { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-        { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-        { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-        { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-        { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-        { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-        { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
+        // {
+        //   field: 'fullName',
+        //   headerName: 'Full name',
+        //   description: 'This column has a value getter and is not sortable.',
+        //   sortable: false,
+        //   width: 160,
+        //   valueGetter: (params) =>
+        //     `${params.getValue(params.id, 'firstName') || ''} ${
+        //       params.getValue(params.id, 'lastName') || ''
+        //     }`,
+        // },
       ];
 
-      const getAllUsers = () => {
+    useEffect(() => {
         const requestOptions = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
@@ -55,10 +43,9 @@ function Leaderboard() {
         .then(response => response.json())
         .then(data => {
             console.log(JSON.stringify(data))
+            setAllUsers(data)
         })
-      }
-
-      getAllUsers()
+    },[])
 
 
 
@@ -158,10 +145,14 @@ function Leaderboard() {
   
     return (
         <div style={styles.root}>
-            LIIDERBOORD
+            <h3>EDETABEL</h3>
 
             <div style={{ width: '100%' }}>
             <Box sx={{ width: '100%' }}>
+            <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense} />}
+                    label="Kompaktne vaade"
+                />
                 <Paper sx={{ width: '100%', mb: 2 }}>
                     <TableContainer>
                     <Table
@@ -197,8 +188,8 @@ function Leaderboard() {
                                     {row.name}
                                 </TableCell>
                                 <TableCell align="right">{row.id}</TableCell>
-                                <TableCell align="right">{row.firstName}</TableCell>
-                                <TableCell align="right">{row.lastName}</TableCell>
+                                <TableCell align="right">{row.username}</TableCell>
+                                <TableCell align="right">{row.pwhash}</TableCell>
                                 <TableCell align="right">{row.points}</TableCell>
                                 </TableRow>
                             );
@@ -216,19 +207,15 @@ function Leaderboard() {
                     </Table>
                     </TableContainer>
                     <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
                     component="div"
+                    labelRowsPerPage="Ridu ühel lehel"
                     count={rows.length}
-                    rowsPerPage={rowsPerPage}
+                    rowsPerPage={50}
                     page={page}
                     onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <FormControlLabel
-                    control={<Switch checked={dense} onChange={handleChangeDense} />}
-                    label="Dense padding"
-                />
+                
                 </Box>
             </div>
         </div>

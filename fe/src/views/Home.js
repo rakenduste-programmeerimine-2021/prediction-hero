@@ -7,7 +7,7 @@ function Home() {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        console.log('INIT : '+ state)
+        // console.log('INIT : '+ state)
         if(!state){ 
             navigate('/login') 
         }else{

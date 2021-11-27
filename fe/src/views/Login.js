@@ -22,7 +22,7 @@ function Login() {
     const [state, dispatch] = useContext(Context);
 
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     useEffect(()=>{
         if(state.auth.user) navigate('/', {state: state.auth})
@@ -124,7 +124,7 @@ function Login() {
                 />
             </div>
             
-            <Snackbar open={open} autoHideDuration={1500} onClose={closeSnacbar}>
+            <Snackbar open={open} autoHideDuration={1500} onClose={closeSnacbar} anchorOrigin={{ vertical: "top", horizontal:"center" }}>
                 <Alert onClose={closeSnacbar} severity="error" sx={{ width: '100%' }}>
                     {logInData?.message}
                 </Alert>
