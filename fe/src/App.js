@@ -21,13 +21,13 @@ function App() {
     <>
       <Head/>
       <Routes>
-        <Route exact path="/" element={<Home/>} />
-        <Route exact path="/login" element={<Login/>} />
-        <Route exact path="/leaderboard" element={<Leaderboard/>} />
-        <Route exact path="/rules" element={<Rules/>} />
-        <Route exact path="/predict" element={<Predict/>} />
-        <Route exact path="/settings" element={<Settings/>} />
-        <Route exact path="/matches" element={<Matches/>} />
+        <Route path="/" element={<Home/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/leaderboard" element={<Leaderboard/>} />
+        <Route path="/rules" element={<Rules/>} />
+        <Route path="/predict" element={<Predict/>} />
+        <Route path="/settings" element={<Settings/>} />
+        <Route path="/matches" element={<Matches/>} />
       </Routes>
     </>
   );
