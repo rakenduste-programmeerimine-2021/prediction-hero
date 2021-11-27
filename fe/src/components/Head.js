@@ -11,6 +11,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import TocIcon from '@mui/icons-material/Toc';
 import HomeIcon from '@mui/icons-material/Home';
+import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
+import GavelIcon from '@mui/icons-material/Gavel';
 import { Link } from "react-router-dom";
 import { Context } from "../store";
 import { loginUser } from "../store/actions";
@@ -38,18 +40,23 @@ function Head() {
 
     const iconsMapping = {
       "Avaleht": <HomeIcon/>,
-      "Alagrupid": <TocIcon/>,
+      "Turniiritabel": <TocIcon/>,
       "Edetabel": <LeaderboardIcon/>,
       "Minu andmed": <PersonIcon/>,
-      "Seaded": <SettingsIcon/>
+      "Seaded": <SettingsIcon/>,
+      "Reeglid": <GavelIcon/>,
+      "Ennusta": <OnlinePredictionIcon/>,
+
     }
 
     const navigationMapping = {
       "Avaleht": "/",
-      "Alagrupid": "/",
+      "Turniiritabel": "/matches",
       "Edetabel":  "/leaderboard",
-      "Minu andmed":  "/",
-      "Seaded":  "/",
+      "Minu andmed":  "/settings",
+      "Seaded":  "/settings",
+      "Reeglid":  "/rules",
+      "Ennusta":  "/predict",
     }
 
     return (
@@ -67,18 +74,18 @@ function Head() {
             onKeyDown={toggleDrawer(false)}
           >
             <List>
-              {['Avaleht', 'Alagrupid', 'Edetabel'].map((text) => (
+              {['Avaleht', 'Edetabel', 'Turniiritabel', 'Ennusta'].map((text) => (
                 <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
-                  <ListItemIcon>
+                  <ListItemIcon style={{color: text == 'Ennusta' ? "dodgerblue" : "black"}}>
                     {iconsMapping[text]}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={text} style={{color: text == 'Ennusta' ? "dodgerblue" : "black"}}/>
                 </ListItem>
               ))}
             </List>
             <Divider />
             <List>
-              {['Minu andmed', 'Seaded'].map((text) => (
+              {['Minu andmed', 'Reeglid'].map((text) => (
                 <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
                   <ListItemIcon>
                     {iconsMapping[text]}

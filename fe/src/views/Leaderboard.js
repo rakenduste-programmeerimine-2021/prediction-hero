@@ -208,7 +208,7 @@ function Leaderboard() {
                     </TableContainer>
                     <TablePagination
                     component="div"
-                    labelRowsPerPage="Ridu ühel lehel"
+                    labelRowsPerPage="Näita ühel lehel"
                     count={rows.length}
                     rowsPerPage={50}
                     page={page}

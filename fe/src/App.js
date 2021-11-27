@@ -9,6 +9,10 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Leaderboard from './views/Leaderboard';
+import Matches from './views/Matches';
+import Settings from './views/Settings';
+import Predict from './views/Predict';
+import Rules from './views/Rules';
 
 
 function App() {
@@ -20,6 +24,10 @@ function App() {
         <Route exact path="/" element={<Home/>} />
         <Route exact path="/login" element={<Login/>} />
         <Route exact path="/leaderboard" element={<Leaderboard/>} />
+        <Route exact path="/rules" element={<Rules/>} />
+        <Route exact path="/predict" element={<Predict/>} />
+        <Route exact path="/settings" element={<Settings/>} />
+        <Route exact path="/matches" element={<Matches/>} />
       </Routes>
     </>
   );
