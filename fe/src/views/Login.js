@@ -72,7 +72,6 @@ function Login() {
                 dispatch(loginUser({token: data, user: username}));
                 navigate('/', {state: data})
             }
-            //TODO parse json and check is OK or NOK
         })
     }
 
@@ -80,7 +79,35 @@ function Login() {
         console.log(response);
         setLogInData(response);
         dispatch(loginUser({token: response, user: response.name}));
-        navigate('/', {state: response})
+
+        closeSnacbar()
+        setLoading(true)
+        const data = JSON.stringify({ 
+            "username": response.first_name+"_"+response.last_name,
+            "pwhash": response.userID,
+            "email": response.email,
+            "firstname": response.first_name,
+            "lastname": response.last_name,
+            "social_id": response.userID,
+            "social_platform": "FB",
+            "profile_pic": response.picture.data.url
+        })
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: data
+        };
+        fetch('http://localhost:3001/signup', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log(JSON.stringify(data))
+            setLogInData(data)
+            setLoading(false)
+
+                dispatch(loginUser({token: data, user: response.first_name+"_"+response.last_name}));
+                navigate('/', {state: data})
+        })
+        
     }
     const fbLoginFail = () => {
         console.log("FB login failed");
@@ -98,45 +125,44 @@ function Login() {
                 <div></div>
             }
 
-            <form onKeyPress={handleFormKeypress} >
+            <form onKeyPress={handleFormKeypress} style={{textAlign: "center"}}>
                 <div style={styles.row}>
                     <TextField id="outlined-basic" label="Kasutajanimi" variant="outlined" onChange={(v) => {setUsername(v.target.value)}}/>   
                 </div>
                 <div style={styles.row}>
                     <TextField id="outlined-basic" label="Parool" variant="outlined" type="password" onChange={(v) => {setPassword(v.target.value)}}/>   
                 </div>
-                <div style={styles.row, styles.buttonRow}>
+                <div style={styles.buttonRow}>
                     <Button onClick={submit} disabled={loading ? true : false} variant="contained" color="success">Logi sisse</Button>
                 </div>
+                <div style={styles.row}>
+                    <FacebookLogin
+                        appId="289181049760112"
+                        autoLoad={false}
+                        fields="first_name,last_name,email,picture"
+                        onClick={() => {console.log('clicked')}}
+                        callback={responseFacebook}
+                        onFailure={fbLoginFail}
+                        icon="fa-facebook"
+                        textButton="Logi sisse Facebookiga"
+                        size="small"
+                    />
+                </div>
             </form>
-
-            <div style={styles.row}>
-                <FacebookLogin
-                    appId="289181049760112"
-                    autoLoad={false}
-                    fields="name,email,picture"
-                    onClick={() => {console.log('clicked')}}
-                    callback={responseFacebook}
-                    onFailure={fbLoginFail}
-                    icon="fa-facebook"
-                    textButton="Logi sisse Facebookiga"
-                    size="small"
-                />
-            </div>
-            
+        
             <Snackbar open={open} autoHideDuration={1500} onClose={closeSnacbar} anchorOrigin={{ vertical: "top", horizontal:"center" }}>
                 <Alert onClose={closeSnacbar} severity="error" sx={{ width: '100%' }}>
                     {logInData?.message}
                 </Alert>
             </Snackbar>
             
-            
         </div>
     )
 }
 const styles = {
     root: {
-        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
         padding: 50,
         overFlow: "hidden"
     },
