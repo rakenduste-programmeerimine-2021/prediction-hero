@@ -48,14 +48,14 @@ function Login() {
     const submit = () => {  
         closeSnacbar()
         setLoading(true)
-        const test = JSON.stringify({ 
+        const data = JSON.stringify({ 
             "username": username,
             "pwhash": password 
         })
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: test
+            body: data
         };
         fetch('http://localhost:3001/login', requestOptions)
         .then(response => response.json())
