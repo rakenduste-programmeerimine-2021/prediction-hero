@@ -46,6 +46,7 @@ function Login() {
 
 
     const submit = () => {  
+        closeSnacbar()
         setLoading(true)
         const test = JSON.stringify({ 
             "username": username,
@@ -123,7 +124,7 @@ function Login() {
                 />
             </div>
             
-            <Snackbar open={open} autoHideDuration={10000} onClose={closeSnacbar}>
+            <Snackbar open={open} autoHideDuration={1500} onClose={closeSnacbar}>
                 <Alert onClose={closeSnacbar} severity="error" sx={{ width: '100%' }}>
                     {logInData?.message}
                 </Alert>
