@@ -4,19 +4,31 @@
 
 #### Run /fe
 
-* `npm install`
-* `npm start`
+```
+npm install
+```
+```
+npm start
+```
 
 
 #### Run /be
 
-* `npm install`
-* `node ./main.js`
+```
+npm install
+```
+```
+node ./main.js
+```
 
 #### /be for development purposes
 
-* `npm install nodemon -g`
-* `nodemon ./main.js`
+```
+npm install nodemon -g
+```
+```
+nodemon ./main.js
+```
 
 #### wireframe
 
@@ -24,19 +36,30 @@
 
 ## Funktsionaalsus
 
-* kasutaja registreerib konto/logib sisse
-* FE global store
-* Avalehe kujundus
-* registreerimise lehekülg
-* Admini informatsioon kasutajate kohta
-* BE-s kasutajate ja ennustuste kuvamine
-* Admini funktsionaalsus
-* FE funktsionaalsus
-* Kasutajate info kuvamine
-* Kasutaja näeb alagruppe, tiimide nimekirja ja tulevaid mänge
-* kasutaja saab vaadata tingimusi ja tulevaid mänge
-* kasutaja saab igale mängule lisada ennustuse 
-* Tekib edetabel osalejatest kogutud punktide järjestuses
+#### Registreerimata külaline
+
+* näeb turniiri reegleid ja infot
+* saab registreerida kasutaja
+* saab sisse logida facebookiga (luuakse kasutaja fb andmete põhjal)
+
+#### Registreeritud kasutaja
+
+* saab sisse logida registreeritud kasutajanime ja parooliga
+* näeb kõiki turniiril osalevaid/registreerunud kasutajaid edetabelis
+* näeb alagruppe
+* saab salvestada ennustuse igale mängule
+* saab "minu andmed" alt muuta enda andmeid avalikuks/privaatseks
+* näeb edetabelis kasutajate peale vajutades nende infot
+* näeb reeglite all turniiri infot ning reegleid
+
+#### Administraator
+
+* logib sisse administraatori õigustega
+* saab kustutada registreerunud kasutajaid
+* saab muuta registreerunud kasutajate parooli
+* saab lisada/muuta tulevasi mänge
+* saab lisata/muuta reegleid ja turniiri infot
+* saab lisada/muuta lisaküsimusi
 
 ## Wireframe link miro
 
