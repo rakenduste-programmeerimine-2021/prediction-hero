@@ -41,16 +41,18 @@ app.get('/test',async(req,res)=>{
 // TODO check, et sellist kasutjat juba ei oleks, kui on siis tagasta viga nt kujul {status: "NOK", message: "Sellise nimega kasutaja on juba registreeritud."}
 app.post('/signup', async(req, res) => {
   try {
-    const {username, pwhash} = req.body;
+    let {username, pwhash, firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     console.log(req.body)
+
+    username = username == "" ? "olityhi" : username
 
     var hash = crypto.createHash('md5').update(pwhash).digest('hex');
     console.log(`${pwhash} - ${hash}`);
     log.info('',`${pwhash} - ${hash}`)
 
     const newInsertion = await pool.query(
-      "INSERT INTO users (username, pwhash) VALUES($1,$2) RETURNING *",
-      [username,hash]
+      "INSERT INTO users (username, pwhash, firstname, lastname, email, social_id, social_platform, profile_pic) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
+      [username,hash, firstname, lastname, email, social_id, social_platform, profile_pic]
     );
 
       res.json(newInsertion.rows[0]);
