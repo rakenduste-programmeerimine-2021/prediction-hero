@@ -59,7 +59,7 @@ function Head() {
             onKeyDown={toggleDrawer(false)}
           >
             <List>
-              {['Avaleht', 'Alagrupid', 'Edetabel'].map((text, index) => (
+              {['Avaleht', 'Alagrupid', 'Edetabel'].map((text) => (
                 <ListItem button key={text}>
                   <ListItemIcon>
                     {iconsMapping[text]}
@@ -70,7 +70,7 @@ function Head() {
             </List>
             <Divider />
             <List>
-              {['Minu andmed', 'Seaded'].map((text, index) => (
+              {['Minu andmed', 'Seaded'].map((text) => (
                 <ListItem button key={text}>
                   <ListItemIcon>
                     {iconsMapping[text]}
