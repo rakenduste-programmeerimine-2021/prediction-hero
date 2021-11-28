@@ -63,7 +63,7 @@ app.post('/signup', async(req, res) => {
 
 app.post('/loginFB', async(req, res) => {
   try {
-    let {username, pwhash, firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
+    let {username, pwhash="parool", firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     console.log(req.body)
 
     username = username == "" ? "olityhi" : username
@@ -81,7 +81,7 @@ app.post('/loginFB', async(req, res) => {
       //kasutaja olemas
       const resp = await pool.query(
         "SELECT * FROM users WHERE username = $1 AND pwhash = $2",
-        [username,hash]
+        [username, hash]
       );
   
       resp.rows.length 
@@ -91,7 +91,7 @@ app.post('/loginFB', async(req, res) => {
       //kasutajat ei ole veel olemas
       const newInsertion = await pool.query(
         "INSERT INTO users (username, pwhash, firstname, lastname, email, social_id, social_platform, profile_pic) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
-        [username,hash, firstname, lastname, email, social_id, social_platform, profile_pic]
+        [username, hash, firstname, lastname, email, social_id, social_platform, profile_pic]
       );
   
       res.json(newInsertion.rows[0]);
@@ -172,8 +172,25 @@ app.put('/changepassword/:id', async(req, res)=>{
   }
 })
 
+// change data
+app.put('/changeuserdata/:id', async(req, res)=>{
+  try {
+    const { id } = req.params;
+    const { firstname, lastname, email, username, profilePic } = req.body;
 
-// change password
+    const updateData = await pool.query(
+      "UPDATE users SET firstname = $1, lastname = $2, email = $3, username = $4, profile_pic = $5 WHERE id = $6",
+      [firstname, lastname, email, username, profilePic, id]
+    );
+
+      res.json("User data updated");
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+
+// delete password
 app.delete('/deleteuser/:id', async(req, res)=>{
   try {
     const { id } = req.params;

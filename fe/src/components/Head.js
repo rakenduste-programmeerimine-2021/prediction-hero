@@ -127,7 +127,9 @@ function Head() {
             {storeState.auth?.token && 
               <div style={styles.row} onClick={() => {navigate(navigationMapping["Minu andmed"])}}>
                 <Typography style={styles.user} variant="subtitle2" component="div">
-                  {storeState.auth?.firstname+" "+storeState.auth?.lastname}
+                  {storeState.auth?.firstname && storeState.auth?.lastname 
+                    ? (storeState.auth?.firstname+" "+storeState.auth?.lastname)
+                    : storeState.auth?.user}
                 </Typography>
                 <div style={styles.avatar}>
                       <Avatar alt="Remy Sharp" src={storeState.auth?.profilePic} sx={{ width: 40, height: 40 }}/>

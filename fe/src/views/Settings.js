@@ -98,7 +98,7 @@ function Settings() {
                     </Grid>
                     <Grid item xs={4} style={styles.column}>
                         <div style={styles.avatar}>
-                            <Avatar alt="Remy Sharp" src={state.auth?.profilePic} sx={{ width: 150, height: 150 }} style={styles.avatarImg} onMouseOver={MouseOver} onMouseOut={MouseOut}/>
+                            <Avatar alt="Remy Sharp" src={state.auth?.profilePic} sx={{ width: 150, height: 150, boxShadow: "0 0 60px 10px #00509f8c" }} style={styles.avatarImg} onMouseOver={MouseOver} onMouseOut={MouseOut}/>
                         </div>
                     </Grid>
                 </Grid>

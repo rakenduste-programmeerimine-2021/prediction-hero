@@ -9,7 +9,7 @@ function Home() {
     return (
         <div style={styles.root}>
             <Typography variant="h2">Avaleht</Typography>
-            <Typography variant="subtitle1">Siin viskame sind mingi relevantse sissejuhatava infoga.</Typography>
+            <Typography variant="subtitle1">Siin viskame kasutajat mingi relevantse sissejuhatava infoga.</Typography>
         </div>
     )
 
