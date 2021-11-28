@@ -27,6 +27,19 @@
   color: #61dafb;
 }
 
+.btn{
+  background-color: #4c69ba;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 15px;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  top: 2px !important;
+  position: relative;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

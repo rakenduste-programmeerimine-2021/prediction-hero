@@ -67,10 +67,17 @@ function Login() {
             if(data.status == "NOK"){
                 openSnacbar()
             }else{
-                data.name=username;
-                data.email="ee@ee.ee";
-                dispatch(loginUser({token: data, user: username}));
-                navigate('/', {state: data})
+                console.log("LOGGING IN.... data:")
+                console.log(data)
+                dispatch(loginUser({
+                    token: data, 
+                    user: username, 
+                    firtname: data.data.rows[0].firstname, 
+                    lastname: data.data.rows[0].lastname,
+                    email: data.data.rows[0].email,
+                    profilePic: data.data.rows[0].profile_pic}))
+                    navigate('/', {state: data})
+                
             }
         })
     }
@@ -78,7 +85,6 @@ function Login() {
     const responseFacebook = (response) => {
         console.log(response);
         setLogInData(response);
-        dispatch(loginUser({token: response, user: response.name}));
 
         closeSnacbar()
         setLoading(true)
@@ -97,14 +103,23 @@ function Login() {
             headers: { 'Content-Type': 'application/json' },
             body: data
         };
-        fetch('http://localhost:3001/signup', requestOptions)
+        fetch('http://localhost:3001/loginFB', requestOptions)
         .then(response => response.json())
         .then(data => {
-            console.log(JSON.stringify(data))
+            console.log(data)
             setLogInData(data)
             setLoading(false)
+            console.log("Now dispatching user")
+            console.log(data.data.rows[0].username)
 
-                dispatch(loginUser({token: data, user: response.first_name+"_"+response.last_name}));
+                dispatch(loginUser({
+                    token: data, 
+                    user: data.data.rows[0].username,
+                    firstname: data.data.rows[0].firstname, 
+                    lastname: data.data.rows[0].lastname,
+                    email: data.data.rows[0].email,
+                    profilePic: data.data.rows[0].profile_pic
+                }));
                 navigate('/', {state: data})
         })
         
@@ -121,9 +136,6 @@ function Login() {
 
     return (
         <div style={styles.root}>
-            {(logInData?.status == "NOK") && 
-                <div></div>
-            }
 
             <form onKeyPress={handleFormKeypress} style={{textAlign: "center"}}>
                 <div style={styles.row}>

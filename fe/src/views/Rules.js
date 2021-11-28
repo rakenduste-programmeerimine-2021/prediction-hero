@@ -1,10 +1,11 @@
+import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 function Rules() {
     
     return (
         <div style={styles.root}>
-            <h3>Rules</h3>
+            <Typography variant="h2">Reeglid</Typography>
         </div>
     )
 

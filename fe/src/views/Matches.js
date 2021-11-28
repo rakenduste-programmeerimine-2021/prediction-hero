@@ -1,10 +1,11 @@
+import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 function Matches() {
     
     return (
         <div style={styles.root}>
-            <h3>Matches</h3>
+            <Typography variant="h2">Mängud</Typography>
         </div>
     )
 

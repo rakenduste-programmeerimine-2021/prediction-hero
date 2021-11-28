@@ -1,36 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
+import { Context } from '../store/';
 
 function Home() {
-    const [loggedIn, setLoggedIn] = useState(false)
-    const {state} = useLocation();
-    const navigate = useNavigate();
-
-    useEffect(()=>{
-        // console.log('INIT : '+ state)
-        if(!state){ 
-            navigate('/login') 
-        }else{
-            setLoggedIn(true)
-        }
-    },[])
+    const [state, dispatch] = useContext(Context);
 
     return (
         <div style={styles.root}>
-            {loggedIn && <div style={{color:"lightgreen",fontWeight:600}}>Oled sisse logitud</div>}
-            <div style={{marginBottom:50, width:"100%", overflow:"hidden"}}>
-                <div style={{overflow:"auto"}}>{state && JSON.stringify(state)}</div>
-            </div>
-            <div>
-                <div>
-                    <img src={state?.picture?.data?.url}/>
-                </div>
-                <div>
-                    <h3>{state?.name || "kasutaja"}</h3>
-                    <h4>{state?.email || "email"}</h4>
-                </div>
-            </div>
-            
+            <Typography variant="h2">Avaleht</Typography>
+            <Typography variant="subtitle1">Siin viskame sind mingi relevantse sissejuhatava infoga.</Typography>
         </div>
     )
 

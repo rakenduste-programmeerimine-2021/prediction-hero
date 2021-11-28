@@ -30,5 +30,13 @@ export const loginUser = data => ({
 })
 
 export const logoutUser = () => ({
-  type: USER_LOGOUT
+  type: USER_LOGOUT,
+  payload: {
+    token: "", 
+    user: "", 
+    firstname: "", 
+    lastname: "",
+    email: "",
+    profilePic: "",
+  }
 })

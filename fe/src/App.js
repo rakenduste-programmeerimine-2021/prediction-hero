@@ -18,7 +18,7 @@ import Rules from './views/Rules';
 function App() {
 
   return ( 
-    <>
+    <div style={{minHeight: "100vh"}}>
       <Head/>
       <Routes>
         <Route path="/" element={<Home/>} />
@@ -29,7 +29,7 @@ function App() {
         <Route path="/settings" element={<Settings/>} />
         <Route path="/matches" element={<Matches/>} />
       </Routes>
-    </>
+    </div>
   );
 }
 
