@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Typography } from '@mui/material';
 
 function Leaderboard() {
     const [rows, setAllUsers] = useState([])
@@ -145,7 +145,7 @@ function Leaderboard() {
   
     return (
         <div style={styles.root}>
-            <h3>EDETABEL</h3>
+            <Typography variant="h2">Edetabel</Typography>
 
             <div style={{ width: '100%' }}>
             <Box sx={{ width: '100%' }}>

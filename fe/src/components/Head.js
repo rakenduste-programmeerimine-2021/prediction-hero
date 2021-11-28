@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,20 +13,33 @@ import TocIcon from '@mui/icons-material/Toc';
 import HomeIcon from '@mui/icons-material/Home';
 import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
 import GavelIcon from '@mui/icons-material/Gavel';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Context } from "../store";
-import { loginUser } from "../store/actions";
+import { logoutUser } from "../store/actions";
 import { useNavigate } from "react-router-dom";
 import Drawer from '@mui/material/Drawer';
-import { Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Avatar } from '@mui/material'
 
 function Head() {
-    const [state, dispatch] = useContext(Context);
+    const [storeState, dispatch] = useContext(Context);
     const navigate = useNavigate();
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(false)
+    const { state } = useLocation();
+
+    useEffect(()=>{
+        // console.log('INIT : '+ state)
+        if(!state){ 
+            navigate('/login') 
+        }else{
+            setLoggedIn(true)
+        }
+    },[])
+
 
     const logOut = () => {
-        dispatch(loginUser({token:"",user : ""}));
+      // dispatch(loginUser({token:"",user : ""}));
+      dispatch(logoutUser());
         navigate('/login');
     }
 
@@ -111,7 +124,17 @@ function Head() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Prediction Hero
             </Typography>
-            {state.auth.user
+            {storeState.auth?.token && 
+              <div style={styles.row} onClick={() => {navigate(navigationMapping["Minu andmed"])}}>
+                <Typography style={styles.user} variant="subtitle2" component="div">
+                  {storeState.auth?.firstname+" "+storeState.auth?.lastname}
+                </Typography>
+                <div style={styles.avatar}>
+                      <Avatar alt="Remy Sharp" src={storeState.auth?.profilePic} sx={{ width: 40, height: 40 }}/>
+                </div>
+                
+              </div>}
+            {storeState.auth.user
                 ? <Button color="inherit" onClick={logOut}>Logi välja</Button>
                 : <Button color="inherit"><Link to="/login" style={{textDecoration:"none",color:"white"}}>Logi sisse</Link></Button>
             }
@@ -132,6 +155,15 @@ const styles = {
   drawerItem: {
     width: "500px",
     margin: "10px 10px"
+  },
+  avatar: {
+    margin: "0 10px 0 15px"
+  },
+  row: {
+    display: "flex"
+  },
+  user: {
+    margin: "auto 0"
   }
 }
 
