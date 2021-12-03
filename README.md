@@ -70,4 +70,3 @@ nodemon ./main.js
 
 * Kasutaja saab paypali kaudu maksta osalemistasu
 * Kasutaja saab läbi Facebooki või Google sisse logida rakendusse
-
