@@ -25,7 +25,7 @@ function Login() {
     const [open, setOpen] = useState(false);
 
     useEffect(()=>{
-        if(state.auth.user) navigate('/', {state: state.auth})
+        if(state.auth.username) navigate('/settings', {state: state.auth})
         console.log(state.auth)
     },[])
 
@@ -72,11 +72,12 @@ function Login() {
                 dispatch(loginUser({
                     token: data, 
                     user: username, 
-                    firtname: data.data.rows[0].firstname, 
+                    firstname: data.data.rows[0].firstname, 
                     lastname: data.data.rows[0].lastname,
                     email: data.data.rows[0].email,
-                    profilePic: data.data.rows[0].profile_pic}))
-                    navigate('/', {state: data})
+                    profilePic: data.data.rows[0].profile_pic,
+                    id: data.data.rows[0].id}))
+                    navigate('/settings', {state: data})
                 
             }
         })
@@ -136,7 +137,6 @@ function Login() {
 
     return (
         <div style={styles.root}>
-
             <form onKeyPress={handleFormKeypress} style={{textAlign: "center"}}>
                 <div style={styles.row}>
                     <TextField id="outlined-basic" label="Kasutajanimi" variant="outlined" onChange={(v) => {setUsername(v.target.value)}}/>   

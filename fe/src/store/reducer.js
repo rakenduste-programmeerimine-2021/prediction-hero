@@ -1,4 +1,4 @@
-import { POST_ADD, POST_REMOVE, USER_LOGIN, USER_LOGOUT } from "./actions";
+import { POST_ADD, POST_REMOVE, USER_LOGOUT } from "./actions";
 
 const postReducer = (state, action) => {
   console.log(action.state);
@@ -14,7 +14,6 @@ const postReducer = (state, action) => {
         ...state,
         data: state.data.filter(post => post.id !== action.payload)
       }
-    // Kodutööna uue listi vastu võtmine maybe
     case "POSTS_UPDATE": 
     console.log("UPDATING POSTS");
         return {
@@ -37,6 +36,8 @@ const postReducer = (state, action) => {
 }
 
 const authReducer = (state, action) => {
+  console.log("HERE IN REDUCER")
+  console.log(action.payload)
   switch(action.type){
     case "USER_LOGIN":
       return {
@@ -46,7 +47,8 @@ const authReducer = (state, action) => {
         firstname: action.payload.firstname,
         lastname: action.payload.lastname,
         email: action.payload.email,
-        profilePic: action.payload.profilePic
+        profilePic: action.payload.profilePic,
+        id: action.payload.id
       }
     case USER_LOGOUT:
       return {
@@ -56,7 +58,8 @@ const authReducer = (state, action) => {
         firstname: "",
         lastname: "",
         email: "",
-        profilePic: ""
+        profilePic: "",
+        id: ""
       }
     default:
       return state

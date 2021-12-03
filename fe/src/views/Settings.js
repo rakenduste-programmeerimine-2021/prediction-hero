@@ -36,7 +36,6 @@ function Settings() {
         setOpen(true);
     };
 
-
     const closeSnacbar = (event, reason) => {
         if (reason === 'clickaway') {
         return;
@@ -70,6 +69,43 @@ function Settings() {
     }
     const MouseOut = (event) => {
         event.target.style.filter="";
+    }
+    
+    const saveProfile = () => {
+        setLoading(true)
+        const data = JSON.stringify({ 
+            "firstname": firstName,
+            "lastname": lastName,
+            "email": email,
+            "username": username,
+            "profilePic": "https://jalgpall.ee/images/players/ca06ab4f32c76ff4ec3bc436668d44f3"
+        })
+
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: data
+        };
+        fetch(`http://localhost:3001/changeuserdata/${state.auth.id}`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            setLogInData(data)
+            setLoading(false)
+            console.log("Now dispatching user")
+            console.log(data.data.rows[0].username)
+
+                dispatch(loginUser({
+                    token: data, 
+                    user: data.data.rows[0].username,
+                    firstname: data.data.rows[0].firstname, 
+                    lastname: data.data.rows[0].lastname,
+                    email: data.data.rows[0].email,
+                    profilePic: data.data.rows[0].profile_pic,
+                    id: data.data.rows[0].id
+                }));
+                navigate('/', {state: data})
+        })
     }
 
     return (
@@ -105,8 +141,8 @@ function Settings() {
                 
                 
                 <div style={styles.buttonRow}>
-                    <Button onClick={submit} disabled={loading ? true : false} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
-                    <FacebookLogin
+                    <Button onClick={saveProfile} disabled={loading ? true : false} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
+                    {/* <FacebookLogin
                         appId="289181049760112"
                         autoLoad={false}
                         fields="first_name,last_name,email,picture"
@@ -116,7 +152,7 @@ function Settings() {
                         textButton="Facebook"
                         size="small"
                         cssClass="btn"
-                    />
+                    /> */}
                 </div>
             </form>
             {/* {JSON.stringify(state.auth.token)} */}

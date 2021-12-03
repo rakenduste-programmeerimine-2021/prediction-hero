@@ -12,7 +12,8 @@ const initialAuth = {
   firstname: '',
   lastname: '',
   email: '',
-  profilePic: ''
+  profilePic: '',
+  id: ''
 }
 
 const [combinedReducer, initialState] = combineReducers({
@@ -24,7 +25,8 @@ export const Context = createContext(initialState)
 
 function Store({ children }) {
   const [state, dispatch] = useReducer(combinedReducer, initialState)
-
+  console.info("here in Store index.")
+  console.log(children)
   return (
     <Context.Provider value={[state, dispatch]}>
       {children}
