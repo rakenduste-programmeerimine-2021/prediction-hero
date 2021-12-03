@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Context } from "../store";
-import { loginUser } from "../store/actions";
+import { loginUser, logoutUser } from "../store/actions";
 import { Avatar, Grid, Paper, Stack, styled, Typography } from '@mui/material';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -31,6 +31,13 @@ function Settings() {
 
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+
+    useEffect(()=>{
+        setFirstName(state?.auth?.firstname)
+        setLastName(state?.auth?.lastname)
+        setEmail(state?.auth?.email)
+        setUsername(state?.auth?.user)
+    },[])
 
     const openSnacbar = () => {
         setOpen(true);
@@ -78,7 +85,7 @@ function Settings() {
             "lastname": lastName,
             "email": email,
             "username": username,
-            "profilePic": "https://jalgpall.ee/images/players/ca06ab4f32c76ff4ec3bc436668d44f3"
+            "profilePic": "https://www.forgerecycling.co.uk/blog/wp-content/uploads/2018/08/bigstock-Top-view-of-white-recycle-eco-209395741.jpg"
         })
 
         const requestOptions = {
