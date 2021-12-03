@@ -1,52 +1,89 @@
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function Turniiritabel() {
 
     const columns = [
-        { field: 'Meeskond', headerName: 'Meeskond', wPunktidth: 130 },
-        { field: 'Mänge', headerName: 'Mänge ', wPunktidth: 130 },
-        { field: 'Väravatevahe', headerName: 'Väravatevahe', wPunktidth: 130 },
-        { field: 'Punktid', headerName: 'Punktid', wPunktidth: 90 },
+        { field: 'Meeskond', headerName: 'Meeskond', width: 300 },
+        { field: 'Mänge', headerName: 'Mänge ', width: 150 },
+        { field: 'Väravatevahe', headerName: 'Väravatevahe', width: 150 },
+        { field: 'Punktid', headerName: 'Punktid', width: 150 },
       ];
       
+      const testElement = (url, name) => {
+          return <div> <img src={url} width = "20" height="20" /> {name}</div>
+      }
       const rows = [
-        { id: 1, Meeskond: 'Argentiina', Mänge: 0, Väravatevahe: 35, Punktid: 1, Alagrupp: 1 },
-        { id: 2, Meeskond: 'Brasiilia', Mänge: 0, Väravatevahe: 42, Punktid: 1, Alagrupp: 1 },
-        { id: 3, Meeskond: 'Prantsusmaa', Mänge: 0, Väravatevahe: 45, Punktid: 3, Alagrupp: 1 },
-        { id: 4, Meeskond: 'Portugal', Mänge: 0, Väravatevahe: 16, Punktid: 4, Alagrupp: 1 },
-        { id: 5, Meeskond: 'Hispaania', Mänge: 0, Väravatevahe: 0, Punktid: 5, Alagrupp: 1 },
-        { id: 6, Meeskond: 'Jaapan', Mänge: 0, Väravatevahe: 150, Punktid: 6, Alagrupp: 2 },
-        { id: 7, Meeskond: 'Rootsi', Mänge: 0, Väravatevahe: 44, Punktid: 7, Alagrupp: 2 },
-        { id: 8, Meeskond: 'Mehhiko', Mänge: 0, Väravatevahe: 36,  Punktid: 8, Alagrupp: 2 },
-        { id: 9, Meeskond: 'Egiptus', Mänge: 0, Väravatevahe: 65, Punktid: 9, Alagrupp: 2 },
-        { id: 10, Meeskond: 'Eesti', Mänge: 0, Väravatevahe: -18, Punktid: 9, Alagrupp: 2 }
+        { key: 1,
+          data: [
+              { id: 1, Meeskond: testElement("https://www.forgerecycling.co.uk/blog/wp-content/uploads/2018/08/bigstock-Top-view-of-white-recycle-eco-209395741.jpg", "Argentiina"), Mänge: 0, Väravatevahe: 35, Punktid: 1, Alagrupp: 1 },
+              { id: 2, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg", "Brasiilia"), Mänge: 0, Väravatevahe: 42, Punktid: 1, Alagrupp: 1 },
+              { id: 3, Meeskond: 'Prantsusmaa', Mänge: 0, Väravatevahe: 45, Punktid: 3, Alagrupp: 1 },
+              { id: 4, Meeskond: 'Portugal', Mänge: 0, Väravatevahe: 16, Punktid: 4, Alagrupp: 1 },
+              { id: 5, Meeskond: 'Hispaania', Mänge: 0, Väravatevahe: 0, Punktid: 5, Alagrupp: 1 }
+          ]
+      },
+      {   key: 2,
+          data: [
+              { id: 6, Meeskond: 'Jaapan', Mänge: 0, Väravatevahe: 150, Punktid: 6, Alagrupp: 2 },
+              { id: 7, Meeskond: 'Rootsi', Mänge: 0, Väravatevahe: 44, Punktid: 7, Alagrupp: 2 },
+              { id: 8, Meeskond: 'Mehhiko', Mänge: 0, Väravatevahe: 36,  Punktid: 8, Alagrupp: 2 },
+              { id: 9, Meeskond: 'Egiptus', Mänge: 0, Väravatevahe: 65, Punktid: 9, Alagrupp: 2 },
+              { id: 10, Meeskond: 'Eesti', Mänge: 0, Väravatevahe: -18, Punktid: 9, Alagrupp: 2 }
+          ]
+      }
+    ];
 
-      ];
+  const alagrupp = () => {
+         console.log("HERR")
+          const tables = rows.map((element, index) => {  
+              console.log(`MAP ${index}`)
+              console.log(rows)
 
-    const alagruppe = 0 
-    
+              return   <TableContainer key={index} component={Paper}>
+                            <Table key={index}  sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                <TableRow>
+                                    <TableCell>Meeskond</TableCell>
+                                    <TableCell align="right">Mänge</TableCell>
+                                    <TableCell align="right">Väravatevahe</TableCell>
+                                    <TableCell align="right">Punktid</TableCell>
+                                </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {element.data.map((row) => (
+                                    <TableRow
+                                    key={row.id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                    <TableCell component="th" scope="row">
+                                        {row.Meeskond}
+                                    </TableCell>
+                                    <TableCell align="right">{row.Mänge}</TableCell>
+                                    <TableCell align="right">{row.Väravatevahe}</TableCell>
+                                    <TableCell align="right">{row.Punktid}</TableCell>
+                                    </TableRow>
+                                ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+          })
 
-    const alagrupp = () => {
-        return (        
-            rows.map((element, index) => {  
-                            
-                    <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}/> 
-                
-            })
-        )           
-    }  
+      return tables
+  }   
     
     return (
         <div style={styles.root}>
             <Typography variant="h2">Mängud</Typography>
             <div style={{ height: 400, width: '100%' }}>
-                { alagrupp }
+                { alagrupp() }
             </div>
         </div>
 
