@@ -69,16 +69,7 @@ function Login() {
             }else{
                 console.log("LOGGING IN.... data:")
                 console.log(data)
-                dispatch(loginUser({
-                    token: data, 
-                    user: username, 
-                    firstname: data.data.rows[0].firstname, 
-                    lastname: data.data.rows[0].lastname,
-                    email: data.data.rows[0].email,
-                    profilePic: data.data.rows[0].profile_pic,
-                    id: data.data.rows[0].id}))
-                    navigate('/settings', {state: data})
-                
+                finishLogin(data)
             }
         })
     }
@@ -113,18 +104,26 @@ function Login() {
             console.log("Now dispatching user")
             console.log(data.data.rows[0].username)
 
-                dispatch(loginUser({
-                    token: data, 
-                    user: data.data.rows[0].username,
-                    firstname: data.data.rows[0].firstname, 
-                    lastname: data.data.rows[0].lastname,
-                    email: data.data.rows[0].email,
-                    profilePic: data.data.rows[0].profile_pic
-                }));
-                navigate('/', {state: data})
+            finishLogin(data)
         })
         
     }
+    const finishLogin = (data) => {
+        window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": state.auth}))
+        let user = {
+            token: data, 
+            user: data.data.rows[0].username,
+            firstname: data.data.rows[0].firstname, 
+            lastname: data.data.rows[0].lastname,
+            email: data.data.rows[0].email,
+            profilePic: data.data.rows[0].profile_pic,
+            id: data.data.rows[0].id
+        }
+        dispatch(loginUser(user));
+        window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": user}))
+        navigate('/settings', {state: data}) 
+    }
+
     const fbLoginFail = () => {
         console.log("FB login failed");
     }

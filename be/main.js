@@ -63,10 +63,10 @@ app.post('/signup', async(req, res) => {
 
 app.post('/loginFB', async(req, res) => {
   try {
-    let {username, pwhash="parool", firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
+    let {username="", pwhash=(new Date()).getTime().toString(15), firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     console.log(req.body)
 
-    username = username == "" ? "olityhi" : username
+    // username == "" ? res.json({status: "NOK", message:"Kasutajanimi on kohustuslik", data: resp})  : username
 
     var hash = crypto.createHash('md5').update(pwhash).digest('hex');
     console.log(`${pwhash} - ${hash}`);
@@ -78,15 +78,11 @@ app.post('/loginFB', async(req, res) => {
     );
 
     if(resp.rows.length){
-      //kasutaja olemas
-      const resp = await pool.query(
-        "SELECT * FROM users WHERE username = $1 AND pwhash = $2",
-        [username, hash]
+      const updateData = await pool.query(
+        "UPDATE users SET social_id = $1, social_platform = $2 WHERE username = $3",
+        [social_id, social_platform, username]
       );
-  
-      resp.rows.length 
-        ? res.json({status: "OK", message:"logged in successfully", data: resp}) 
-        : res.json({status: "NOK", message:"invalid username or password", data: resp});
+      res.json({status: "OK", message:"logged in successfully", data: resp}) 
     }else{
       //kasutajat ei ole veel olemas
       const newInsertion = await pool.query(

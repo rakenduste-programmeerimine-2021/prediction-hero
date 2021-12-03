@@ -15,7 +15,7 @@ import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
 import GavelIcon from '@mui/icons-material/Gavel';
 import { Link } from "react-router-dom";
 import { Context } from "../store";
-import { logoutUser } from "../store/actions";
+import { loginUser, logoutUser } from "../store/actions";
 import { useNavigate } from "react-router-dom";
 import Drawer from '@mui/material/Drawer';
 import { Divider, List, ListItem, ListItemIcon, ListItemText, Avatar } from '@mui/material'
@@ -24,10 +24,21 @@ function Head() {
     const [storeState, dispatch] = useContext(Context);
     const navigate = useNavigate();
     const [drawerOpen, setDrawerOpen] = useState(false);
-
+    let authUser;
     useEffect(()=>{
+        console.log("SHOULD REFRESH SESSION")
         if(!storeState?.auth?.username){ 
-          logOut()
+          authUser = JSON.parse(window.localStorage.getItem("PHsess"))
+          console.log("LEIDSIN LOCALIST KASUTAJA:")
+          console.log(authUser)
+          if((((new Date()).getTime() - authUser?.chk )/1000/60) < 60){
+            console.log("leitud kasutaja sess < 60min")
+            dispatch(loginUser(authUser.data));
+          }else{
+            logOut()
+          }
+        }else{
+          window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": storeState.auth}))
         }
     },[])
 

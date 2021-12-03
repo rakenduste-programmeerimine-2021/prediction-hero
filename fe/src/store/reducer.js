@@ -1,7 +1,6 @@
 import { POST_ADD, POST_REMOVE, USER_LOGOUT } from "./actions";
 
 const postReducer = (state, action) => {
-  console.log(action.state);
   switch(action.type){
     case POST_ADD:
       console.log("ADDING");
