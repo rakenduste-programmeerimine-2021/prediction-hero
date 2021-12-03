@@ -13,7 +13,7 @@ import TocIcon from '@mui/icons-material/Toc';
 import HomeIcon from '@mui/icons-material/Home';
 import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
 import GavelIcon from '@mui/icons-material/Gavel';
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Context } from "../store";
 import { logoutUser } from "../store/actions";
 import { useNavigate } from "react-router-dom";
@@ -24,21 +24,18 @@ function Head() {
     const [storeState, dispatch] = useContext(Context);
     const navigate = useNavigate();
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(false)
-    const { state } = useLocation();
 
     useEffect(()=>{
-        // console.log('INIT : '+ state)
-        if(!state){ 
-            navigate('/login') 
-        }else{
-            setLoggedIn(true)
+        if(!storeState?.auth?.username){ 
+          logOut()
         }
     },[])
 
+    useEffect(()=>{
+      console.log(storeState.auth)
+    },[storeState.auth,window.location])
 
     const logOut = () => {
-      // dispatch(loginUser({token:"",user : ""}));
       dispatch(logoutUser());
         navigate('/login');
     }
@@ -127,7 +124,7 @@ function Head() {
             {storeState.auth?.token && 
               <div style={styles.row} onClick={() => {navigate(navigationMapping["Minu andmed"])}}>
                 <Typography style={styles.user} variant="subtitle2" component="div">
-                  {storeState.auth?.firstname && storeState.auth?.lastname 
+                  {storeState?.auth?.firstname && storeState.auth?.lastname 
                     ? (storeState.auth?.firstname+" "+storeState.auth?.lastname)
                     : storeState.auth?.user}
                 </Typography>

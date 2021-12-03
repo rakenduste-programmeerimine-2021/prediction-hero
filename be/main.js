@@ -179,11 +179,11 @@ app.put('/changeuserdata/:id', async(req, res)=>{
     const { firstname, lastname, email, username, profilePic } = req.body;
 
     const updateData = await pool.query(
-      "UPDATE users SET firstname = $1, lastname = $2, email = $3, username = $4, profile_pic = $5 WHERE id = $6",
+      "UPDATE users SET firstname = $1, lastname = $2, email = $3, username = $4, profile_pic = $5 WHERE id = $6 RETURNING *",
       [firstname, lastname, email, username, profilePic, id]
     );
 
-      res.json("User data updated");
+      res.json({status: "OK", message:"Data updated", data: updateData});
   } catch (err) {
     console.error(err)
   }
