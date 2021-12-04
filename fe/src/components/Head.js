@@ -31,7 +31,7 @@ function Head() {
           authUser = JSON.parse(window.localStorage.getItem("PHsess"))
           console.log("LEIDSIN LOCALIST KASUTAJA:")
           console.log(authUser)
-          if((((new Date()).getTime() - authUser?.chk )/1000/60) < 60){
+          if((((new Date()).getTime() - authUser?.chk )/1000/60) < 120){ // sessioon justkui 2h (120min)
             console.log("leitud kasutaja sess < 60min")
             dispatch(loginUser(authUser.data));
           }else{

@@ -9,7 +9,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Leaderboard from './views/Leaderboard';
-import Turniiritabel from './views/Matches';
+import Matches from './views/Matches';
 import Settings from './views/Settings';
 import Predict from './views/Predict';
 import Rules from './views/Rules';
@@ -27,7 +27,7 @@ function App() {
         <Route path="/rules" element={<Rules/>} />
         <Route path="/predict" element={<Predict/>} />
         <Route path="/settings" element={<Settings/>} />
-        <Route path="/matches" element={<Turniiritabel/>} />
+        <Route path="/matches" element={<Matches/>} />
       </Routes>
     </div>
   );
