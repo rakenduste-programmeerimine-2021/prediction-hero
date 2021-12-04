@@ -18,25 +18,25 @@ function Turniiritabel() {
       ];
       
       const testElement = (url, name) => {
-          return <div> <img src={url} width = "20" height="20" /> {name}</div>
+          return <div> <img src={url} width = "25" height="15" /> {name}</div>
       }
       const rows = [
         { key: 1,
           data: [
-              { id: 1, Meeskond: testElement("https://www.forgerecycling.co.uk/blog/wp-content/uploads/2018/08/bigstock-Top-view-of-white-recycle-eco-209395741.jpg", "Argentiina"), Mänge: 0, Väravatevahe: 35, Punktid: 1, Alagrupp: 1 },
+              { id: 1, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg", "Argentiina"), Mänge: 0, Väravatevahe: 35, Punktid: 1, Alagrupp: 1 },
               { id: 2, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg", "Brasiilia"), Mänge: 0, Väravatevahe: 42, Punktid: 1, Alagrupp: 1 },
-              { id: 3, Meeskond: 'Prantsusmaa', Mänge: 0, Väravatevahe: 45, Punktid: 3, Alagrupp: 1 },
-              { id: 4, Meeskond: 'Portugal', Mänge: 0, Väravatevahe: 16, Punktid: 4, Alagrupp: 1 },
-              { id: 5, Meeskond: 'Hispaania', Mänge: 0, Väravatevahe: 0, Punktid: 5, Alagrupp: 1 }
+              { id: 3, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg", "Prantsusmaa"), Mänge: 0, Väravatevahe: 45, Punktid: 3, Alagrupp: 1 },
+              { id: 4, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg", "Portugal"), Mänge: 0, Väravatevahe: 16, Punktid: 4, Alagrupp: 1 },
+              { id: 5, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/7/7d/Flag_of_Spain_%281785%E2%80%931873%2C_1875%E2%80%931931%29.svg", "Hispaania"), Mänge: 0, Väravatevahe: 0, Punktid: 5, Alagrupp: 1 }
           ]
       },
       {   key: 2,
           data: [
-              { id: 6, Meeskond: 'Jaapan', Mänge: 0, Väravatevahe: 150, Punktid: 6, Alagrupp: 2 },
-              { id: 7, Meeskond: 'Rootsi', Mänge: 0, Väravatevahe: 44, Punktid: 7, Alagrupp: 2 },
-              { id: 8, Meeskond: 'Mehhiko', Mänge: 0, Väravatevahe: 36,  Punktid: 8, Alagrupp: 2 },
-              { id: 9, Meeskond: 'Egiptus', Mänge: 0, Väravatevahe: 65, Punktid: 9, Alagrupp: 2 },
-              { id: 10, Meeskond: 'Eesti', Mänge: 0, Väravatevahe: -18, Punktid: 9, Alagrupp: 2 }
+              { id: 6, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Japan.svg", "Jaapan"), Mänge: 0, Väravatevahe: 150, Punktid: 6, Alagrupp: 2 },
+              { id: 7, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg", "Rootsi"), Mänge: 0, Väravatevahe: 44, Punktid: 7, Alagrupp: 2 },
+              { id: 8, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/1/17/Flag_of_Mexico.png", "Mehhiko"), Mänge: 0, Väravatevahe: 36,  Punktid: 8, Alagrupp: 2 },
+              { id: 9, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg", "Egiptus"), Mänge: 0, Väravatevahe: 65, Punktid: 9, Alagrupp: 2 },
+              { id: 10, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/2/2f/Flag_of_Estonia_%28bordered%29.svg", "Eesti"), Mänge: 0, Väravatevahe: -18, Punktid: 9, Alagrupp: 2 }
           ]
       }
     ];
