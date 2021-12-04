@@ -79,7 +79,7 @@ function Matches() {
           })
 
       return tables
-  }   
+    } 
     
     return (
         <div style={styles.root}>
