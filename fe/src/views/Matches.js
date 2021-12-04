@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function Turniiritabel() {
+function Matches() {
 
     const columns = [
         { field: 'Meeskond', headerName: 'Meeskond', width: 300 },
@@ -47,14 +47,14 @@ function Turniiritabel() {
               console.log(`MAP ${index}`)
               console.log(rows)
 
-              return   <TableContainer key={index} component={Paper}>
-                            <Table key={index}  sx={{ minWidth: 650 }} aria-label="simple table">
+              return   <TableContainer key={index} component={Paper} sx={styles.tableContainer}>
+                            <Table key={index}  sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
                                 <TableHead>
                                 <TableRow>
-                                    <TableCell>Meeskond</TableCell>
-                                    <TableCell align="right">Mänge</TableCell>
-                                    <TableCell align="right">Väravatevahe</TableCell>
-                                    <TableCell align="right">Punktid</TableCell>
+                                    <TableCell sx={{ width: 400 }} size="small">Meeskond</TableCell>
+                                    <TableCell align="right" size="small">Mänge</TableCell>
+                                    <TableCell align="right" size="small">Väravatevahe</TableCell>
+                                    <TableCell align="right" size="small">Punktid</TableCell>
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -62,13 +62,15 @@ function Turniiritabel() {
                                     <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    hover={true}
+                                    
                                     >
-                                    <TableCell component="th" scope="row">
+                                    <TableCell component="th" scope="row" size="small">
                                         {row.Meeskond}
                                     </TableCell>
-                                    <TableCell align="right">{row.Mänge}</TableCell>
-                                    <TableCell align="right">{row.Väravatevahe}</TableCell>
-                                    <TableCell align="right">{row.Punktid}</TableCell>
+                                    <TableCell align="right" size="small">{row.Mänge}</TableCell>
+                                    <TableCell align="right" size="small">{row.Väravatevahe}</TableCell>
+                                    <TableCell align="right" size="small">{row.Punktid}</TableCell>
                                     </TableRow>
                                 ))}
                                 </TableBody>
@@ -95,7 +97,14 @@ const styles = {
     root:{
         padding: 50,
         overFlow: "hidden"
+    },
+    table: {
+    },
+    tableContainer: {
+        marginTop: "30px",
+        backgroundColor: "#f3f3f3",
+        borderRadius: "5px"
     }
 }
 
-export default Turniiritabel;
+export default Matches;
