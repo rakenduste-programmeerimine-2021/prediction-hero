@@ -242,7 +242,6 @@ function App() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        {/* <Head/> */}
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
@@ -254,18 +253,6 @@ function App() {
        </Routes>
       </Box>
     </Box>
-    // <div style={{minHeight: "100vh"}}>
-    //   <Head/>
-    //   <Routes>
-    //     <Route path="/" element={<Home/>} />
-    //     <Route path="/login" element={<Login/>} />
-    //     <Route path="/leaderboard" element={<Leaderboard/>} />
-    //     <Route path="/rules" element={<Rules/>} />
-    //     <Route path="/predict" element={<Predict/>} />
-    //     <Route path="/settings" element={<Settings/>} />
-    //     <Route path="/groups" element={<Groups/>} />
-    //   </Routes>
-    // </div>
   );
 }
 
