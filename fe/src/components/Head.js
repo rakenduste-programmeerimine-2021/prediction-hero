@@ -61,7 +61,7 @@ function Head() {
 
     const iconsMapping = {
       "Avaleht": <HomeIcon/>,
-      "Turniiritabel": <TocIcon/>,
+      "Alagrupid": <TocIcon/>,
       "Edetabel": <LeaderboardIcon/>,
       "Minu andmed": <PersonIcon/>,
       "Seaded": <SettingsIcon/>,
@@ -72,7 +72,7 @@ function Head() {
 
     const navigationMapping = {
       "Avaleht": "/",
-      "Turniiritabel": "/matches",
+      "Alagrupid": "/groups",
       "Edetabel":  "/leaderboard",
       "Minu andmed":  "/settings",
       "Seaded":  "/settings",
@@ -95,7 +95,7 @@ function Head() {
             onKeyDown={toggleDrawer(false)}
           >
             <List>
-              {['Avaleht', 'Edetabel', 'Turniiritabel', 'Ennusta'].map((text) => (
+              {['Avaleht', 'Edetabel', 'Alagrupid', 'Ennusta'].map((text) => (
                 <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
                   <ListItemIcon style={{color: text == 'Ennusta' ? "dodgerblue" : "black"}}>
                     {iconsMapping[text]}
