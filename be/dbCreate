@@ -1,0 +1,36 @@
+CREATE DATABASE hero
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'C'
+    LC_CTYPE = 'C'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+
+
+CREATE TABLE IF NOT EXISTS public.users
+(
+    id integer NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+    username character varying(255) COLLATE pg_catalog."default",
+    pwhash character varying(255) COLLATE pg_catalog."default",
+    firstname character varying(255) COLLATE pg_catalog."default",
+    lastname character varying(255) COLLATE pg_catalog."default",
+    email character varying(255) COLLATE pg_catalog."default",
+    social_id character varying(255) COLLATE pg_catalog."default",
+    social_platform character varying(255) COLLATE pg_catalog."default",
+    profile_pic character varying(999) COLLATE pg_catalog."default",
+    user_points integer DEFAULT 0,
+    CONSTRAINT users_pkey PRIMARY KEY (id)
+)
+
+CREATE TABLE IF NOT EXISTS public.teams
+(
+    id integer NOT NULL DEFAULT nextval('teams_id_seq'::regclass),
+    team character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    played integer DEFAULT 0,
+    difference integer DEFAULT 0,
+    points integer DEFAULT 0,
+    "group" character varying(3) COLLATE pg_catalog."default",
+    flag character varying(999) COLLATE pg_catalog."default",
+    CONSTRAINT teams_pkey PRIMARY KEY (id)
+)
