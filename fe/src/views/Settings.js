@@ -144,10 +144,9 @@ function Settings() {
                                     <TextField id="outlined-basic" fullWidth label="E-mail" variant="outlined" value={email} onChange={(v) => {setEmail(v.target.value)}}/>   
                                 </div>
                         </Grid>
-                        <Grid item xs={1}></Grid>
-                        <Grid item xs={4} container direction='column'>
+                        <Grid item xs={5} container direction='column'>
                                 <div style={styles.avatar}>
-                                    <Avatar alt="Remy Sharp" src={profile_pic} sx={{ width: 150, height: 150, marginTop: "25px" }} style={styles.avatarImg}/>
+                                    <Avatar alt="Remy Sharp" src={profile_pic} sx={{ width: 250, height: 250, marginTop: "-72px" }} style={styles.avatarImg}/>
                                 </div>
                                 <div style={{display: "flex"}}>
                                     <TextField id="outlined-basic" fullWidth label="URL" variant="outlined" value={profile_pic} onChange={(v) => {setImage(v.target.value)}}/>   
