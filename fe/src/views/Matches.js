@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 function Matches() {
+    const [teams, setAllTeams] = useState({})
+    let rows = {}
 
     const columns = [
         { field: 'Meeskond', headerName: 'Meeskond', width: 300 },
@@ -16,36 +18,47 @@ function Matches() {
         { field: 'Väravatevahe', headerName: 'Väravatevahe', width: 150 },
         { field: 'Punktid', headerName: 'Punktid', width: 150 },
       ];
-      
+    
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        };
+        fetch('http://localhost:3001/getallteams', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log(JSON.stringify(data))
+            console.log(data.length)
+            // setAllTeams(data)
+
+            data.map((row,index) => {
+                if(row.group && (!Object.keys(rows).length || !Object.keys(rows).includes(row.group))){
+
+                    console.log("loon uue "+row.group)
+                    rows[row.group]={key: row.group, data: [row]}
+
+                }else{
+
+                    console.log("lisan olemasolevasse")
+                    rows[row.group].data.push(row)
+
+                }
+            })
+            console.log(rows)
+            setAllTeams({...rows})
+        })
+    },[])
+
       const testElement = (url, name) => {
           return <div> <img src={url} width = "25" height="15" /> {name}</div>
       }
-      const rows = [
-        { key: 1,
-          data: [
-              { id: 1, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg", "Argentiina"), Mänge: 0, Väravatevahe: 35, Punktid: 1, Alagrupp: 1 },
-              { id: 2, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg", "Brasiilia"), Mänge: 0, Väravatevahe: 42, Punktid: 1, Alagrupp: 1 },
-              { id: 3, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg", "Prantsusmaa"), Mänge: 0, Väravatevahe: 45, Punktid: 3, Alagrupp: 1 },
-              { id: 4, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg", "Portugal"), Mänge: 0, Väravatevahe: 16, Punktid: 4, Alagrupp: 1 },
-              { id: 5, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/7/7d/Flag_of_Spain_%281785%E2%80%931873%2C_1875%E2%80%931931%29.svg", "Hispaania"), Mänge: 0, Väravatevahe: 0, Punktid: 5, Alagrupp: 1 }
-          ]
-      },
-      {   key: 2,
-          data: [
-              { id: 6, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Japan.svg", "Jaapan"), Mänge: 0, Väravatevahe: 150, Punktid: 6, Alagrupp: 2 },
-              { id: 7, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg", "Rootsi"), Mänge: 0, Väravatevahe: 44, Punktid: 7, Alagrupp: 2 },
-              { id: 8, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/1/17/Flag_of_Mexico.png", "Mehhiko"), Mänge: 0, Väravatevahe: 36,  Punktid: 8, Alagrupp: 2 },
-              { id: 9, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg", "Egiptus"), Mänge: 0, Väravatevahe: 65, Punktid: 9, Alagrupp: 2 },
-              { id: 10, Meeskond: testElement("https://upload.wikimedia.org/wikipedia/commons/2/2f/Flag_of_Estonia_%28bordered%29.svg", "Eesti"), Mänge: 0, Väravatevahe: -18, Punktid: 9, Alagrupp: 2 }
-          ]
-      }
-    ];
 
   const alagrupp = () => {
          console.log("HERR")
-          const tables = rows.map((element, index) => {  
+         console.log(teams)
+          const tables = Object.keys(teams).map((element, index) => {  
               console.log(`MAP ${index}`)
-              console.log(rows)
+              console.log(element)
 
               return   <TableContainer key={index} component={Paper} sx={styles.tableContainer}>
                             <Table key={index}  sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
@@ -58,7 +71,7 @@ function Matches() {
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {element.data.map((row) => (
+                                {teams[element]?.data.map((row) => (
                                     <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -66,11 +79,11 @@ function Matches() {
                                     
                                     >
                                     <TableCell component="th" scope="row" size="small">
-                                        {row.Meeskond}
+                                        {testElement(row.flag, row.team)}
                                     </TableCell>
-                                    <TableCell align="right" size="small">{row.Mänge}</TableCell>
-                                    <TableCell align="right" size="small">{row.Väravatevahe}</TableCell>
-                                    <TableCell align="right" size="small">{row.Punktid}</TableCell>
+                                    <TableCell align="right" size="small">{row.played}</TableCell>
+                                    <TableCell align="right" size="small">{row.difference}</TableCell>
+                                    <TableCell align="right" size="small">{row.points}</TableCell>
                                     </TableRow>
                                 ))}
                                 </TableBody>
@@ -85,7 +98,7 @@ function Matches() {
         <div style={styles.root}>
             <Typography variant="h2">Mängud</Typography>
             <div style={{ height: 400, width: '100%' }}>
-                { alagrupp() }
+                { rows && alagrupp() }
             </div>
         </div>
 
