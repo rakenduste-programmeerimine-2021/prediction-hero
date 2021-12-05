@@ -39,6 +39,9 @@
   top: 2px !important;
   position: relative;
 }
+.css-bshv44-MuiButtonBase-root-MuiListItem-root{
+  padding-left: 25px !important;
+}
 
 @keyframes App-logo-spin {
   from {

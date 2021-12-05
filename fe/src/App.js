@@ -40,25 +40,25 @@ const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create('all', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
-  backgroundColor: "#f3f3f3"
+  backgroundColor: "#f3f3f3",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create('all', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
-    width: '55px',
+    width: `calc(${theme.spacing(9)} + 1px)`,
   },
-  backgroundColor: "#f3f3f3"
+  backgroundColor: "#f3f3f3",
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -212,9 +212,9 @@ function App() {
           </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open} sx={{backgroundColor:"#f3f3f3",background: "red"}}>
-        <DrawerHeader style={{backgroundColor:"#0c5195"}}>
+        <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {<ChevronLeftIcon sx={{color: 'white'}}/>}
+            {<ChevronLeftIcon/>}
           </IconButton>
         </DrawerHeader>
         <Divider />
