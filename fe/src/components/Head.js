@@ -134,11 +134,17 @@ function Head() {
             </Typography>
             {storeState.auth?.token && 
               <div style={styles.row} onClick={() => {navigate(navigationMapping["Minu andmed"])}}>
-                <Typography style={styles.user} variant="subtitle2" component="div">
-                  {storeState?.auth?.firstname && storeState.auth?.lastname 
-                    ? (storeState.auth?.firstname+" "+storeState.auth?.lastname)
-                    : storeState.auth?.user}
-                </Typography>
+                <div style={styles.column}>
+                  <Typography style={styles.user} variant="subtitle2" component="div">
+                    {storeState?.auth?.firstname && storeState.auth?.lastname 
+                      ? (storeState.auth?.firstname+" "+storeState.auth?.lastname)
+                      : storeState.auth?.user}
+                  </Typography>
+                  {storeState?.auth?.user_points>=0 && <Typography style={styles.user} variant="caption" component="div">
+                        {storeState?.auth?.user_points + " punkti"} 
+                      </Typography>
+                  } 
+                </div>
                 <div style={styles.avatar}>
                       <Avatar alt="Remy Sharp" src={storeState.auth?.profilePic} sx={{ width: 40, height: 40 }}/>
                 </div>
@@ -174,7 +180,13 @@ const styles = {
   },
   user: {
     margin: "auto 0"
+  },
+  column: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
   }
+
 }
 
 export default Head;

@@ -28,6 +28,7 @@ function Settings() {
     const [lastName, setLastName] = useState(state.auth?.lastname)
     const [email, setEmail] = useState(state.auth?.email)
     const [username, setUsername] = useState(state.auth?.user)
+    const [profile_pic, setImage] = useState(state.auth?.profilePic)
 
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
@@ -37,7 +38,8 @@ function Settings() {
         setLastName(state?.auth?.lastname)
         setEmail(state?.auth?.email)
         setUsername(state?.auth?.user)
-    },[])
+        setImage(state.auth?.profilePic)
+    },[state.auth])
 
     const openSnacbar = () => {
         setOpen(true);
@@ -70,14 +72,6 @@ function Settings() {
         }
     }
     
-    const MouseOver = (event) => {
-        event.target.style.filter = 'brightness(0.5)';
-        event.target.style.cursor = 'pointer';
-    }
-    const MouseOut = (event) => {
-        event.target.style.filter="";
-    }
-    
     const saveProfile = () => {
         setLoading(true)
         const data = JSON.stringify({ 
@@ -85,7 +79,7 @@ function Settings() {
             "lastname": lastName,
             "email": email,
             "username": username,
-            "profilePic": "https://www.forgerecycling.co.uk/blog/wp-content/uploads/2018/08/bigstock-Top-view-of-white-recycle-eco-209395741.jpg"
+            "profilePic": profile_pic
         })
 
         const requestOptions = {
@@ -101,16 +95,18 @@ function Settings() {
             setLoading(false)
             console.log("Now dispatching user")
             console.log(data.data.rows[0].username)
-
-                dispatch(loginUser({
+                let newUser = {
                     token: data, 
                     user: data.data.rows[0].username,
                     firstname: data.data.rows[0].firstname, 
                     lastname: data.data.rows[0].lastname,
                     email: data.data.rows[0].email,
                     profilePic: data.data.rows[0].profile_pic,
-                    id: data.data.rows[0].id
-                }));
+                    id: data.data.rows[0].id,
+                    user_points: data.data.rows[0].user_points
+                }
+                dispatch(loginUser(newUser));
+                window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": newUser}))
                 navigate('/', {state: data})
         })
     }
@@ -123,8 +119,8 @@ function Settings() {
                     <Grid item xs={12}>
                         <Typography variant="h2">Minu andmed</Typography>
                     </Grid>
-                    <Grid item xs={8}>
-                        <Item>
+                    <Grid item xs={7}>
+                        <Item sx={{backgroundColor: "#f3f3f3"}}>
                             <div style={styles.row}>
                                 <TextField id="outlined-basic" fullWidth label="Eesnimi" variant="outlined" value={firstName} onChange={(v) => {setFirstName(v.target.value)}}/>   
                             </div>
@@ -139,10 +135,16 @@ function Settings() {
                             </div>
                         </Item>
                     </Grid>
-                    <Grid item xs={4} style={styles.column}>
-                        <div style={styles.avatar}>
-                            <Avatar alt="Remy Sharp" src={state.auth?.profilePic} sx={{ width: 150, height: 150, boxShadow: "0 0 60px 10px #00509f8c" }} style={styles.avatarImg} onMouseOver={MouseOver} onMouseOut={MouseOut}/>
-                        </div>
+                    <Grid item xs={1}></Grid>
+                    <Grid item xs={4} container direction='column'>
+                        <Item sx={{backgroundColor: "#f3f3f3"}}>
+                            <div style={styles.avatar}>
+                                <Avatar alt="Remy Sharp" src={state.auth?.profilePic} sx={{ width: 150, height: 150, marginTop: "25px" }} style={styles.avatarImg}/>
+                            </div>
+                            <div style={{display: "flex"}}>
+                                <TextField id="outlined-basic" fullWidth label="URL" variant="outlined" value={profile_pic} onChange={(v) => {setImage(v.target.value)}}/>   
+                            </div>
+                        </Item>
                     </Grid>
                 </Grid>
                 
@@ -184,8 +186,9 @@ const styles = {
         marginTop: 10
     },
     column: {
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
         justifyContent: "center"
     },
     buttonRow: {
@@ -194,7 +197,8 @@ const styles = {
     },
     avatar:{
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        marginBottom: 30
     },
     avatarImg: {
         transition: "all .5s"

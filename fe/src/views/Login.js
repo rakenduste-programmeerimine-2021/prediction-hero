@@ -102,7 +102,6 @@ function Login() {
             setLogInData(data)
             setLoading(false)
             console.log("Now dispatching user")
-            console.log(data.data.rows[0].username)
 
             finishLogin(data)
         })
@@ -117,7 +116,8 @@ function Login() {
             lastname: data.data.rows[0].lastname,
             email: data.data.rows[0].email,
             profilePic: data.data.rows[0].profile_pic,
-            id: data.data.rows[0].id
+            id: data.data.rows[0].id,
+            user_points: data.data.rows[0].user_points
         }
         dispatch(loginUser(user));
         window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": user}))
