@@ -217,7 +217,6 @@ function App() {
             {<ChevronLeftIcon/>}
           </IconButton>
         </DrawerHeader>
-        <Divider />
         <List>
           {['Avaleht', 'Edetabel', 'Alagrupid', 'Ennusta'].map((text, index) => (
             <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
