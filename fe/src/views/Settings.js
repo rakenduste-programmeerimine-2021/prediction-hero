@@ -107,7 +107,7 @@ function Settings() {
                 }
                 dispatch(loginUser(newUser));
                 window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": newUser}))
-                navigate('/', {state: data})
+                // navigate('/', {state: data})
         })
     }
 
