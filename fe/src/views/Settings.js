@@ -7,7 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Context } from "../store";
 import { loginUser, logoutUser } from "../store/actions";
-import { Avatar, Grid, Paper, Stack, styled, Typography } from '@mui/material';
+import { Avatar, Card, CardActions, CardContent, CardMedia, Grid, Paper, Stack, styled, Typography } from '@mui/material';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -112,59 +112,66 @@ function Settings() {
     }
 
     return (
-        <div style={styles.root}>
+        <div className="settingsView" style={styles.root}>
             
             <form onKeyPress={handleFormKeypress} style={styles.form}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant="h2">Minu andmed</Typography>
+
+            <Grid item xs={12} sx={{textAlign: "start"}}>
+                <Typography variant="h2">Minu andmed</Typography>
+            </Grid>
+            <Card >
+                <CardMedia
+                    component="img"
+                    alt="green iguana"
+                    height="140"
+                    // image="https://wallpaperaccess.com/full/1808816.jpg"
+                    image={state.auth?.profilePic || "https://cdn.suwalls.com/wallpapers/abstract/lights-14769-1920x1200.jpg"}
+                />
+                <CardContent>
+                    <Grid container spacing={2}>
+                       
+                        <Grid item xs={7}>
+                                <div style={styles.row}>
+                                    <TextField id="outlined-basic" fullWidth label="Eesnimi" variant="outlined" value={firstName} onChange={(v) => {setFirstName(v.target.value)}}/>   
+                                </div>
+                                <div style={styles.row}>
+                                    <TextField id="outlined-basic" fullWidth label="Perekonnanimi" variant="outlined" value={lastName} onChange={(v) => {setLastName(v.target.value)}}/>   
+                                </div>
+                                <div style={styles.row}>
+                                    <TextField id="outlined-basic" fullWidth label="Kasutjanimi" variant="outlined" value={username} onChange={(v) => {setUsername(v.target.value)}}/>   
+                                </div>
+                                <div style={styles.row}>
+                                    <TextField id="outlined-basic" fullWidth label="E-mail" variant="outlined" value={email} onChange={(v) => {setEmail(v.target.value)}}/>   
+                                </div>
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={4} container direction='column'>
+                                <div style={styles.avatar}>
+                                    <Avatar alt="Remy Sharp" src={profile_pic} sx={{ width: 150, height: 150, marginTop: "25px" }} style={styles.avatarImg}/>
+                                </div>
+                                <div style={{display: "flex"}}>
+                                    <TextField id="outlined-basic" fullWidth label="URL" variant="outlined" value={profile_pic} onChange={(v) => {setImage(v.target.value)}}/>   
+                                </div>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={7}>
-                        <Item sx={{backgroundColor: "#f3f3f3"}}>
-                            <div style={styles.row}>
-                                <TextField id="outlined-basic" fullWidth label="Eesnimi" variant="outlined" value={firstName} onChange={(v) => {setFirstName(v.target.value)}}/>   
-                            </div>
-                            <div style={styles.row}>
-                                <TextField id="outlined-basic" fullWidth label="Perekonnanimi" variant="outlined" value={lastName} onChange={(v) => {setLastName(v.target.value)}}/>   
-                            </div>
-                            <div style={styles.row}>
-                                <TextField id="outlined-basic" fullWidth label="Kasutjanimi" variant="outlined" value={username} onChange={(v) => {setUsername(v.target.value)}}/>   
-                            </div>
-                            <div style={styles.row}>
-                                <TextField id="outlined-basic" fullWidth label="E-mail" variant="outlined" value={email} onChange={(v) => {setEmail(v.target.value)}}/>   
-                            </div>
-                        </Item>
-                    </Grid>
-                    <Grid item xs={1}></Grid>
-                    <Grid item xs={4} container direction='column'>
-                        <Item sx={{backgroundColor: "#f3f3f3"}}>
-                            <div style={styles.avatar}>
-                                <Avatar alt="Remy Sharp" src={state.auth?.profilePic} sx={{ width: 150, height: 150, marginTop: "25px" }} style={styles.avatarImg}/>
-                            </div>
-                            <div style={{display: "flex"}}>
-                                <TextField id="outlined-basic" fullWidth label="URL" variant="outlined" value={profile_pic} onChange={(v) => {setImage(v.target.value)}}/>   
-                            </div>
-                        </Item>
-                    </Grid>
-                </Grid>
-                
-                
-                <div style={styles.buttonRow}>
-                    <Button onClick={saveProfile} disabled={loading ? true : false} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
-                    {/* <FacebookLogin
-                        appId="289181049760112"
-                        autoLoad={false}
-                        fields="first_name,last_name,email,picture"
-                        onClick={() => {console.log('clicked')}}
-                        callback={responseFacebook}
-                        onFailure={fbLoginFail}
-                        textButton="Facebook"
-                        size="small"
-                        cssClass="btn"
-                    /> */}
-                </div>
+
+                    </CardContent>
+                    <CardActions>
+                        <Button onClick={saveProfile} disabled={loading ? true : false} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
+                        {/* <FacebookLogin
+                            appId="289181049760112"
+                            autoLoad={false}
+                            fields="first_name,last_name,email,picture"
+                            onClick={() => {console.log('clicked')}}
+                            callback={responseFacebook}
+                            onFailure={fbLoginFail}
+                            textButton="Facebook"
+                            size="small"
+                            cssClass="btn"
+                        /> */}
+                    </CardActions>
+                </Card>
             </form>
-            {/* {JSON.stringify(state.auth.token)} */}
         
             <Snackbar open={open} autoHideDuration={1500} onClose={closeSnacbar} anchorOrigin={{ vertical: "top", horizontal:"center" }}>
                 <Alert onClose={closeSnacbar} severity="error" sx={{ width: '100%' }}>
