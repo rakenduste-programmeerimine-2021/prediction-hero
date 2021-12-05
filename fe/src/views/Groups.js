@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function Matches() {
+function Groups() {
     const [teams, setAllTeams] = useState({})
     let rows = {}
 
@@ -96,7 +96,7 @@ function Matches() {
     
     return (
         <div style={styles.root}>
-            <Typography variant="h2">Mängud</Typography>
+            <Typography variant="h2">Alagrupid</Typography>
             <div style={{ height: 400, width: '100%' }}>
                 { rows && alagrupp() }
             </div>
@@ -120,4 +120,4 @@ const styles = {
     }
 }
 
-export default Matches;
+export default Groups;

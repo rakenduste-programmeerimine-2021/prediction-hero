@@ -16,6 +16,9 @@ const initialAuth = {
   id: ''
 }
 
+const initialTeams = []
+const initialGroups = []
+
 const [combinedReducer, initialState] = combineReducers({
   posts: [postReducer, initialPosts],
   auth: [authReducer, initialAuth]
