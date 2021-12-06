@@ -37,5 +37,6 @@ export const logoutUser = () => ({
     lastname: "",
     email: "",
     profilePic: "",
+    user_points: 0
   }
 })

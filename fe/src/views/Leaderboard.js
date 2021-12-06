@@ -1,37 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Typography } from '@mui/material';
-
+import { Box, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Context } from '../store/';
 function Leaderboard() {
     const [rows, setAllUsers] = useState([])
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('calories');
+    const [selected, setSelected] = useState([]);
+    const [page, setPage] = useState(0);
+    const [dense, setDense] = useState(true);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [state, dispatch] = useContext(Context);
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
         { field: 'username', headerName: 'Name', width: 130 },
         { field: 'pwhash', headerName: 'pwhash', width: 130 },
-        // {
-        //   field: 'age',
-        //   headerName: 'Age',
-        //   type: 'number',
-        //   width: 120,
-        // },
         {
             field: 'points',
             headerName: 'Points',
             type: 'number',
             width: 150,
-        },
-        // {
-        //   field: 'fullName',
-        //   headerName: 'Full name',
-        //   description: 'This column has a value getter and is not sortable.',
-        //   sortable: false,
-        //   width: 160,
-        //   valueGetter: (params) =>
-        //     `${params.getValue(params.id, 'firstName') || ''} ${
-        //       params.getValue(params.id, 'lastName') || ''
-        //     }`,
-        // },
+        }
       ];
 
     useEffect(() => {
@@ -43,37 +33,10 @@ function Leaderboard() {
         .then(response => response.json())
         .then(data => {
             console.log(JSON.stringify(data))
+            console.log(data.length)
             setAllUsers(data)
         })
     },[])
-
-
-
-      ////////////////////////////////////////////////////////////
-
-
-
-        const [order, setOrder] = React.useState('asc');
-        const [orderBy, setOrderBy] = React.useState('calories');
-        const [selected, setSelected] = React.useState([]);
-        const [page, setPage] = React.useState(0);
-        const [dense, setDense] = React.useState(false);
-        const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-        const handleRequestSort = (event, property) => {
-            const isAsc = orderBy === property && order === 'asc';
-            setOrder(isAsc ? 'desc' : 'asc');
-            setOrderBy(property);
-        };
-
-        const handleSelectAllClick = (event) => {
-            if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.name);
-            setSelected(newSelecteds);
-            return;
-            }
-            setSelected([]);
-        };
 
         const handleClick = (event, id) => {
             const selectedIndex = selected.indexOf(id);
@@ -95,31 +58,11 @@ function Leaderboard() {
             setSelected(newSelected);
         };
 
-        const handleChangePage = (event, newPage) => {
-            setPage(newPage);
-        };
-
-        const handleChangeRowsPerPage = (event) => {
-            setRowsPerPage(parseInt(event.target.value, 10));
-            setPage(0);
-        };
-
-        const handleChangeDense = (event) => {
-            setDense(event.target.checked);
-        };
-
         const isSelected = (id) => selected.indexOf(id) !== -1;
 
         // Avoid a layout jump when reaching the last page with empty rows.
         const emptyRows =
             page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-
-        function getComparator(order, orderBy) {
-            return order === 'desc'
-                ? (a, b) => descendingComparator(a, b, orderBy)
-                : (a, b) => -descendingComparator(a, b, orderBy);
-        }
 
         function descendingComparator(a, b, orderBy) {
             if (b[orderBy] < a[orderBy]) {
@@ -131,92 +74,55 @@ function Leaderboard() {
             return 0;
         }
 
-        function stableSort(array, comparator) {
+        function stableSort(array) {
             const stabilizedThis = array.map((el, index) => [el, index]);
+            console.log("sorting?")
+            console.log(stabilizedThis)
             stabilizedThis.sort((a, b) => {
-              const order = comparator(a[0], b[0]);
-              if (order !== 0) {
-                return order;
-              } 
-              return a[1] - b[1];
+              return b[0].user_points - a[0].user_points;
             });
             return stabilizedThis.map((el) => el[0]);
         }
+
+        const alagrupp = () => {
+            console.log("HERR")
+   
+                 return   <TableContainer component={Paper} sx={styles.tableContainer}>
+                               <Table sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
+                                   <TableHead>
+                                   <TableRow>
+                                       {/* <TableCell sx={{ width: 10 }} size="small">id</TableCell> */}
+                                       <TableCell align="left" size="small">Eesnimi</TableCell>
+                                       <TableCell align="left" size="small">Perekonnanimi</TableCell>
+                                       <TableCell align="left" size="small">Kasutajanimi</TableCell>
+                                       <TableCell align="right" size="small">Punktid</TableCell>
+                                   </TableRow>
+                                   </TableHead>
+                                   <TableBody>
+                                   {stableSort(rows).map((row) => {
+                                       return <TableRow
+                                                key={row.id}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                hover={true}
+                                                
+                                                >
+                                                <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.firstname || "-"}</TableCell>
+                                                <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.lastname || "-"}</TableCell>
+                                                <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.username || "-"}</TableCell>
+                                                <TableCell align="right" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.user_points || "0"}</TableCell>
+                                                </TableRow>
+                                   })}
+                                   </TableBody>
+                               </Table>
+                           </TableContainer>
+       } 
   
     return (
         <div style={styles.root}>
             <Typography variant="h2">Edetabel</Typography>
 
             <div style={{ width: '100%' }}>
-            <Box sx={{ width: '100%' }}>
-            <FormControlLabel
-                    control={<Switch checked={dense} onChange={handleChangeDense} />}
-                    label="Kompaktne vaade"
-                />
-                <Paper sx={{ width: '100%', mb: 2 }}>
-                    <TableContainer>
-                    <Table
-                        sx={{ minWidth: 750 }}
-                        aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
-                    >
-                        <TableBody>
-                        {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                            rows.slice().sort(getComparator(order, orderBy)) */}
-                        {stableSort(rows, getComparator(order, orderBy))
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row, index) => {
-                            const isItemSelected = isSelected(row.id);
-                            const labelId = `enhanced-table-checkbox-${index}`;
-
-                            return (
-                                <TableRow
-                                hover
-                                onClick={(event) => handleClick(event, row.name)}
-                                role="checkbox"
-                                aria-checked={isItemSelected}
-                                tabIndex={-1}
-                                key={row.id}
-                                selected={isItemSelected}
-                                >
-                                <TableCell
-                                    component="th"
-                                    id={labelId}
-                                    scope="row"
-                                    padding="none"
-                                >
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="right">{row.id}</TableCell>
-                                <TableCell align="right">{row.username}</TableCell>
-                                <TableCell align="right">{row.pwhash}</TableCell>
-                                <TableCell align="right">{row.points}</TableCell>
-                                </TableRow>
-                            );
-                            })}
-                        {emptyRows > 0 && (
-                            <TableRow
-                            style={{
-                                height: (dense ? 33 : 53) * emptyRows,
-                            }}
-                            >
-                            <TableCell colSpan={6} />
-                            </TableRow>
-                        )}
-                        </TableBody>
-                    </Table>
-                    </TableContainer>
-                    <TablePagination
-                    component="div"
-                    labelRowsPerPage="Näita ühel lehel"
-                    count={rows.length}
-                    rowsPerPage={50}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    />
-                </Paper>
-                
-                </Box>
+                { alagrupp() }
             </div>
         </div>
     )
@@ -227,6 +133,14 @@ const styles = {
     root:{
         padding: 50,
         overFlow: "hidden"
+    },
+    tableContainer: {
+        marginTop: "30px",
+        backgroundColor: "#f3f3f3",
+        borderRadius: "5px"
+    },
+    currentUser: {
+        color: "dodgerblue"
     }
 }
 

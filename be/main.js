@@ -27,18 +27,10 @@ const corsOpts = {
 
 app.use(cors(corsOpts));
 
-app.get('/', (req, res) => {
-    res.send("OK - toimib !!!");
-});
-app.get('/test',async(req,res)=>{
-  res.json({data: "Greetings from node.js"});
-})
 
 // ===========================================================================================================================================================
 
 // sign up
-// TODO pw peaks frontist liikuma juba hashitult nodesse
-// TODO check, et sellist kasutjat juba ei oleks, kui on siis tagasta viga nt kujul {status: "NOK", message: "Sellise nimega kasutaja on juba registreeritud."}
 app.post('/signup', async(req, res) => {
   try {
     let {username, pwhash, firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
@@ -73,14 +65,14 @@ app.post('/loginFB', async(req, res) => {
     log.info('',`${pwhash} - ${hash}`)
 
     const resp = await pool.query(
-      "SELECT * FROM users WHERE username = $1",
-      [username]
+      "SELECT * FROM users WHERE social_id = $1",
+      [social_id]
     );
 
     if(resp.rows.length){
       const updateData = await pool.query(
-        "UPDATE users SET social_id = $1, social_platform = $2 WHERE username = $3",
-        [social_id, social_platform, username]
+        "UPDATE users SET social_platform = $1 WHERE social_id = $2",
+        [social_platform, social_id]
       );
       res.json({status: "OK", message:"logged in successfully", data: resp}) 
     }else{
@@ -138,7 +130,20 @@ app.get('/getuser/:id', async(req, res)=>{
   }
 })
 
-// get all users (debugging)
+
+// get teams
+app.get('/getallteams', async(req, res)=>{
+  try {
+    const { id } = req.params;
+    const user = await pool.query("SELECT * FROM teams");
+
+      res.json(user.rows);
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+// get all users
 app.get('/getallusers', async(req, res)=>{
   try {
     const users = await pool.query("SELECT * FROM users");
@@ -185,6 +190,23 @@ app.put('/changeuserdata/:id', async(req, res)=>{
   }
 })
 
+//update user points
+app.put('/updatepoints/:id', async(req, res)=>{
+  try {
+    const { id } = req.params;
+    const { user_points } = req.body;
+
+    const updateData = await pool.query(
+      "UPDATE users SET user_points = $1 WHERE id = $2 RETURNING *",
+      [user_points, id]
+    );
+
+      res.json({status: "OK", message:"Data updated", data: updateData});
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 
 // delete password
 app.delete('/deleteuser/:id', async(req, res)=>{
@@ -202,11 +224,6 @@ app.delete('/deleteuser/:id', async(req, res)=>{
 })
 
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 http.listen(port, () => {
   console.log(`HERO server jookseb pordil ${port}`);
