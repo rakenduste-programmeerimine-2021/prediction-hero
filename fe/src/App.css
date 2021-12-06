@@ -45,6 +45,10 @@
 .settingsView .MuiCardMedia-img{
   filter: blur(26px);
 } 
+.matchRow .MuiOutlinedInput-input{
+  padding: 8.5px 4px !important;
+  text-align: center
+}
 
 @keyframes App-logo-spin {
   from {
