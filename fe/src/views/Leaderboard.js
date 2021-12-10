@@ -85,7 +85,6 @@ function Leaderboard() {
         }
 
         const alagrupp = () => {
-            console.log("HERR")
    
                  return   <TableContainer component={Paper} sx={styles.tableContainer}>
                                <Table sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">

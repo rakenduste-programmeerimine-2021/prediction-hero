@@ -5,13 +5,9 @@ import { Context } from '../store';
 import { blue } from '@mui/material/colors';
 
 function Predict() {
-    const [rows, setAllUsers] = useState([])
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('calories');
-    const [selected, setSelected] = useState([]);
-    const [page, setPage] = useState(0);
-    const [dense, setDense] = useState(true);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rows, setAllMatches] = useState([])
+    const mappedTeams = {}
+    const [allTeams, setAllTeams] = useState({})
     const [state, dispatch] = useContext(Context);
 
     const columns = [
@@ -27,56 +23,23 @@ function Predict() {
       ];
 
     useEffect(() => {
-
-            setAllUsers([
-                {"id":1,"team1id":1,"team2id":2,"difference":0,"points":0,"group":"a","flag":"https://upload.wikimedia.org/wikipedia/commons/1/1a/Flag_of_Argentina.svg"},
-                {"id":2,"team1id":2,"team2id":3,"difference":0,"points":0,"group":"a","flag":"https://upload.wikimedia.org/wikipedia/commons/2/2f/Flag_of_Estonia_%28bordered%29.svg"},
-                {"id":3,"team1id":3,"team2id":4,"difference":0,"points":0,"group":"a","flag":"https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg"},
-                {"id":4,"team1id":4,"team2id":5,"difference":0,"points":0,"group":"a","flag":"https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg"},
-                {"id":5,"team1id":5,"team2id":6,"difference":0,"points":0,"group":"a","flag":"https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg"},
-                {"id":6,"team1id":6,"team2id":7,"difference":0,"points":0,"group":"b","flag":"https://upload.wikimedia.org/wikipedia/commons/7/7d/Flag_of_Spain_%281785%E2%80%931873%2C_1875%E2%80%931931%29.svg"},
-                {"id":7,"team1id":7,"team2id":8,"difference":0,"points":0,"group":"b","flag":"https://upload.wikimedia.org/wikipedia/commons/9/9e/Flag_of_Japan.svg"},
-                {"id":8,"team1id":8,"team2id":9,"difference":0,"points":0,"group":"b","flag":"https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Sweden.svg"},
-                {"id":9,"team1id":9,"team2id":10,"difference":0,"points":0,"group":"b","flag":"https://upload.wikimedia.org/wikipedia/commons/1/17/Flag_of_Mexico.png"},
-                {"id":10,"team1id":10,"team2id":1,"difference":0,"points":0,"group":"b","flag":"https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_Egypt.svg"}])
-    
-    },[])
-
-        const handleClick = (event, id) => {
-            const selectedIndex = selected.indexOf(id);
-            let newSelected = [];
-
-            if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-            } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-            } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-            } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-            }
-
-            setSelected(newSelected);
+        const requestOptions = {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
         };
+        fetch('http://localhost:3001/getallmatches', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log(JSON.stringify(data))
+            console.log(data.length)
+            setAllMatches(data);
 
-        const isSelected = (id) => selected.indexOf(id) !== -1;
+            
+        })
+        setAllTeams(state.teams.data)
 
-        // Avoid a layout jump when reaching the last page with empty rows.
-        const emptyRows =
-            page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-        function descendingComparator(a, b, orderBy) {
-            if (b[orderBy] < a[orderBy]) {
-            return -1;
-            }
-            if (b[orderBy] > a[orderBy]) {
-            return 1;
-            }
-            return 0;
-        }
+        teams()
+    },[])
 
         function stableSort(array) {
             const stabilizedThis = array.map((el, index) => [el, index]);
@@ -86,6 +49,18 @@ function Predict() {
               return b[0].user_points - a[0].user_points;
             });
             return stabilizedThis.map((el) => el[0]);
+        }
+
+        const teams = () => {
+            
+            Object.keys(allTeams).map((index)=>{
+                console.log(allTeams[index])
+                mappedTeams[allTeams[index].id] = {team: allTeams[index].team, flag:allTeams[index].flag}
+            })
+            return mappedTeams
+        }
+        const flagAndTeam = (url, name, no) => {
+            return no != '2' ? <div> <img src={url} width = "25" height="15" /> {name}</div> : <div>{name} <img src={url} width = "25" height="15" /> </div>
         }
 
         const matches = () => {
@@ -102,7 +77,7 @@ function Predict() {
                                                 hover={true}
                                                 
                                                 >
-                                                <TableCell scope="row" size="small" sx={{}}>{row.team1id || "-"}</TableCell>
+                                                <TableCell scope="row" size="small" sx={{}}>{allTeams && flagAndTeam((teams())[row.team1id].flag,(teams())[row.team1id].team)}</TableCell>
                                                 <TableCell align="right" size="small" sx={{width: "50px", padding:"5px", }}>
                                                     <TextField id="outlined-basic" label="" variant="outlined" sx={{}}/>  
                                                 </TableCell>
@@ -110,7 +85,7 @@ function Predict() {
                                                 <TableCell align="left" size="small" sx={{width: "50px", padding:"5px"}}>
                                                     <TextField id="outlined-basic" label="" variant="outlined" sx={{}}/>  
                                                 </TableCell>
-                                                <TableCell align="right" size="small" sx={{}}>{row.team2id || "0"}</TableCell>
+                                                <TableCell align="right" size="small" sx={{}}>{allTeams && flagAndTeam((teams())[row.team2id].flag,(teams())[row.team2id].team,"2")}</TableCell>
                                                 </TableRow>
                                    })}
                                    </TableBody>

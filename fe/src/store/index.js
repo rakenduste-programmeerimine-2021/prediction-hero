@@ -1,10 +1,8 @@
 import { createContext, useReducer } from "react";
-import { postReducer, authReducer } from "./reducer";
+import { teamsReducer, authReducer } from "./reducer";
 import combineReducers from "react-combine-reducers"
 
-const initialPosts = {
-  data: ["test","teine"]
-}
+const initialTeams = []
 
 const initialAuth = {
   token: '',
@@ -16,11 +14,11 @@ const initialAuth = {
   id: ''
 }
 
-const initialTeams = []
+// const initialTeams = []
 const initialGroups = []
 
 const [combinedReducer, initialState] = combineReducers({
-  posts: [postReducer, initialPosts],
+  teams: [teamsReducer, initialTeams],
   auth: [authReducer, initialAuth]
 })
 
