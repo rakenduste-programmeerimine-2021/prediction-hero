@@ -134,10 +134,21 @@ app.get('/getuser/:id', async(req, res)=>{
 // get teams
 app.get('/getallteams', async(req, res)=>{
   try {
-    const { id } = req.params;
     const user = await pool.query("SELECT * FROM teams");
 
       res.json(user.rows);
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+
+// get matches
+app.get('/getallmatches', async(req, res)=>{
+  try {
+    const matches = await pool.query("SELECT * FROM matches");
+
+    res.json(matches.rows);
   } catch (err) {
     console.error(err)
   }

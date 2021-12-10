@@ -13,13 +13,8 @@ export const removePost = id => ({
 })
 
 // Lisada siis uus konstant selle jaoks ja muuta ka reduceris
-export const updatePosts = array => ({
-  type: "POSTS_UPDATE",
-  payload: array
-})
-
-export const updatePost = array => ({
-  type: "POST_UPDATE",
+export const updateTeams = array => ({
+  type: "TEAMS_UPDATE",
   payload: array
 })
 
