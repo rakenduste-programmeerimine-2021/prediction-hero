@@ -112,7 +112,6 @@ function App() {
   const [storeState, dispatch] = useContext(Context);
   let authUser;
   useEffect(()=>{
-      console.log("SHOULD REFRESH SESSION")
       if(!storeState?.auth?.username){ 
         authUser = JSON.parse(window.localStorage.getItem("PHsess"))
         console.log("LEIDSIN LOCALIST KASUTAJA:")
@@ -121,6 +120,7 @@ function App() {
           console.log("leitud kasutaja sess < 60min")
           dispatch(loginUser(authUser.data));
         }else{
+          console.log("leitud kasutaja sess > 60min --> LOGOUT")
           logOut()
         }
       }else{

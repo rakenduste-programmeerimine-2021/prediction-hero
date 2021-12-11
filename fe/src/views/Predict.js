@@ -8,17 +8,13 @@ import { ThemeContext } from '@mui/styled-engine';
 
 function Predict() {
     const [rows, setAllMatches] = useState([])
-    const mappedTeams = {}
-    const [allTeams, setAllTeams] = useState({})
+    const [mappedTeams, setMappedTeams] = useState({})
+    const [allTeams, setAllTeams] = useState([])
     const [loading, setLoading] = useState(false)
+    const [curretUserID, setCurretUserID] = useState()
     const [currentMatchID, setCurrentMatchID] = useState(null)
     const [state, dispatch] = useContext(Context);
-    const [scores, setScores] = useState({
-        1:{1:2, 2:4},
-        2:{1:4, 2:44},
-        3:{1:5, 2:2},
-        4:{1:0, 2:2}
-    })
+    const [scores, setScores] = useState({})
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -35,26 +31,35 @@ function Predict() {
 
 
     useEffect(() => {
+        setCurretUserID(state.auth.id)
+        getAllTeams()
+    },[state.auth.id])
 
+    useEffect(() => {
+        makeTable()
+    },[state.teams.data])
+
+    const getAllTeams = () => {
         fetch('http://localhost:3001/getallteams', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         })
         .then(response => response.json())
         .then(data => {
-            // console.log(JSON.stringify(data))
-            // console.log(data.length)
-            // setAllTeams(data)
+            // console.log("GET ALL TEAMS DATA:")
+            // console.log(data)
+            setAllTeams(data)
+            // console.log(allTeams)
             dispatch(updateTeams(data))
         }).then(() => {
-            makeTable()
+            // console.log("THEN allTeams should be set:")
+            // console.log(allTeams)
+            // makeTable()
         })
-
-    },[])
+    }
 
     const makeTable = () => {
-        console.log(state.teams.data)
-        setAllTeams(state.teams.data)
+        console.log(allTeams)
 
         const requestOptions = {
             method: 'GET',
@@ -66,9 +71,9 @@ function Predict() {
             // console.log(JSON.stringify(data))
             // console.log(data.length)
             setAllMatches(data);
-            teams()
+            
         }).then(()=>{
-            fetch(`http://localhost:3001/getuserpredictions/${state.auth.id}`, {
+            fetch(`http://localhost:3001/getuserpredictions/${curretUserID}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             })
@@ -78,9 +83,36 @@ function Predict() {
                 // console.log(data.length)
                 // setAllTeams(data)
                 // dispatch(updateTeams(data))
+                
+                let tempObj={}
+                Object.keys(data).map((index)=>{
+                    console.log(data[index].matchid)
+                    // console.log({...permObj})
+                    tempObj[data[index].matchid] = {1: data[index].team1score, 2: data[index].team2score}
+                })
 
+                setScores(tempObj)
                 //TODO destruct data into ROWS??? allteams????
             })
+        }).then(()=>{
+            // setAllTeams(state.teams.data)
+            // console.log("starting to map:")
+            // console.log(allTeams)
+            let tempObj={}
+            Object.keys(allTeams).map((index)=>{
+                // console.log(allTeams[index])
+                // console.log({...permObj})
+                tempObj[allTeams[index].id] = {team: allTeams[index].team, flag:allTeams[index].flag}
+                // setMappedTeams({...mappedTeams,[allTeams[index].id]:{team: allTeams[index].team, flag:allTeams[index].flag}})
+            })
+
+            setMappedTeams({...tempObj})
+
+            // window.setTimeout(() => {
+            //     console.log("MAPPED TEAMS:")
+            //     console.log(mappedTeams)
+            // },500)
+            
         })
     }
 
@@ -94,15 +126,7 @@ function Predict() {
             return stabilizedThis.map((el) => el[0]);
         }
 
-        const teams = () => { 
-            console.log("NYYD ALLES JOUDSIN SIIA.")
-            console.log(state.teams.data)
-            Object.keys(allTeams).map((index)=>{
-                // console.log(allTeams[index])
-                mappedTeams[allTeams[index].id] = {team: allTeams[index].team, flag:allTeams[index].flag}
-            })
-            return mappedTeams
-        }
+        
         const flagAndTeam = (url, name, no) => {
             return no != '2' ? <div> <img src={url} width = "25" height="15" /> {name}</div> : <div>{name} <img src={url} width = "25" height="15" /> </div>
         }
@@ -144,18 +168,18 @@ function Predict() {
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 hover={true}
                                                 >
-                                                <TableCell scope="row" size="small" sx={{}}>{allTeams && flagAndTeam((teams())[row.team1id].flag,(teams())[row.team1id].team)}</TableCell>
+                                                <TableCell scope="row" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team1id]?.flag,mappedTeams[row.team1id]?.team) : "-"}</TableCell>
                                                 <TableCell align="right" size="small" sx={{width: "50px", padding:"5px", }}>
-                                                    <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id][1]} 
-                                                    onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],1:v.target.value}})}}/>  
+                                                {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id][1]} 
+                                                    onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],1:v.target.value}})}}/>  }
                                                     
                                                 </TableCell>
                                                 <TableCell align="center" sx={{width:"10px", padding:"5px"}}>:</TableCell>
                                                 <TableCell align="left" size="small" sx={{width: "50px", padding:"5px"}}>
-                                                    <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id][2]}
-                                                    onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],2:v.target.value}})}}/>  
+                                                    {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id][2]}
+                                                    onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],2:v.target.value}})}}/>  }
                                                 </TableCell>
-                                                <TableCell align="right" size="small" sx={{}}>{allTeams && flagAndTeam((teams())[row.team2id].flag,(teams())[row.team2id].team,"2")}</TableCell>
+                                                <TableCell align="right" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team2id]?.flag,mappedTeams[row.team2id]?.team,"2") : "-"}</TableCell>
                                                 </TableRow>
                                    })}
                                    </TableBody>

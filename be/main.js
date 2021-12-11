@@ -268,6 +268,7 @@ app.post('/savepredictions/:userId', async(req, res) => {
 // get user predicitons
 app.get('/getuserpredictions/:userId', async(req, res)=>{
   try {
+    
     const { userId } = req.params;
     const predictions = await pool.query("SELECT * FROM predictions WHERE userid = $1",[userId]);
 
