@@ -83,7 +83,7 @@ function Groups() {
                                     
                                     >
                                     <TableCell component="th" scope="row" size="small">
-                                        {testElement(row.flag, row.id)}
+                                        {testElement(row.flag, row.team)}
                                     </TableCell>
                                     <TableCell align="right" size="small">{row.played}</TableCell>
                                     <TableCell align="right" size="small">{row.difference}</TableCell>

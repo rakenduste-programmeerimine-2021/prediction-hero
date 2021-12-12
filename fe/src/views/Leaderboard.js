@@ -101,8 +101,8 @@ function Leaderboard() {
                                    {stableSort(rows).map((row) => {
                                        return <TableRow
                                                 key={row.id}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                hover={true}
+                                                sx={[{ '&:last-child td, &:last-child th': { border: 0 }}, state?.auth.id == row.id ? styles.currentUserRow : {}]}
+                                                hover={state?.auth.id == row.id ? false : true}
                                                 
                                                 >
                                                 <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.firstname || "-"}</TableCell>
@@ -139,7 +139,11 @@ const styles = {
         borderRadius: "5px"
     },
     currentUser: {
-        color: "dodgerblue"
+        color: "dodgerblue",
+        fontWeight: 600
+    },
+    currentUserRow: {
+        backgroundColor: "lightgray"
     }
 }
 
