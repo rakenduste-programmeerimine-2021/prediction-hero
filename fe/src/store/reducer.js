@@ -3,22 +3,14 @@ import { POST_ADD, POST_REMOVE, USER_LOGOUT } from "./actions";
 const teamsReducer = (state, action) => {
 
   console.log("HERE IN TEAMS REDUCER")
+  console.log(action.payload)
+  
   switch(action.type){
     case "TEAMS_UPDATE": 
     console.log("UPDATING TEAMS");
         return {
           ...state,
           data: action.payload
-        }
-    case "POST_UPDATE": 
-    console.log("UPDATING");
-        return {
-          ...state,
-          data: state.data.filter((post) => {
-            console.log(post.Id === action.payload.Id);
-            console.log(post.Id+"!=="+action.payload.Id);
-            return post.Id !== action.payload.Id
-          }).concat(action.payload)
         }
     default:
       console.log("EI LEIDNUD MIDAGI.")
@@ -27,7 +19,7 @@ const teamsReducer = (state, action) => {
 }
 
 const authReducer = (state, action) => {
-  console.log("HERE IN REDUCER")
+  console.log("HERE IN AUTH REDUCER")
   console.log(action.payload)
   switch(action.type){
     case "USER_LOGIN":
