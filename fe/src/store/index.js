@@ -11,7 +11,8 @@ const initialAuth = {
   lastname: '',
   email: '',
   profilePic: '',
-  id: ''
+  id: '',
+  is_admin: false
 }
 
 // const initialTeams = []

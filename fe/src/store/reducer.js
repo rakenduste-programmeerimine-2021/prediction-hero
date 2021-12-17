@@ -32,7 +32,8 @@ const authReducer = (state, action) => {
         email: action.payload.email,
         profilePic: action.payload.profilePic,
         id: action.payload.id,
-        user_points: action.payload.user_points
+        user_points: action.payload.user_points,
+        is_admin: action.payload.is_admin
       }
     case USER_LOGOUT:
       return {

@@ -169,14 +169,14 @@ function Predict() {
                                                 hover={true}
                                                 >
                                                 <TableCell scope="row" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team1id]?.flag,mappedTeams[row.team1id]?.team) : "-"}</TableCell>
-                                                <TableCell align="right" size="small" sx={{width: "50px", padding:"5px", }}>
-                                                {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id][1]} 
+                                                <TableCell align="right" size="small" sx={{width: "50px", padding:"1px 5px", }}>
+                                                {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][1] : ""} 
                                                     onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],1:v.target.value}})}}/>  }
                                                     
                                                 </TableCell>
                                                 <TableCell align="center" sx={{width:"10px", padding:"5px"}}>:</TableCell>
                                                 <TableCell align="left" size="small" sx={{width: "50px", padding:"5px"}}>
-                                                    {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id][2]}
+                                                    {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][2] : ""}
                                                     onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],2:v.target.value}})}}/>  }
                                                 </TableCell>
                                                 <TableCell align="right" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team2id]?.flag,mappedTeams[row.team2id]?.team,"2") : "-"}</TableCell>
