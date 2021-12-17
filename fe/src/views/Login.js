@@ -122,7 +122,8 @@ function Login() {
         }
         dispatch(loginUser(user));
         window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": user}))
-        navigate('/settings', {state: data}) 
+        const navigateTo = window.localStorage.getItem("PHlwp") || '/settings'
+        navigate(navigateTo, {state: data}) 
     }
 
     const fbLoginFail = () => {
