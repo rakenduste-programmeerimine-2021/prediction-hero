@@ -156,7 +156,6 @@ function Settings() {
                     component="img"
                     alt="green iguana"
                     height="140"
-                    // image="https://wallpaperaccess.com/full/1808816.jpg"
                     image={state.auth?.profilePic || "https://cdn.suwalls.com/wallpapers/abstract/lights-14769-1920x1200.jpg"}
                 />
                 <CardContent>
@@ -257,7 +256,6 @@ const styles = {
     },
     form:{
         textAlign: "center",
-        width: "80%",
         margin: "0 auto"
     },
     btn: {

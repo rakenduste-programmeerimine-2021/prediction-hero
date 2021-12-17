@@ -114,10 +114,10 @@ function App() {
   useEffect(()=>{
       if(!storeState?.auth?.username){ 
         authUser = JSON.parse(window.localStorage.getItem("PHsess"))
-        console.log("LEIDSIN LOCALIST KASUTAJA:")
-        console.log(authUser)
+        // console.log("LEIDSIN LOCALIST KASUTAJA:")
+        // console.log(authUser)
         if((((new Date()).getTime() - authUser?.chk )/1000/60) < 120){ // sessioon justkui 2h (120min)
-          console.log("leitud kasutaja sess < 60min")
+          // console.log("leitud kasutaja sess < 60min")
           dispatch(loginUser(authUser.data));
         }else{
           console.log("leitud kasutaja sess > 60min --> LOGOUT")
@@ -129,7 +129,7 @@ function App() {
   },[])
 
   useEffect(()=>{
-    console.log(storeState.auth)
+    // console.log(storeState.auth)
   },[storeState.auth,window.location])
 
   const logOut = () => {
@@ -179,7 +179,7 @@ function App() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
+        <Toolbar sx={{backgroundColor: "#028288"}}>
           <IconButton
               size="large"
               edge="start"

@@ -42,11 +42,14 @@
 .css-bshv44-MuiButtonBase-root-MuiListItem-root{
   padding-left: 25px !important;
 }
+.MuiCardMedia-img{
+  filter: blur(10px);
+} 
 .settingsView .MuiCardMedia-img{
   filter: blur(26px);
 } 
 .matchRow .MuiOutlinedInput-input{
-  padding: 8.5px 4px !important;
+  padding: 1.5px!important;
   text-align: center
 }
 

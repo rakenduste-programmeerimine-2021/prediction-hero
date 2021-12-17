@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import React, { useEffect, useState, useContext } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -64,7 +64,8 @@ function Groups() {
               console.log(`MAP ${index}`)
               console.log(element)
 
-              return   <TableContainer key={index} component={Paper} sx={styles.tableContainer}>
+              return (
+                        <TableContainer key={index} component={Paper} sx={styles.tableContainer}>
                             <Table key={index}  sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
                                 <TableHead>
                                 <TableRow>
@@ -93,6 +94,7 @@ function Groups() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                    )
           })
 
       return tables
@@ -102,7 +104,17 @@ function Groups() {
         <div style={styles.root}>
             <Typography variant="h2">Alagrupid</Typography>
             <div style={{ height: 400, width: '100%' }}>
-                { rows && alagrupp() }
+                <Card >
+                    <CardMedia
+                        component="img"
+                        alt="green iguana"
+                        height="200"
+                        image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
+                    />
+                    <CardContent>
+                        { rows && alagrupp() }
+                    </CardContent>
+                </Card>
             </div>
         </div>
 

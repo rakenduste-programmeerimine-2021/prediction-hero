@@ -1,6 +1,6 @@
 //import { Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Checkbox, FormControlLabel, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Checkbox, FormControlLabel, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TextField, Typography } from '@mui/material';
 import { Context } from '../store';
 import { blue } from '@mui/material/colors';
 import { updateTeams } from '../store/actions';
@@ -15,20 +15,6 @@ function Predict() {
     const [currentMatchID, setCurrentMatchID] = useState(null)
     const [state, dispatch] = useContext(Context);
     const [scores, setScores] = useState({})
-
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'username', headerName: 'Name', width: 130 },
-        { field: 'pwhash', headerName: 'pwhash', width: 130 },
-        {
-            field: 'points',
-            headerName: 'Points',
-            type: 'number',
-            width: 150,
-        }
-      ];
-
-
 
     useEffect(() => {
         setCurretUserID(state.auth.id)
@@ -156,36 +142,48 @@ function Predict() {
             // console.log("HERR")
    
                  return  <Grid item xs={12} sx={{textAlign: "start"}}>
+                <Card raised={false}>
+                <CardMedia
+                    component="img"
+                    alt="green iguana"
+                    height="200"
+                    image={"https://ak.picdn.net/shutterstock/videos/1024072910/thumb/12.jpg"}
+                />
+                <CardContent>
                   <TableContainer component={Paper} sx={styles.tableContainer}>
-                               <Table sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
-                                   <TableBody>
-                                   {stableSort(rows).map((row) => {
-                                    //    console.log("SEE ON SEE")
-                                    //    console.log(scores)
-                                       return <TableRow
-                                                className="matchRow"
-                                                key={row.id}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                hover={true}
-                                                >
-                                                <TableCell scope="row" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team1id]?.flag,mappedTeams[row.team1id]?.team) : "-"}</TableCell>
-                                                <TableCell align="right" size="small" sx={{width: "50px", padding:"1px 5px", }}>
-                                                {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][1] : ""} 
-                                                    onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],1:v.target.value}})}}/>  }
-                                                    
-                                                </TableCell>
-                                                <TableCell align="center" sx={{width:"10px", padding:"5px"}}>:</TableCell>
-                                                <TableCell align="left" size="small" sx={{width: "50px", padding:"5px"}}>
-                                                    {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][2] : ""}
-                                                    onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],2:v.target.value}})}}/>  }
-                                                </TableCell>
-                                                <TableCell align="right" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team2id]?.flag,mappedTeams[row.team2id]?.team,"2") : "-"}</TableCell>
-                                                </TableRow>
-                                   })}
-                                   </TableBody>
-                               </Table>
-                           </TableContainer>
-                           <Button onClick={savePredictions} disabled={loading ? true : false} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
+                        <Table sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
+                            <TableBody>
+                            {stableSort(rows).map((row) => {
+                            //    console.log("SEE ON SEE")
+                            //    console.log(scores)
+                                return <TableRow
+                                        className="matchRow"
+                                        key={row.id}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        hover={true}
+                                        >
+                                        <TableCell scope="row" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team1id]?.flag,mappedTeams[row.team1id]?.team) : "-"}</TableCell>
+                                        <TableCell align="right" size="small" sx={{width: "50px", padding:"1px 5px", }}>
+                                        {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][1] : ""} 
+                                            onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],1:v.target.value}})}}/>  }
+                                            
+                                        </TableCell>
+                                        <TableCell align="center" sx={{width:"10px", padding:"5px"}}>:</TableCell>
+                                        <TableCell align="left" size="small" sx={{width: "50px", padding:"5px"}}>
+                                            {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][2] : ""}
+                                            onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],2:v.target.value}})}}/>  }
+                                        </TableCell>
+                                        <TableCell align="right" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team2id]?.flag,mappedTeams[row.team2id]?.team,"2") : "-"}</TableCell>
+                                        </TableRow>
+                            })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </CardContent>
+                <CardActions sx={{justifyContent: "right"}}>
+                    <Button onClick={savePredictions} disabled={loading ? true : false} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
+                </CardActions>
+                </Card>
                         </Grid>
        } 
   
@@ -206,6 +204,11 @@ const styles = {
     root:{
         padding: 50,
         overFlow: "hidden"
+    },
+    tableContainer: {
+        marginTop: "30px",
+        backgroundColor: "#f3f3f3",
+        borderRadius: "5px"
     }
 }
 

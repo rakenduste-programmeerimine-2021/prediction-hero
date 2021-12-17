@@ -2,25 +2,25 @@ import { POST_ADD, POST_REMOVE, USER_LOGOUT } from "./actions";
 
 const teamsReducer = (state, action) => {
 
-  console.log("HERE IN TEAMS REDUCER")
-  console.log(action.payload)
+  // console.log("HERE IN TEAMS REDUCER")
+  // console.log(action.payload)
   
   switch(action.type){
     case "TEAMS_UPDATE": 
-    console.log("UPDATING TEAMS");
+    // console.log("UPDATING TEAMS");
         return {
           ...state,
           data: action.payload
         }
     default:
-      console.log("EI LEIDNUD MIDAGI.")
+      // console.log("EI LEIDNUD MIDAGI.")
       return state
   }
 }
 
 const authReducer = (state, action) => {
-  console.log("HERE IN AUTH REDUCER")
-  console.log(action.payload)
+  // console.log("HERE IN AUTH REDUCER")
+  // console.log(action.payload)
   switch(action.type){
     case "USER_LOGIN":
       return {
