@@ -121,7 +121,7 @@ function App() {
           dispatch(loginUser(authUser.data));
         }else{
           console.log("leitud kasutaja sess > 60min --> LOGOUT")
-          logOut()
+          window.location.pathname !== "/settings" && logOut()
         }
       }else{
         window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": storeState.auth}))
@@ -133,8 +133,9 @@ function App() {
   },[storeState.auth,window.location])
 
   const logOut = () => {
+    window.localStorage.removeItem("PHsess")
     dispatch(logoutUser());
-      navigate('/login');
+    navigate('/login');
   }
 
   const handleDrawerOpen = () => {

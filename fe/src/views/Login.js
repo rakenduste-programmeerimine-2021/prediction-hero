@@ -144,6 +144,7 @@ function Login() {
                     <TextField id="outlined-basic" label="Parool" variant="outlined" type="password" onChange={(v) => {setPassword(v.target.value)}}/>   
                 </div>
                 <div style={styles.buttonRow}>
+                    <Button onClick={()=>{navigate('/settings')}} disabled={loading ? true : false} variant="contained" color="info">Registreeru</Button>
                     <Button onClick={submit} disabled={loading ? true : false} variant="contained" color="success">Logi sisse</Button>
                 </div>
                 <div style={styles.row}>
@@ -183,7 +184,9 @@ const styles = {
     ,
     buttonRow: {
         marginTop: 30,
-        marginBottom: 30
+        marginBottom: 30,
+        display: "flex",
+        justifyContent: "space-between"
     }
 }
 

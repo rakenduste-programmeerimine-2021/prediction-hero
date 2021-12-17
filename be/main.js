@@ -33,14 +33,15 @@ app.use(cors(corsOpts));
 // sign up
 app.post('/signup', async(req, res) => {
   try {
-    let {username, pwhash, firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
+    console.log("SINGNING UP")
+    let {username="", pw, firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     console.log(req.body)
+    console.log(username)
+    console.log(firstname)
 
-    username = username == "" ? "olityhi" : username
-
-    var hash = crypto.createHash('md5').update(pwhash).digest('hex');
-    console.log(`${pwhash} - ${hash}`);
-    log.info('',`${pwhash} - ${hash}`)
+    var hash = crypto.createHash('md5').update(pw).digest('hex');
+    console.log(`${pw} - ${hash}`);
+    log.info('',`${pw} - ${hash}`)
 
     const newInsertion = await pool.query(
       "INSERT INTO users (username, pwhash, firstname, lastname, email, social_id, social_platform, profile_pic) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",

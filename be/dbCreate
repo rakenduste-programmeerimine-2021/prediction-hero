@@ -97,7 +97,7 @@ ALTER TABLE public.matches ALTER COLUMN id SET DEFAULT nextval('matches_id_seq':
 
 INSERT INTO public.users(
 	username, pwhash, firstname, lastname, email, social_id, social_platform, profile_pic, user_points, is_admin)
-	VALUES ('testkasutaja', '12312312312312', 'testkasutaja', 'testkasutajaperenimi', 'email', '123si', 'TEST', 'url', '123', false);
+	VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3', 'Malle', 'Pirn', 'ee@ee.ee', '', 'FB', 'https://avatarfiles.alphacoders.com/127/thumb-1920-127130.jpg', '123', true);
 
 INSERT INTO public.teams(
 	team, played, difference, points, "group", flag)
