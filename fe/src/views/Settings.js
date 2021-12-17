@@ -120,13 +120,15 @@ function Settings() {
                     email: data?.data.rows[0].email,
                     profilePic: data?.data.rows[0].profile_pic,
                     id: data?.data.rows[0].id,
-                    user_points: data?.data.rows[0].user_points
+                    user_points: data?.data.rows[0].user_points,
+                    is_admin: data?.data.rows[0].is_admin
                 }
                 dispatch(loginUser(newUser));
                 window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": newUser}))
             }else{
-                setSnackbarType("success")
-                setLogInData({message:"Kasutaja on loodud!"})
+                data.message 
+                    ? setSnackbarType("error")
+                    : setSnackbarType("success"); setLogInData({message:"Kasutaja on loodud!"})
                 openSnacbar()
             }
                 
@@ -173,12 +175,16 @@ function Settings() {
                                 <div style={styles.row}>
                                     <TextField id="outlined-basic" fullWidth label="Kasutjanimi" variant="outlined" value={username} onChange={(v) => {setUsername(v.target.value)}}/>   
                                 </div>
-                                <div style={styles.row}>
-                                    <TextField id="outlined-basic" fullWidth label="Parool" variant="outlined" value={password} onChange={(v) => {setPassword(v.target.value)}}/>   
-                                </div>
-                                <div style={styles.row}>
-                                    <TextField id="outlined-basic" fullWidth label="Korda parooli" variant="outlined" onChange={(v) => {validatePassword(v.target.value)}}/>   
-                                </div>
+                                {!state.auth?.id && 
+                                    <>
+                                        <div style={styles.row}>
+                                            <TextField id="outlined-basic" fullWidth label="Parool" variant="outlined" value={password} onChange={(v) => {setPassword(v.target.value)}}/>   
+                                        </div>
+                                        <div style={styles.row}>
+                                            <TextField id="outlined-basic" fullWidth label="Korda parooli" variant="outlined" onChange={(v) => {validatePassword(v.target.value)}}/>   
+                                        </div>
+                                    </>
+                                }
                                 
                         </Grid>
                         <Grid item xs={5} container direction='column'>
@@ -194,7 +200,7 @@ function Settings() {
                     </CardContent>
                     <CardActions sx={{justifyContent: "right"}}>
                     {state.auth?.id
-                        ?<Button onClick={saveProfile} disabled={loading || submitDisabled} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
+                        ?<Button onClick={saveProfile} disabled={loading} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
                         :<Button onClick={saveProfile} disabled={loading || submitDisabled} variant="contained" color="success" style={styles.btn}>Registreeru</Button>
                     }
                         {/* <FacebookLogin

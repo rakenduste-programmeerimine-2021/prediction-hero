@@ -117,7 +117,8 @@ function Login() {
             email: data.data.rows[0].email,
             profilePic: data.data.rows[0].profile_pic,
             id: data.data.rows[0].id,
-            user_points: data.data.rows[0].user_points
+            user_points: data.data.rows[0].user_points,
+            is_admin: data?.data.rows[0].is_admin
         }
         dispatch(loginUser(user));
         window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": user}))

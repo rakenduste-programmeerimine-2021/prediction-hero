@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS public.users
     profile_pic character varying(999) COLLATE pg_catalog."default",
     user_points integer DEFAULT 0,
     is_admin boolean NOT NULL DEFAULT false,
+    blocked boolean NOT NULL DEFAULT false,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 )
 

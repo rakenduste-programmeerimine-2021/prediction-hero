@@ -8,6 +8,7 @@ var crypto = require('crypto');
 const port = 3001;
 
 var log = require('./log.js');
+const e = require('express');
 app.use(express.json())
 
 const corsOpts = {
@@ -43,12 +44,24 @@ app.post('/signup', async(req, res) => {
     console.log(`${pw} - ${hash}`);
     log.info('',`${pw} - ${hash}`)
 
-    const newInsertion = await pool.query(
-      "INSERT INTO users (username, pwhash, firstname, lastname, email, social_id, social_platform, profile_pic) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
-      [username,hash, firstname, lastname, email, social_id, social_platform, profile_pic]
+    const resp = await pool.query(
+      "SELECT * FROM users WHERE username = $1",
+      [username]
     );
 
-      res.json(newInsertion.rows[0]);
+    if(!resp.rows.length){
+      //kasutajat ei ole veel olemas
+      const newInsertion = await pool.query(
+        "INSERT INTO users (username, pwhash, firstname, lastname, email, social_id, social_platform, profile_pic) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
+        [username,hash, firstname, lastname, email, social_id, social_platform, profile_pic]
+      );
+  
+        res.json(newInsertion.rows[0]);
+    }else{
+      res.json({status: "NOK", message:"Kasutajanimi on kasutusel", data: resp});
+    }
+
+    
   } catch (err) {
     console.error(err)
   }
@@ -103,7 +116,7 @@ app.post('/login', async(req, res) => {
     console.log(`${pwhash} - ${hash}`);
 
     const resp = await pool.query(
-      "SELECT * FROM users WHERE username = $1 AND pwhash = $2",
+      "SELECT * FROM users WHERE username = $1 AND pwhash = $2 AND blocked = false",
       [username,hash]
     );
 
@@ -158,7 +171,7 @@ app.get('/getallmatches', async(req, res)=>{
 // get all users
 app.get('/getallusers', async(req, res)=>{
   try {
-    const users = await pool.query("SELECT * FROM users");
+    const users = await pool.query("SELECT * FROM users WHERE blocked = false");
 
       res.json(users.rows);
   } catch (err) {
@@ -280,15 +293,15 @@ app.get('/getuserpredictions/:userId', async(req, res)=>{
 
 
 // delete password
-app.delete('/deleteuser/:id', async(req, res)=>{
+app.put('/blockuser/:id', async(req, res)=>{
   try {
     const { id } = req.params;
     const deleteuser = await pool.query(
-      "DELETE FROM users WHERE id = $1",
+      "UPDATE users SET blocked = true WHERE id = $1",
       [id]
     );
 
-      res.json("User deleted");
+      res.json("User blocked");
   } catch (err) {
     console.error(err)
   }
