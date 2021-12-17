@@ -22,13 +22,17 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Settings() {
     const [state, dispatch] = useContext(Context);
-    const [logInData, setLogInData] = useState('')
+    const [logInData, setLogInData] = useState({message:""})
     const [loading, setLoading] = useState(false)
     const [firstName, setFirstName] = useState(state.auth?.firstname)
     const [lastName, setLastName] = useState(state.auth?.lastname)
     const [email, setEmail] = useState(state.auth?.email)
     const [username, setUsername] = useState(state.auth?.user)
+    const [password, setPassword] = useState("")
     const [profile_pic, setImage] = useState(state.auth?.profilePic)
+    const [submitDisabled, setSubmitDisabled] = useState(false)
+    const [snacbarType, setSnackbarType] = useState("success")
+    const [snacbarAction, setSnackbarAction] = useState(<Button onClick={()=>{navigate('/login')}} style={styles.snacbarBtn} size="small">Logi sisse</Button>)
 
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
@@ -39,11 +43,13 @@ function Settings() {
         setEmail(state?.auth?.email)
         setUsername(state?.auth?.user)
         setImage(state.auth?.profilePic)
+
+        !state.auth?.id && setSubmitDisabled(true)
     },[state.auth])
 
     const openSnacbar = () => {
         setOpen(true);
-    };
+    }
 
     const closeSnacbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -51,7 +57,12 @@ function Settings() {
         }
 
         setOpen(false);
-    };
+    }
+
+    const validatePassword = (value) => {
+        value === password ? setSubmitDisabled(false) : setSubmitDisabled(true)
+    }
+
     const submit = () => {  
         closeSnacbar()
     }
@@ -74,40 +85,55 @@ function Settings() {
     
     const saveProfile = () => {
         setLoading(true)
+
+        const url = state.auth?.id ? `changeuserdata//${state.auth.id}` : `signup`
+
         const data = JSON.stringify({ 
             "firstname": firstName,
             "lastname": lastName,
             "email": email,
             "username": username,
-            "profilePic": profile_pic
+            "profilePic": profile_pic,
+            "pw": password
         })
 
         const requestOptions = {
-            method: 'PUT',
+            method: state.auth?.id ? 'PUT' : 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: data
         };
-        fetch(`http://localhost:3001/changeuserdata/${state.auth.id}`, requestOptions)
+        fetch(`http://localhost:3001/${url}`, requestOptions)
         .then(response => response.json())
         .then(data => {
             console.log(data)
             setLogInData(data)
             setLoading(false)
-            console.log("Now dispatching user")
-            console.log(data.data.rows[0].username)
+            
+            if(state.auth?.id){
+                setSnackbarType("error")
+                
                 let newUser = {
                     token: data, 
-                    user: data.data.rows[0].username,
-                    firstname: data.data.rows[0].firstname, 
-                    lastname: data.data.rows[0].lastname,
-                    email: data.data.rows[0].email,
-                    profilePic: data.data.rows[0].profile_pic,
-                    id: data.data.rows[0].id,
-                    user_points: data.data.rows[0].user_points
+                    user: data?.data.rows[0].username,
+                    firstname: data?.data.rows[0].firstname, 
+                    lastname: data?.data.rows[0].lastname,
+                    email: data?.data.rows[0].email,
+                    profilePic: data?.data.rows[0].profile_pic,
+                    id: data?.data.rows[0].id,
+                    user_points: data?.data.rows[0].user_points
                 }
                 dispatch(loginUser(newUser));
                 window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": newUser}))
+            }else{
+                setSnackbarType("success")
+                setLogInData({message:"Kasutaja on loodud!"})
+                openSnacbar()
+            }
+                
                 // navigate('/', {state: data})
+        }).catch(e => {
+            console.log(e)
+            setLoading(false)
         })
     }
 
@@ -117,7 +143,11 @@ function Settings() {
             <form onKeyPress={handleFormKeypress} style={styles.form}>
 
             <Grid item xs={12} sx={{textAlign: "start"}}>
-                <Typography variant="h2">Minu andmed</Typography>
+                {state.auth?.id
+                    ?<Typography variant="h2">Minu andmed</Typography>
+                    :<Typography variant="h2">Registreeri</Typography>
+                }
+                
             </Grid>
             <Card >
                 <CardMedia
@@ -138,11 +168,18 @@ function Settings() {
                                     <TextField id="outlined-basic" fullWidth label="Perekonnanimi" variant="outlined" value={lastName} onChange={(v) => {setLastName(v.target.value)}}/>   
                                 </div>
                                 <div style={styles.row}>
+                                    <TextField id="outlined-basic" fullWidth label="E-mail" variant="outlined" value={email} onChange={(v) => {setEmail(v.target.value)}}/>   
+                                </div>
+                                <div style={styles.row}>
                                     <TextField id="outlined-basic" fullWidth label="Kasutjanimi" variant="outlined" value={username} onChange={(v) => {setUsername(v.target.value)}}/>   
                                 </div>
                                 <div style={styles.row}>
-                                    <TextField id="outlined-basic" fullWidth label="E-mail" variant="outlined" value={email} onChange={(v) => {setEmail(v.target.value)}}/>   
+                                    <TextField id="outlined-basic" fullWidth label="Parool" variant="outlined" value={password} onChange={(v) => {setPassword(v.target.value)}}/>   
                                 </div>
+                                <div style={styles.row}>
+                                    <TextField id="outlined-basic" fullWidth label="Korda parooli" variant="outlined" onChange={(v) => {validatePassword(v.target.value)}}/>   
+                                </div>
+                                
                         </Grid>
                         <Grid item xs={5} container direction='column'>
                                 <div style={styles.avatar}>
@@ -155,8 +192,11 @@ function Settings() {
                     </Grid>
 
                     </CardContent>
-                    <CardActions>
-                        <Button onClick={saveProfile} disabled={loading ? true : false} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
+                    <CardActions sx={{justifyContent: "right"}}>
+                    {state.auth?.id
+                        ?<Button onClick={saveProfile} disabled={loading || submitDisabled} variant="contained" color="success" style={styles.btn}>Salvesta</Button>
+                        :<Button onClick={saveProfile} disabled={loading || submitDisabled} variant="contained" color="success" style={styles.btn}>Registreeru</Button>
+                    }
                         {/* <FacebookLogin
                             appId="289181049760112"
                             autoLoad={false}
@@ -172,8 +212,8 @@ function Settings() {
                 </Card>
             </form>
         
-            <Snackbar open={open} autoHideDuration={1500} onClose={closeSnacbar} anchorOrigin={{ vertical: "top", horizontal:"center" }}>
-                <Alert onClose={closeSnacbar} severity="error" sx={{ width: '100%' }}>
+            <Snackbar open={open} autoHideDuration={15000} onClose={closeSnacbar} anchorOrigin={{ vertical: "top", horizontal:"center" }}>
+                <Alert onClose={closeSnacbar} severity={snacbarType} sx={{ width: '100%' }} action={state.auth?.id ? "" : snacbarAction}>
                     {logInData?.message}
                 </Alert>
             </Snackbar>
@@ -217,6 +257,9 @@ const styles = {
     btn: {
         margin: 10,
         borderRadius: 4
+    },
+    snacbarBtn: {
+        color: "white"
     }
 }
 
