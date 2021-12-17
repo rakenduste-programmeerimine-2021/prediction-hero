@@ -86,7 +86,7 @@ function Settings() {
     const saveProfile = () => {
         setLoading(true)
 
-        const url = state.auth?.id ? `changeuserdata//${state.auth.id}` : `signup`
+        const url = state.auth?.id ? `changeuserdata/${state.auth.id}` : `signup`
 
         const data = JSON.stringify({ 
             "firstname": firstName,
