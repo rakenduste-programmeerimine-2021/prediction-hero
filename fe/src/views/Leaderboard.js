@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Context } from '../store/';
 import BlockIcon from '@mui/icons-material/Block';
 
@@ -154,7 +154,17 @@ function Leaderboard() {
             <Typography variant="h2">Edetabel</Typography>
 
             <div style={{ width: '100%' }}>
-                { alagrupp() }
+                <Card >
+                    <CardMedia
+                        component="img"
+                        alt="green iguana"
+                        height="200"
+                        image="https://i.pinimg.com/736x/56/6f/14/566f14057cde9bb7898d7f25d305528d.jpg"
+                    />
+                    <CardContent>
+                        { alagrupp() }
+                    </CardContent>
+                </Card>
             </div>
         </div>
     )
