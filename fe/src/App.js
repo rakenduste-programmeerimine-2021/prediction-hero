@@ -133,9 +133,15 @@ function App() {
   },[storeState.auth,window.location])
 
   const logOut = () => {
+    window.localStorage.setItem("PHlwp",window.location.pathname)
     window.localStorage.removeItem("PHsess")
     dispatch(logoutUser());
     navigate('/login');
+  }
+
+  const navigation = (to, data) => {
+    window.localStorage.setItem("PHlwp",to)
+    navigate(to, data)
   }
 
   const handleDrawerOpen = () => {
@@ -189,7 +195,7 @@ function App() {
                 Prediction Hero
             </Typography>
             {storeState.auth?.token && 
-              <div style={styles.row} onClick={() => {navigate(navigationMapping["Minu andmed"])}}>
+              <div style={styles.row} onClick={() => {navigation(navigationMapping["Minu andmed"])}}>
                 <div style={styles.column}>
                   <Typography style={styles.user} variant="subtitle2" component="div">
                     {storeState?.auth?.firstname && storeState.auth?.lastname 
@@ -220,7 +226,7 @@ function App() {
         </DrawerHeader>
         <List>
           {['Avaleht', 'Edetabel', 'Alagrupid', 'Ennusta'].map((text, index) => (
-            <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
+            <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
               <ListItemIcon style={{color: text == 'Ennusta' ? "dodgerblue" : "black"}}>
                 {iconsMapping[text]}
               </ListItemIcon>
@@ -231,7 +237,7 @@ function App() {
         <Divider />
         <List>
           {['Minu andmed', 'Reeglid'].map((text, index) => (
-            <ListItem button key={text} onClick={() => {navigate(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
+            <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
               <ListItemIcon>
                 {iconsMapping[text]}
               </ListItemIcon>
