@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Card, CardContent, CardMedia, Checkbox, Fade, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Context } from '../store/';
 import BlockIcon from '@mui/icons-material/Block';
 
@@ -15,7 +15,14 @@ function Leaderboard() {
     const [dense, setDense] = useState(true);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [loading, setLoading] = useState(true)
+    const [dialogOpen, setDialogOpen] = useState(false)
     const [state, dispatch] = useContext(Context);
+
+    const [blockId, setBlockId] = useState("");
+    const [blockFName, setBlockFName] = useState("");
+    const [blockLName, setBlockLName] = useState("");
+    const [blockUsername, setBlockUsername] = useState("");
+    const [blockPoints, setBlockPoints] = useState("");
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -48,6 +55,20 @@ function Leaderboard() {
         })
     }
 
+    const handleDialogOpen = (id, fname, lname, username, points) => {
+        setBlockId(id)
+        setBlockFName(fname)
+        setBlockLName(lname)
+        setBlockUsername(username)
+        setBlockPoints(points)
+
+        setDialogOpen(true);
+      };
+    
+      const handleDialogClose = () => {
+        setDialogOpen(false);
+      };
+
     const blockUser = (id) => {
         setLoading(true)
         const blockOptions = {
@@ -61,6 +82,14 @@ function Leaderboard() {
             console.log(data.length)
             getAllUsers()
             // setAllUsers(data)
+            setLoading(false)
+            setBlockId("")
+            setBlockFName("")
+            setBlockLName("")
+            setBlockUsername("")
+            setBlockPoints("")
+
+            setDialogOpen(false);
         })
     }
  
@@ -136,7 +165,7 @@ function Leaderboard() {
                                                 {state?.auth.is_admin 
                                                     &&  <TableCell scope="row" size="small">
                                                         {state?.auth.id !== row.id &&
-                                                            <Button onClick={() => {blockUser(row.id)}} size="small"><BlockIcon style={{color:"red"}}/></Button>
+                                                            <Button onClick={() => {handleDialogOpen(row.id, row.firstname, row.lastname, row.username, row.user_points)}} size="small"><BlockIcon style={{color:"red"}}/></Button>
                                                         }
                                                             
                                                         </TableCell>}
@@ -171,6 +200,27 @@ function Leaderboard() {
                     </Card>
                 </Fade>
             </div>
+            <Dialog
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                {`Kas oled kindel et soovid kaustaja blokeerida?`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {`Nimi: ${blockFName} ${blockLName}`}<br/>
+                        {`Kasutaja: ${blockUsername}`}<br/>
+                        {`Punktid: ${blockPoints}`}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} autoFocus>EI</Button>
+                    <Button onClick={()=>{blockUser(blockId)}} color="error">Blokeeri</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 
