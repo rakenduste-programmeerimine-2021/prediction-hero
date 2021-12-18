@@ -148,14 +148,15 @@ function Leaderboard() {
                                         {state?.auth.is_admin 
                                             && <TableCell sx={{ color: "red" }} size="small"></TableCell>
                                         }
-                                       <TableCell align="left" size="small">Eesnimi</TableCell>
-                                       <TableCell align="left" size="small">Perekonnanimi</TableCell>
-                                       <TableCell align="left" size="small">Kasutajanimi</TableCell>
-                                       <TableCell align="right" size="small">Punktid</TableCell>
+                                        <TableCell align="left" size="small">#</TableCell>
+                                        <TableCell align="left" size="small">Eesnimi</TableCell>
+                                        <TableCell align="left" size="small">Perekonnanimi</TableCell>
+                                        <TableCell align="left" size="small">Kasutajanimi</TableCell>
+                                        <TableCell align="right" size="small">Punktid</TableCell>
                                    </TableRow>
                                    </TableHead>
                                    <TableBody>
-                                   {stableSort(rows).map((row) => {
+                                   {stableSort(rows).map((row, rowIndex) => {
                                        return <TableRow
                                                 key={row.id}
                                                 sx={[{ '&:last-child td, &:last-child th': { border: 0 }}, state?.auth.id == row.id ? styles.currentUserRow : {}]}
@@ -170,10 +171,11 @@ function Leaderboard() {
                                                             
                                                         </TableCell>}
                                                 
-                                                <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.firstname || "-"}</TableCell>
-                                                <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.lastname || "-"}</TableCell>
-                                                <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.username || "-"}</TableCell>
-                                                <TableCell align="right" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.user_points || "0"}</TableCell>
+                                                        <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{rowIndex+1}</TableCell>
+                                                        <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.firstname || "-"}</TableCell>
+                                                        <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.lastname || "-"}</TableCell>
+                                                        <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.username || "-"}</TableCell>
+                                                        <TableCell align="right" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.user_points || "0"}</TableCell>
                                                 </TableRow>
                                    })}
                                    </TableBody>

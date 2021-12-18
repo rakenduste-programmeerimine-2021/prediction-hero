@@ -189,7 +189,7 @@ function App() {
               disabled={open ? true : false}
               onClick={handleDrawerOpen}
             >
-              <MenuIcon sx={{ color: open ? '#1976d2' : 'white'}}/>
+              <MenuIcon sx={{ color: open ? '#028288' : 'white'}}/>
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Prediction Hero
@@ -227,10 +227,10 @@ function App() {
         <List>
           {['Avaleht', 'Edetabel', 'Alagrupid', 'Ennusta'].map((text, index) => (
             <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
-              <ListItemIcon style={{color: text == 'Ennusta' ? "dodgerblue" : "black"}}>
+              <ListItemIcon style={{color: text == 'Ennusta' ? "#ff8888" : "#6f6f6f"}}>
                 {iconsMapping[text]}
               </ListItemIcon>
-              <ListItemText primary={text} style={{color: text == 'Ennusta' ? "dodgerblue" : "black"}}/>
+              <ListItemText primary={text} style={{color: text == 'Ennusta' ? "#ff8888" : "#6f6f6f"}}/>
             </ListItem>
           ))}
         </List>
@@ -238,10 +238,10 @@ function App() {
         <List>
           {['Minu andmed', 'Reeglid'].map((text, index) => (
             <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
-              <ListItemIcon>
+              <ListItemIcon style={{color: "#6f6f6f"}}>
                 {iconsMapping[text]}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={text} style={{color: "#6f6f6f"}}/>
             </ListItem>
           ))}
         </List>
