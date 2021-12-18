@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Fade, Slide, Typography } from '@mui/material';
 import React, { useEffect, useState, useContext } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +12,7 @@ import { Context } from '../store';
 
 function Groups() {
     const [teams, setAllTeams] = useState({})
+    const [loading, setLoading] = useState(true)
     const [state, dispatch] = useContext(Context);
     let rows = {}
 
@@ -50,6 +51,8 @@ function Groups() {
             })
             console.log(rows)
             setAllTeams({...rows})
+
+            setLoading(false)
         })
     },[])
 
@@ -65,7 +68,9 @@ function Groups() {
               console.log(element)
 
               return (
-                        <TableContainer key={index} component={Paper} sx={styles.tableContainer}>
+                  <div key={"groupContainer"+index}>
+                        <Typography key={"groupName"+index} variant="subtitle2" gutterBottom={false} sx={styles.tableGroupName}>Grupp {element.toUpperCase()}</Typography>
+                        <TableContainer key={"groupTContainer"+index} component={Paper} sx={styles.tableContainer}>
                             <Table key={index}  sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
                                 <TableHead>
                                 <TableRow>
@@ -94,6 +99,7 @@ function Groups() {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        </div>
                     )
           })
 
@@ -104,17 +110,20 @@ function Groups() {
         <div style={styles.root}>
             <Typography variant="h2">Alagrupid</Typography>
             <div style={{ height: 400, width: '100%' }}>
-                <Card >
-                    <CardMedia
-                        component="img"
-                        alt="green iguana"
-                        height="200"
-                        image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
-                    />
-                    <CardContent>
-                        { rows && alagrupp() }
-                    </CardContent>
-                </Card>
+
+                <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
+                    <Card >
+                        <CardMedia
+                            component="img"
+                            alt="green iguana"
+                            height="200"
+                            image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
+                        />
+                        <CardContent>
+                            { rows && alagrupp() }
+                        </CardContent>
+                    </Card>
+                </Fade>
             </div>
         </div>
 
@@ -130,9 +139,11 @@ const styles = {
     table: {
     },
     tableContainer: {
-        marginTop: "30px",
         backgroundColor: "#f3f3f3",
         borderRadius: "5px"
+    },
+    tableGroupName: {
+        marginTop: "30px",
     }
 }
 
