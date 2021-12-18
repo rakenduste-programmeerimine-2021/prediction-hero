@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Card, CardContent, CardMedia, Checkbox, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Checkbox, Fade, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Context } from '../store/';
 import BlockIcon from '@mui/icons-material/Block';
 
@@ -14,6 +14,7 @@ function Leaderboard() {
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(true);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [loading, setLoading] = useState(true)
     const [state, dispatch] = useContext(Context);
 
     const columns = [
@@ -43,10 +44,12 @@ function Leaderboard() {
             console.log(JSON.stringify(data))
             console.log(data.length)
             setAllUsers(data)
+            setLoading(false)
         })
     }
 
     const blockUser = (id) => {
+        setLoading(true)
         const blockOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' }
@@ -131,7 +134,7 @@ function Leaderboard() {
                                                 
                                                 >
                                                 {state?.auth.is_admin 
-                                                    &&  <TableCell TableCell scope="row" size="small">
+                                                    &&  <TableCell scope="row" size="small">
                                                         {state?.auth.id !== row.id &&
                                                             <Button onClick={() => {blockUser(row.id)}} size="small"><BlockIcon style={{color:"red"}}/></Button>
                                                         }
@@ -154,17 +157,19 @@ function Leaderboard() {
             <Typography variant="h2">Edetabel</Typography>
 
             <div style={{ width: '100%' }}>
-                <Card >
-                    <CardMedia
-                        component="img"
-                        alt="green iguana"
-                        height="200"
-                        image="https://i.pinimg.com/736x/56/6f/14/566f14057cde9bb7898d7f25d305528d.jpg"
-                    />
-                    <CardContent>
-                        { alagrupp() }
-                    </CardContent>
-                </Card>
+                <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
+                    <Card >
+                        <CardMedia
+                            component="img"
+                            alt="green iguana"
+                            height="200"
+                            image="https://i.pinimg.com/736x/56/6f/14/566f14057cde9bb7898d7f25d305528d.jpg"
+                        />
+                        <CardContent>
+                            { alagrupp() }
+                        </CardContent>
+                    </Card>
+                </Fade>
             </div>
         </div>
     )

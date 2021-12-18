@@ -35,7 +35,7 @@ app.use(cors(corsOpts));
 app.post('/signup', async(req, res) => {
   try {
     console.log("SINGNING UP")
-    let {username="", pw, firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
+    let {username="", pw, firstname="", lastname="", email="", social_id="", social_platform="", profilePic="",} = req.body;
     console.log(req.body)
     console.log(username)
     console.log(firstname)
@@ -53,7 +53,7 @@ app.post('/signup', async(req, res) => {
       //kasutajat ei ole veel olemas
       const newInsertion = await pool.query(
         "INSERT INTO users (username, pwhash, firstname, lastname, email, social_id, social_platform, profile_pic) VALUES($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
-        [username,hash, firstname, lastname, email, social_id, social_platform, profile_pic]
+        [username,hash, firstname, lastname, email, social_id, social_platform, profilePic]
       );
   
         res.json(newInsertion.rows[0]);
