@@ -123,7 +123,7 @@ function Settings() {
                     setSnackbarType("error") 
                     openSnacbar()
                 }else{
-                    navigate('login/')
+                    navigate('/login')
                 }
                     // : setSnackbarType("success"); setLogInData({message:"Kasutaja on loodud!"})
                 
