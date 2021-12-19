@@ -133,14 +133,18 @@ function App() {
   },[storeState.auth,window.location])
 
   const logOut = () => {
-    window.localStorage.setItem("PHlwp",window.location.pathname)
+    if(!window.location.pathname.includes("/login")){
+      window.localStorage.setItem("PHlwp",window.location.pathname)
+    }
     window.localStorage.removeItem("PHsess")
     dispatch(logoutUser());
     navigate('/login');
   }
 
   const navigation = (to, data) => {
-    window.localStorage.setItem("PHlwp",to)
+    if(!to.includes("/login")){
+      window.localStorage.setItem("PHlwp",to)
+    }
     navigate(to, data)
   }
 
@@ -226,7 +230,8 @@ function App() {
         </DrawerHeader>
         <List>
           {['Avaleht', 'Edetabel', 'Alagrupid', 'Ennusta'].map((text, index) => (
-            <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
+            <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} 
+              disabled={(window.location.pathname === navigationMapping[text] || !storeState.auth.id) ? true : false}>
               <ListItemIcon style={{color: text == 'Ennusta' ? "#ff8888" : "#6f6f6f"}}>
                 {iconsMapping[text]}
               </ListItemIcon>
@@ -237,7 +242,8 @@ function App() {
         <Divider />
         <List>
           {['Minu andmed', 'Reeglid'].map((text, index) => (
-            <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} disabled={window.location.pathname === navigationMapping[text] ? true : false}>
+            <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} 
+              disabled={(window.location.pathname === navigationMapping[text] || !storeState.auth.id) ? true : false}>
               <ListItemIcon style={{color: "#6f6f6f"}}>
                 {iconsMapping[text]}
               </ListItemIcon>
