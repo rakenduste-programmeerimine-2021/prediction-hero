@@ -140,9 +140,6 @@ function Settings() {
         <div className="settingsView" style={styles.root}>
             
             <form onKeyPress={handleFormKeypress} style={styles.form}>
-
-                <Grid item xs={12} justifyContent="center" >
-                    <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
                         {state.auth?.id
                             ?<Typography variant="h2">Minu andmed</Typography>
                             :<Typography variant="h2">Registreeri</Typography>
@@ -215,8 +212,6 @@ function Settings() {
                                     </CardActions>
                                 </Card>
                         </Fade>
-                    </Grid>
-                </Grid>
             </form>
         
             <Snackbar open={open} autoHideDuration={15000} onClose={closeSnacbar} anchorOrigin={{ vertical: "top", horizontal:"center" }}>

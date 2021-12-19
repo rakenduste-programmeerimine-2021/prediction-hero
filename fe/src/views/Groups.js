@@ -15,13 +15,6 @@ function Groups() {
     const [loading, setLoading] = useState(true)
     const [state, dispatch] = useContext(Context);
     let rows = {}
-
-    const columns = [
-        { field: 'Meeskond', headerName: 'Meeskond', width: 300 },
-        { field: 'Mänge', headerName: 'Mänge ', width: 150 },
-        { field: 'Väravatevahe', headerName: 'Väravatevahe', width: 150 },
-        { field: 'Punktid', headerName: 'Punktid', width: 150 },
-      ];
     
     useEffect(() => {
         const requestOptions = {
@@ -57,7 +50,7 @@ function Groups() {
     },[])
 
       const testElement = (url, name) => {
-          return <div> <img src={url} width = "25" height="15" /> {name}</div>
+          return <div style={{whiteSpace: "nowrap"}}> <img src={url} width = "25" height="15" /> {name}</div>
       }
 
   const alagrupp = () => {
@@ -71,10 +64,10 @@ function Groups() {
                   <div key={"groupContainer"+index}>
                         <Typography key={"groupName"+index} variant="subtitle2" gutterBottom={false} sx={styles.tableGroupName}>Grupp {element.toUpperCase()}</Typography>
                         <TableContainer key={"groupTContainer"+index} component={Paper} sx={styles.tableContainer}>
-                            <Table key={index}  sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
+                            <Table key={index}  sx={[styles.table]} aria-label="simple table">
                                 <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{ width: 400 }} size="small">Meeskond</TableCell>
+                                    <TableCell sx={{ }} size="small">Meeskond</TableCell>
                                     <TableCell align="right" size="small">Mänge</TableCell>
                                     <TableCell align="right" size="small">Väravatevahe</TableCell>
                                     <TableCell align="right" size="small">Punktid</TableCell>
@@ -91,9 +84,9 @@ function Groups() {
                                     <TableCell component="th" scope="row" size="small">
                                         {testElement(row.flag, row.team)}
                                     </TableCell>
-                                    <TableCell align="right" size="small">{row.played}</TableCell>
-                                    <TableCell align="right" size="small">{row.difference}</TableCell>
-                                    <TableCell align="right" size="small">{row.points}</TableCell>
+                                    <TableCell align="right" size="small" sx={{width:100}}>{row.played}</TableCell>
+                                    <TableCell align="right" size="small" sx={{width:100}}>{row.difference}</TableCell>
+                                    <TableCell align="right" size="small" sx={{width:100}}>{row.points}</TableCell>
                                     </TableRow>
                                 ))}
                                 </TableBody>
@@ -108,27 +101,23 @@ function Groups() {
     
     return (
         <div style={styles.root}>
-            <Grid item xs={12} justifyContent="center" >
-                <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
-                    <Typography variant="h2">Alagrupid</Typography>
-                    <div style={{ height: 400, width: '100%' }}>
+            <Typography variant="h2">Alagrupid</Typography>
+            <div style={{ height: 400, width: '100%' }}>
 
-                        <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
-                            <Card >
-                                <CardMedia
-                                    component="img"
-                                    alt="green iguana"
-                                    height="200"
-                                    image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
-                                />
-                                <CardContent>
-                                    { rows && alagrupp() }
-                                </CardContent>
-                            </Card>
-                        </Fade>
-                    </div>
-                </Grid>
-            </Grid>
+                <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
+                    <Card >
+                        <CardMedia
+                            component="img"
+                            alt="green iguana"
+                            height="200"
+                            image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
+                        />
+                        <CardContent>
+                            { rows && alagrupp() }
+                        </CardContent>
+                    </Card>
+                </Fade>
+            </div>
         </div>
 
     )

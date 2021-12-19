@@ -8,12 +8,8 @@ function Home() {
 
     return (
         <div style={styles.root}>
-            <Grid item xs={12} justifyContent="center" >
-                <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
-                    <Typography variant="h2">Avaleht</Typography>
-                    <Typography variant="subtitle1">Siin viskame kasutajat mingi relevantse sissejuhatava infoga.</Typography>
-                </Grid>
-            </Grid>
+            <Typography variant="h2">Avaleht</Typography>
+            <Typography variant="subtitle1">Siin viskame kasutajat mingi relevantse sissejuhatava infoga.</Typography>
         </div>
     )
 
