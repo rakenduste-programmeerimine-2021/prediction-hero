@@ -217,12 +217,16 @@ function Predict() {
   
     return (
         <div style={styles.root}>
-            <Typography variant="h2">Ennusta</Typography>
-            <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
-            <div style={{ width: '100%' }}>
-                { matches() }
-            </div>
-            </Fade>
+            <Grid item xs={12} justifyContent="center" >
+                <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
+                    <Typography variant="h2">Ennusta</Typography>
+                    <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
+                    <div style={{ width: '100%' }}>
+                        { matches() }
+                    </div>
+                    </Fade>
+                </Grid>
+            </Grid>
         </div>
     )
 

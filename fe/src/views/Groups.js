@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Fade, Slide, Typography } from '@mui/material';
+import { Card, CardContent, CardMedia, Fade, Grid, Slide, Typography } from '@mui/material';
 import React, { useEffect, useState, useContext } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -108,23 +108,27 @@ function Groups() {
     
     return (
         <div style={styles.root}>
-            <Typography variant="h2">Alagrupid</Typography>
-            <div style={{ height: 400, width: '100%' }}>
+            <Grid item xs={12} justifyContent="center" >
+                <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
+                    <Typography variant="h2">Alagrupid</Typography>
+                    <div style={{ height: 400, width: '100%' }}>
 
-                <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
-                    <Card >
-                        <CardMedia
-                            component="img"
-                            alt="green iguana"
-                            height="200"
-                            image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
-                        />
-                        <CardContent>
-                            { rows && alagrupp() }
-                        </CardContent>
-                    </Card>
-                </Fade>
-            </div>
+                        <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
+                            <Card >
+                                <CardMedia
+                                    component="img"
+                                    alt="green iguana"
+                                    height="200"
+                                    image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
+                                />
+                                <CardContent>
+                                    { rows && alagrupp() }
+                                </CardContent>
+                            </Card>
+                        </Fade>
+                    </div>
+                </Grid>
+            </Grid>
         </div>
 
     )
