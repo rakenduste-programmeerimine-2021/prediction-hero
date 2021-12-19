@@ -3,15 +3,10 @@ import FacebookLogin from 'react-facebook-login';
 import { useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
 import { Context } from "../store";
 import { loginUser } from "../store/actions";
+import { Snackbar, Alert } from '@mui/material';
 
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 function Login() {
     const [loggedIn, setLoggedIn] = useState(false)

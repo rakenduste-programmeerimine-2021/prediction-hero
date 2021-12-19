@@ -209,7 +209,7 @@ app.put('/changeuserdata/:id', async(req, res)=>{
       [firstname, lastname, email, username, profilePic, id]
     );
 
-      res.json({status: "OK", message:"Data updated", data: updateData});
+      res.json({status: "OK", message:"Andmed muudetud!", data: updateData});
   } catch (err) {
     console.error(err)
   }
@@ -226,7 +226,7 @@ app.put('/updatepoints/:id', async(req, res)=>{
       [user_points, id]
     );
 
-      res.json({status: "OK", message:"Data updated", data: updateData});
+      res.json({status: "OK", message:"Salvestatud", data: updateData});
   } catch (err) {
     console.error(err)
   }
