@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "./store";
 import { loginUser, logoutUser } from "./store/actions";
 import { Link } from "react-router-dom";
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Avatar } from '@mui/material'
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Avatar, Grid } from '@mui/material'
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -248,15 +248,19 @@ function App() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/leaderboard" element={<Leaderboard/>} />
-          <Route path="/rules" element={<Rules/>} />
-          <Route path="/predict" element={<Predict/>} />
-          <Route path="/settings" element={<Settings/>} />
-          <Route path="/groups" element={<Groups/>} />
-       </Routes>
+          <Grid item xs={12} justifyContent="center" >
+            <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
+            <Routes>
+              <Route path="/" element={<Home/>} />
+              <Route path="/login" element={<Login/>} />
+              <Route path="/leaderboard" element={<Leaderboard/>} />
+              <Route path="/rules" element={<Rules/>} />
+              <Route path="/predict" element={<Predict/>} />
+              <Route path="/settings" element={<Settings/>} />
+              <Route path="/groups" element={<Groups/>} />
+            </Routes>
+            </Grid>
+          </Grid>
       </Box>
     </Box>
   );

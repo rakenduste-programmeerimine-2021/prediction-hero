@@ -58,6 +58,7 @@ function Predict() {
     }
 
     const makeTable = () => {
+        console.log("allTeams")
         console.log(allTeams)
 
         const requestOptions = {
@@ -100,7 +101,7 @@ function Predict() {
             // console.log(allTeams)
             let tempObj={}
             Object.keys(allTeams).map((index)=>{
-                // console.log(allTeams[index])
+                console.log(allTeams[index])
                 // console.log({...permObj})
                 tempObj[allTeams[index].id] = {team: allTeams[index].team, flag:allTeams[index].flag}
                 // setMappedTeams({...mappedTeams,[allTeams[index].id]:{team: allTeams[index].team, flag:allTeams[index].flag}})
@@ -158,6 +159,29 @@ function Predict() {
             })
         }
 
+        const getMatchDateTime = (matchDate, matchTime) => {
+            let date = new Date(matchDate)
+            let day = date.getDate()
+            let mon = date.getMonth()+1
+            let time = getMatchTime(matchTime)
+
+            return (<div style={{display: "flex"}}>
+                        <Typography variant="body2" sx={{color: "gray", marginRight: "10px"}} gutterBottom={false}>
+                            {`${day}.${mon}`}
+                        </Typography>
+                        <Typography variant="body2" sx={{color: "gray"}} gutterBottom={false}>
+                            {time}
+                        </Typography>
+                    </div>)
+        }
+        const getMatchTime = (matchTime) => {
+            let splittedTime = matchTime.split(":")
+            let hours = splittedTime[0]
+            let minutes = splittedTime[1]
+
+            return (`${hours}:${minutes}`)
+        }
+
         const matches = () => {
             // console.log("HERR")
    
@@ -171,9 +195,9 @@ function Predict() {
                                 />
                                 <CardContent>
                                 <TableContainer component={Paper} sx={styles.tableContainer}>
-                                        <Table sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
+                                        <Table sx={[styles.table]} aria-label="simple table">
                                             <TableBody>
-                                            {stableSort(rows).map((row) => {
+                                            {stableSort(rows).map((row, index) => {
                                             //    console.log("SEE ON SEE")
                                             //    console.log(scores)
                                                 return <TableRow
@@ -182,17 +206,20 @@ function Predict() {
                                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                         hover={true}
                                                         >
+                                        
+                                                        <TableCell scope="row" size="small" >{getMatchDateTime(rows[index]?.date, rows[index]?.time)}</TableCell>
                                                         <TableCell scope="row" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team1id]?.flag,mappedTeams[row.team1id]?.team) : "-"}</TableCell>
-                                                        <TableCell align="right" size="small" sx={{width: "50px", padding:"1px 5px", }}>
-                                                            {console.log(Object.keys(scores).length)}
-                                                        {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][1] : ""} 
-                                                            onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],1:v.target.value}})}}/>  }
-                                                            
-                                                        </TableCell>
-                                                        <TableCell align="center" sx={{width:"10px", padding:"5px"}}>:</TableCell>
-                                                        <TableCell align="left" size="small" sx={{width: "50px", padding:"5px"}}>
-                                                            {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{}} value={scores[row.id] ? scores[row.id][2] : ""}
-                                                            onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],2:v.target.value}})}}/>  }
+                                                        <TableCell align="right" size="small" sx={{width: "150px", padding:"1px 5px", }}>
+                                                        {console.log(rows[row.team1id])}
+                                                        {console.log(rows[index].date)}
+                                                        
+                                                        <div style={{display: "flex"}}>
+                                                            {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{marginRight:"2px"}} value={scores[row.id] ? scores[row.id][1] : ""} 
+                                                                onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],1:v.target.value}})}}/>  }
+                                                                
+                                                            :   {Object.keys(scores).length && <TextField id="outlined-basic" label="" variant="outlined" sx={{marginLeft:"2px"}} value={scores[row.id] ? scores[row.id][2] : ""}
+                                                                onChange={(v) => {setScores({...scores,[row.id]:{...scores[row.id],2:v.target.value}})}}/>  }
+                                                        </div>
                                                         </TableCell>
                                                         <TableCell align="right" size="small" sx={{}}>{mappedTeams && Object.keys(mappedTeams).length ? flagAndTeam(mappedTeams[row.team2id]?.flag,mappedTeams[row.team2id]?.team,"2") : "-"}</TableCell>
                                                         </TableRow>
@@ -217,16 +244,12 @@ function Predict() {
   
     return (
         <div style={styles.root}>
-            <Grid item xs={12} justifyContent="center" >
-                <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
-                    <Typography variant="h2">Ennusta</Typography>
-                    <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
-                    <div style={{ width: '100%' }}>
-                        { matches() }
-                    </div>
-                    </Fade>
-                </Grid>
-            </Grid>
+            <Typography variant="h2">Ennusta</Typography>
+            <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
+            <div style={{ width: '100%' }}>
+                { matches() }
+            </div>
+            </Fade>
         </div>
     )
 

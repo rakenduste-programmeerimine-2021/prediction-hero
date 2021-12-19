@@ -185,9 +185,7 @@ function Leaderboard() {
   
     return (
         <div style={styles.root}>
-            <Grid item xs={12} justifyContent="center" >
-                <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
-                    <Typography variant="h2">Edetabel</Typography>
+            <Typography variant="h2">Edetabel</Typography>
 
                     <div style={{ width: '100%' }}>
                         <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
@@ -225,8 +223,6 @@ function Leaderboard() {
                             <Button onClick={()=>{blockUser(blockId)}} color="error">Blokeeri</Button>
                         </DialogActions>
                     </Dialog>
-                </Grid>
-            </Grid>
         </div>
     )
 
