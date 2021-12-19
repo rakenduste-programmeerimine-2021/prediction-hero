@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, FormControlLabel, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, FormControlLabel, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Context } from '../store/';
 import BlockIcon from '@mui/icons-material/Block';
 
@@ -185,44 +185,48 @@ function Leaderboard() {
   
     return (
         <div style={styles.root}>
-            <Typography variant="h2">Edetabel</Typography>
+            <Grid item xs={12} justifyContent="center" >
+                <Grid item xs={12} lg={8} sx={{textAlign: "start", margin: "0 auto"}}>
+                    <Typography variant="h2">Edetabel</Typography>
 
-            <div style={{ width: '100%' }}>
-                <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
-                    <Card >
-                        <CardMedia
-                            component="img"
-                            alt="green iguana"
-                            height="200"
-                            image="https://i.pinimg.com/736x/56/6f/14/566f14057cde9bb7898d7f25d305528d.jpg"
-                        />
-                        <CardContent>
-                            { alagrupp() }
-                        </CardContent>
-                    </Card>
-                </Fade>
-            </div>
-            <Dialog
-                open={dialogOpen}
-                onClose={handleDialogClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                {`Kas oled kindel et soovid kaustaja blokeerida?`}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {`Nimi: ${blockFName} ${blockLName}`}<br/>
-                        {`Kasutaja: ${blockUsername}`}<br/>
-                        {`Punktid: ${blockPoints}`}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleDialogClose} autoFocus>EI</Button>
-                    <Button onClick={()=>{blockUser(blockId)}} color="error">Blokeeri</Button>
-                </DialogActions>
-            </Dialog>
+                    <div style={{ width: '100%' }}>
+                        <Fade in={!loading} timeout={{ enter: 500, exit: 1000 }}>
+                            <Card >
+                                <CardMedia
+                                    component="img"
+                                    alt="green iguana"
+                                    height="200"
+                                    image="https://i.pinimg.com/736x/56/6f/14/566f14057cde9bb7898d7f25d305528d.jpg"
+                                />
+                                <CardContent>
+                                    { alagrupp() }
+                                </CardContent>
+                            </Card>
+                        </Fade>
+                    </div>
+                    <Dialog
+                        open={dialogOpen}
+                        onClose={handleDialogClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                        {`Kas oled kindel et soovid kaustaja blokeerida?`}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {`Nimi: ${blockFName} ${blockLName}`}<br/>
+                                {`Kasutaja: ${blockUsername}`}<br/>
+                                {`Punktid: ${blockPoints}`}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleDialogClose} autoFocus>EI</Button>
+                            <Button onClick={()=>{blockUser(blockId)}} color="error">Blokeeri</Button>
+                        </DialogActions>
+                    </Dialog>
+                </Grid>
+            </Grid>
         </div>
     )
 
