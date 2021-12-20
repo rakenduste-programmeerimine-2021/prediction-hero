@@ -109,6 +109,8 @@ app.post('/loginFB', async(req, res) => {
 // TODO pw peaks frontist liikuma juba hashitult nodesse
 app.post('/login', async(req, res) => {
   try {
+    log.info('login', 'user logging in')
+    log.info('login', req.body)
     const {username, pwhash} = req.body;
     console.log(req.body)
 
@@ -119,13 +121,17 @@ app.post('/login', async(req, res) => {
       "SELECT * FROM users WHERE username = $1 AND pwhash = $2 AND blocked = false",
       [username,hash]
     );
-
-    resp.rows.length 
-      ? res.json({status: "OK", message:"logged in successfully", data: resp}) 
-      : res.json({status: "NOK", message:"invalid username or password", data: resp});
-      
+    
+    if (resp.rows.length){        
+      log.info('login', "logged in successfully")
+      res.json({status: "OK", message:"logged in successfully", data: resp})        
+    } else {
+      log.error('login', "invalid username or password")
+      log.error('login', resp)
+      res.json({status: "NOK", message:"invalid username or password", data: resp});
+    }
   } catch (err) {
-    console.error(err)
+    log.error('login', err)
   }
 })
 
