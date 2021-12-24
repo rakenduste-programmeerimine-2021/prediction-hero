@@ -23,18 +23,11 @@ function Leaderboard() {
     const [blockLName, setBlockLName] = useState("");
     const [blockUsername, setBlockUsername] = useState("");
     const [blockPoints, setBlockPoints] = useState("");
+    const [adminCheck, setAdminCheck] = useState(false)
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'username', headerName: 'Name', width: 130 },
-        { field: 'pwhash', headerName: 'pwhash', width: 130 },
-        {
-            field: 'points',
-            headerName: 'Points',
-            type: 'number',
-            width: 150,
-        }
-      ];
+    useEffect(()=>{
+        setAdminCheck(state.adminCheck)
+    },[state.adminCheck])
 
     useEffect(() => {
         getAllUsers()
@@ -145,7 +138,7 @@ function Leaderboard() {
                                <Table sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
                                    <TableHead>
                                    <TableRow>
-                                        {state?.auth.is_admin 
+                                        {adminCheck 
                                             && <TableCell sx={{ color: "red" }} size="small"></TableCell>
                                         }
                                         <TableCell align="left" size="small">#</TableCell>
@@ -163,7 +156,7 @@ function Leaderboard() {
                                                 hover={state?.auth.id == row.id ? false : true}
                                                 
                                                 >
-                                                {state?.auth.is_admin 
+                                                {adminCheck 
                                                     &&  <TableCell scope="row" size="small">
                                                         {state?.auth.id !== row.id &&
                                                             <Button onClick={() => {handleDialogOpen(row.id, row.firstname, row.lastname, row.username, row.user_points)}} size="small"><BlockIcon style={{color:"red"}}/></Button>

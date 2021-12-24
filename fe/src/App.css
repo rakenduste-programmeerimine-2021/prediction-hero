@@ -54,6 +54,13 @@
   padding: 1.5px!important;
   text-align: center
 }
+.MuiToolbar-root{
+  transition: .5s background-color;
+}
+
+.isAdminSelected .realScore input.MuiOutlinedInput-input{
+  color: red
+}
 
 @keyframes App-logo-spin {
   from {

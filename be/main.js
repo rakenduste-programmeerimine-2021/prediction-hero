@@ -285,7 +285,7 @@ app.post('/savepredictions/:userId', async(req, res) => {
 })
 
 
-// save PREDICTIONS
+// save MATCH SCORES
 app.post('/savematchscore', async(req, res) => {
   try {
 
@@ -293,7 +293,7 @@ app.post('/savematchscore', async(req, res) => {
     // let {username="", pwhash=(new Date()).getTime().toString(15), firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     console.log(req.body)
     // console.log(`userdID: ${userId}`)
-    let reqbody = req.body
+    let reqbody = req.body.matchScores
     let matchPredictions = {}
     let userScoreChange = {}
     let response = {}
@@ -305,9 +305,9 @@ app.post('/savematchscore', async(req, res) => {
 
         let saveMatchScore = await pool.query(
           "UPDATE matches SET team1score = $1, team2score = $2 WHERE id = $3",
-          [reqbody[matchid].team1score, reqbody[matchid].team2score, matchid]
+          [parseInt(reqbody[matchid][1]), parseInt(reqbody[matchid][2]), matchid]
         );
-        console.log("set t1s to: "+reqbody[matchid].team1score+" AND t2s to: "+reqbody[matchid].team2score)
+        console.log("set t1s to: "+reqbody[matchid][1]+" AND t2s to: "+reqbody[matchid][2])
 
         let getMatchPredictions = await pool.query(
           "SELECT * FROM predictions WHERE matchid = $1",
@@ -349,26 +349,26 @@ app.post('/savematchscore', async(req, res) => {
 
                 console.log(userScoreChange)
 
-                if(parseInt(reqbody[matchid].team1score) == parseInt(matchPredictions[matchid][prediction].team1score)
-                  && parseInt(reqbody[matchid].team2score) == parseInt(matchPredictions[matchid][prediction].team2score)){
+                if(parseInt(reqbody[matchid][1]) == parseInt(matchPredictions[matchid][prediction].team1score)
+                  && parseInt(reqbody[matchid][2]) == parseInt(matchPredictions[matchid][prediction].team2score)){
 
                     console.log("EXACT SCORE +3")
                     userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+3
 
                 
-                }else if((parseInt(reqbody[matchid].team1score) == parseInt(matchPredictions[matchid][prediction].team1score)
-                  && parseInt(reqbody[matchid].team2score) != parseInt(matchPredictions[matchid][prediction].team2score))
-                  || (parseInt(reqbody[matchid].team1score) != parseInt(matchPredictions[matchid][prediction].team1score)
-                  && parseInt(reqbody[matchid].team2score) == parseInt(matchPredictions[matchid][prediction].team2score))){
+                }else if((parseInt(reqbody[matchid][1]) == parseInt(matchPredictions[matchid][prediction].team1score)
+                  && parseInt(reqbody[matchid][2]) != parseInt(matchPredictions[matchid][prediction].team2score))
+                  || (parseInt(reqbody[matchid][1]) != parseInt(matchPredictions[matchid][prediction].team1score)
+                  && parseInt(reqbody[matchid][2]) == parseInt(matchPredictions[matchid][prediction].team2score))){
 
                     console.log("NOT EXACT BUT ONE TEAM SCORE MATCHES +1")
                     userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+1
 
-                }else if((parseInt(reqbody[matchid].team1score) > parseInt(reqbody[matchid].team2score)
+                }else if((parseInt(reqbody[matchid][1]) > parseInt(reqbody[matchid][2])
                   &&  parseInt(matchPredictions[matchid][prediction].team1score) > parseInt(matchPredictions[matchid][prediction].team2score))
-                  || (parseInt(reqbody[matchid].team1score) < parseInt(reqbody[matchid].team2score)
+                  || (parseInt(reqbody[matchid][1]) < parseInt(reqbody[matchid][2])
                   &&  parseInt(matchPredictions[matchid][prediction].team1score) < parseInt(matchPredictions[matchid][prediction].team2score))
-                  || (parseInt(reqbody[matchid].team1score) == parseInt(reqbody[matchid].team2score)
+                  || (parseInt(reqbody[matchid][1]) == parseInt(reqbody[matchid][2])
                   &&  parseInt(matchPredictions[matchid][prediction].team1score) == parseInt(matchPredictions[matchid][prediction].team2score))){
 
                     console.log("NOT EXACT BUT CORRECT WINNER +1")

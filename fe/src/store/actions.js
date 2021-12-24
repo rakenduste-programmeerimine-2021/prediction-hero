@@ -23,6 +23,14 @@ export const loginUser = data => ({
   payload: data
 })
 
+export const adminCheckStore = ((data) => {
+  console.log("ADMINCHECKSTORE??????")
+  return {
+    type: "SET_ADMIN_CHECK",
+    payload: data
+  }
+})
+
 export const logoutUser = () => ({
   type: USER_LOGOUT,
   payload: {
