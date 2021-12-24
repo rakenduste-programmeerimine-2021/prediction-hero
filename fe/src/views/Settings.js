@@ -151,46 +151,50 @@ function Settings() {
                                 <CardMedia
                                     component="img"
                                     alt="green iguana"
-                                    height="140"
+                                    height="300"
                                     image={state.auth?.profilePic || "https://cdn.suwalls.com/wallpapers/abstract/lights-14769-1920x1200.jpg"}
                                 />
-                                <CardContent>
-                                    <Grid container spacing={2}>
-                                    
-                                        <Grid item xs={7}>
-                                                <div style={styles.row}>
-                                                    <TextField id="outlined-basic" fullWidth label="Eesnimi" variant="outlined" value={firstName} onChange={(v) => {setFirstName(v.target.value)}}/>   
-                                                </div>
-                                                <div style={styles.row}>
-                                                    <TextField id="outlined-basic" fullWidth label="Perekonnanimi" variant="outlined" value={lastName} onChange={(v) => {setLastName(v.target.value)}}/>   
-                                                </div>
-                                                <div style={styles.row}>
-                                                    <TextField id="outlined-basic" fullWidth label="E-mail" variant="outlined" value={email} onChange={(v) => {setEmail(v.target.value)}}/>   
-                                                </div>
-                                                <div style={styles.row}>
-                                                    <TextField id="outlined-basic" fullWidth label="Kasutajanimi" variant="outlined" value={username} onChange={(v) => {setUsername(v.target.value)}}/>   
-                                                </div>
-                                                {!state.auth?.id && 
-                                                    <>
-                                                        <div style={styles.row}>
-                                                            <TextField id="outlined-basic" fullWidth label="Parool" variant="outlined" value={password} onChange={(v) => {setPassword(v.target.value)}}/>   
-                                                        </div>
-                                                        <div style={styles.row}>
-                                                            <TextField id="outlined-basic" fullWidth label="Korda parooli" variant="outlined" onChange={(v) => {validatePassword(v.target.value)}}/>   
-                                                        </div>
-                                                    </>
-                                                }
-                                                
+                                <CardContent
+                                    sx={{filter: "blur(0px)"}}
+                                >
+                                    <Paper style={styles.paperContainer}>
+                                        <Grid container spacing={2}>
+                                        
+                                            <Grid item xs={7}>
+                                                    <div style={styles.row}>
+                                                        <TextField id="outlined-basic" fullWidth label="Eesnimi" variant="outlined" value={firstName} onChange={(v) => {setFirstName(v.target.value)}}/>   
+                                                    </div>
+                                                    <div style={styles.row}>
+                                                        <TextField id="outlined-basic" fullWidth label="Perekonnanimi" variant="outlined" value={lastName} onChange={(v) => {setLastName(v.target.value)}}/>   
+                                                    </div>
+                                                    <div style={styles.row}>
+                                                        <TextField id="outlined-basic" fullWidth label="E-mail" variant="outlined" value={email} onChange={(v) => {setEmail(v.target.value)}}/>   
+                                                    </div>
+                                                    <div style={styles.row}>
+                                                        <TextField id="outlined-basic" fullWidth label="Kasutajanimi" variant="outlined" value={username} onChange={(v) => {setUsername(v.target.value)}}/>   
+                                                    </div>
+                                                    {!state.auth?.id && 
+                                                        <>
+                                                            <div style={styles.row}>
+                                                                <TextField id="outlined-basic" fullWidth label="Parool" variant="outlined" value={password} onChange={(v) => {setPassword(v.target.value)}}/>   
+                                                            </div>
+                                                            <div style={styles.row}>
+                                                                <TextField id="outlined-basic" fullWidth label="Korda parooli" variant="outlined" onChange={(v) => {validatePassword(v.target.value)}}/>   
+                                                            </div>
+                                                        </>
+                                                    }
+                                                    
+                                            </Grid>
+                                            <Grid item xs={5} container direction='column'>
+                                                    <div style={styles.avatar}>
+                                                        <Avatar alt="Remy Sharp" src={profile_pic} sx={{ width: 250, height: 250, marginTop: "-72px" }} style={styles.avatarImg}/>
+                                                    </div>
+                                                    <div style={{display: "flex"}}>
+                                                        <TextField id="outlined-basic" fullWidth label="Profiilipildi link" variant="outlined" value={profile_pic} onChange={(v) => {setImage(v.target.value)}}/>   
+                                                    </div>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={5} container direction='column'>
-                                                <div style={styles.avatar}>
-                                                    <Avatar alt="Remy Sharp" src={profile_pic} sx={{ width: 250, height: 250, marginTop: "-72px" }} style={styles.avatarImg}/>
-                                                </div>
-                                                <div style={{display: "flex"}}>
-                                                    <TextField id="outlined-basic" fullWidth label="Profiilipildi link" variant="outlined" value={profile_pic} onChange={(v) => {setImage(v.target.value)}}/>   
-                                                </div>
-                                        </Grid>
-                                    </Grid>
+                                    </Paper>
 
                                     </CardContent>
                                     <CardActions sx={{justifyContent: "right"}}>
@@ -261,6 +265,12 @@ const styles = {
     },
     snacbarBtn: {
         color: "white"
+    },
+    paperContainer: {
+        marginTop: "30px",
+        backgroundColor: "#f3f3f3",
+        borderRadius: "5px",
+        padding: "20px"
     }
 }
 

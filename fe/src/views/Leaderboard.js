@@ -193,10 +193,12 @@ function Leaderboard() {
                                 <CardMedia
                                     component="img"
                                     alt="green iguana"
-                                    height="200"
-                                    image="https://i.pinimg.com/736x/56/6f/14/566f14057cde9bb7898d7f25d305528d.jpg"
+                                    height="800"
+                                    image="https://wallpaper.dog/large/5529248.jpg"
                                 />
-                                <CardContent>
+                                <CardContent
+                                    sx={{filter: "blur(0px)"}}
+                                >
                                     { alagrupp() }
                                 </CardContent>
                             </Card>

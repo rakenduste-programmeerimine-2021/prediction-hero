@@ -192,8 +192,11 @@ function Predict() {
                                     alt="green iguana"
                                     height="200"
                                     image={"https://ak.picdn.net/shutterstock/videos/1024072910/thumb/12.jpg"}
+                                    sx={{filter: "blur(30px)",marginBottom: -10}}
                                 />
-                                <CardContent>
+                                <CardContent
+                                    sx={{filter: "blur(0px)"}}
+                                >
                                 <TableContainer component={Paper} sx={styles.tableContainer}>
                                         <Table sx={[styles.table]} aria-label="simple table">
                                             <TableBody>
