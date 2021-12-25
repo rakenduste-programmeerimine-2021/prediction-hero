@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, FormControlLabel, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, FormControlLabel, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Context } from '../store/';
 import BlockIcon from '@mui/icons-material/Block';
 
@@ -142,6 +142,7 @@ function Leaderboard() {
                                             && <TableCell sx={{ color: "red" }} size="small"></TableCell>
                                         }
                                         <TableCell align="left" size="small">#</TableCell>
+                                        <TableCell align="left" size="small"></TableCell>
                                         <TableCell align="left" size="small">Eesnimi</TableCell>
                                         <TableCell align="left" size="small">Perekonnanimi</TableCell>
                                         <TableCell align="left" size="small">Kasutajanimi</TableCell>
@@ -157,14 +158,17 @@ function Leaderboard() {
                                                 
                                                 >
                                                 {adminCheck 
-                                                    &&  <TableCell scope="row" size="small">
+                                                    &&  <TableCell scope="row" size="small" sx={{width: "30px"}}>
                                                         {state?.auth.id !== row.id &&
-                                                            <Button onClick={() => {handleDialogOpen(row.id, row.firstname, row.lastname, row.username, row.user_points)}} size="small"><BlockIcon style={{color:"red"}}/></Button>
+                                                            <BlockIcon onClick={() => {handleDialogOpen(row.id, row.firstname, row.lastname, row.username, row.user_points)}} style={{color:"red", cursor: "pointer"}}/>
                                                         }
                                                             
                                                         </TableCell>}
                                                 
                                                         <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{rowIndex+1}</TableCell>
+                                                        <TableCell align="right" scope="row" size="small" sx={[state?.auth.id == row.id ? styles.currentUser : {}, {width: "30px"}]}>
+                                                            <Avatar src={row.profile_pic} sx={{ width: 25, height: 25}} style={styles.avatarImg}/>
+                                                        </TableCell>
                                                         <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.firstname || "-"}</TableCell>
                                                         <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.lastname || "-"}</TableCell>
                                                         <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.username || "-"}</TableCell>
