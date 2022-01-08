@@ -1,18 +1,19 @@
-var fs = require('fs');
-module.exports = {
-    debug:function(func,data){
+import fs from 'fs';
+const log = {
+    debug: function(func,data){
         writeLog('debug',func,data);
     },
-    info:function(func,data){
+    info: function(func,data){
         writeLog('info',func,data);
     },
-    warn:function(func,warning){
-        writeLog('warning',func,warning);
+    warn: function(func,data){
+        writeLog('warning',func,data);
     },
-    error:function(func,err){
-        writeLog('ERROR',func,err);
+    error: function(func,data){
+        writeLog('ERROR',func,data);
     }
 }
+
 
 function getTime(){
     var date=new Date();
@@ -38,3 +39,5 @@ function writeLog(type,func,data){
         }
     })
 }
+
+export default log

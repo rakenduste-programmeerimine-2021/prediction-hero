@@ -1,14 +1,14 @@
-var express = require('express');
+import express from 'express';
 var app = express();
-var http = require('http').createServer(app);
-var cors = require('cors')
-var pool = require('./db')
-var crypto = require('crypto');
+import http from 'http';
+const appserver = http.createServer(app);
+import cors from 'cors';
+import pool from './db.js'
+import crypto from 'crypto';
 
-const port = 3001;
 
-var log = require('./log.js');
-const e = require('express');
+import log from './log.js';
+
 app.use(express.json())
 
 const corsOpts = {
@@ -29,16 +29,25 @@ const corsOpts = {
 app.use(cors(corsOpts));
 
 
+// testendpoint
+app.get('/test', async(req, res)=>{
+  try {
+      res.json("OK vastus");
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 // ===========================================================================================================================================================
 
 // sign up
 app.post('/signup', async(req, res) => {
   try {
     console.log("SINGNING UP")
-    let {username="", pw, firstname="", lastname="", email="", social_id="", social_platform="", profilePic="",} = req.body;
-    console.log(req.body)
-    console.log(username)
-    console.log(firstname)
+    let {username="", pw="", firstname="", lastname="", email="", social_id="", social_platform="", profilePic="",} = req.body;
+    console.log(req.body);
+    console.log(username);
+    console.log(firstname);
 
     var hash = crypto.createHash('md5').update(pw).digest('hex');
     console.log(`${pw} - ${hash}`);
@@ -437,9 +446,4 @@ app.put('/blockuser/:id', async(req, res)=>{
 })
 
 
-
-http.listen(port, () => {
-  console.log(`HERO server jookseb pordil ${port}`);
-  log.info('SERVER_STARTED',`HERO server started on port ${port}`)
-
-});
+export default appserver
