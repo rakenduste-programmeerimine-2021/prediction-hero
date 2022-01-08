@@ -27,11 +27,11 @@ function Predict() {
     useEffect(() => {
         setCurretUserID(state.auth.id)
         getAllTeams()
-    },[state.auth.id])
+    },[state?.auth?.id])
 
     useEffect(() => {
         makeTable()
-    },[state.teams.data])
+    },[state?.teams?.data])
 
     const openSnacbar = () => {
         setOpen(true);

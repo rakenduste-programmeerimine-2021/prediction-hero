@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 import { teamsReducer, authReducer, adminCheckStore } from "./reducer";
 import combineReducers from "react-combine-reducers"
 
@@ -17,16 +17,14 @@ const initialAuth = {
 
 const initialAdminCheck = false
 
-// const initialTeams = []
-const initialGroups = []
-
 const [combinedReducer, initialState] = combineReducers({
   teams: [teamsReducer, initialTeams],
   auth: [authReducer, initialAuth],
   adminCheck: [adminCheckStore, initialAdminCheck]
 })
 
-export const Context = createContext(initialState)
+// export const Context = React.createContext(initialState)
+export const Context = React.createContext([{}, function(){}])
 
 function Store({ children }) {
   const [state, dispatch] = useReducer(combinedReducer, initialState)
