@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, FormControlLabel, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardContent, CardMedia, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fade, FormControlLabel, Grid, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { Context } from '../store/';
 import BlockIcon from '@mui/icons-material/Block';
 
@@ -23,18 +23,11 @@ function Leaderboard() {
     const [blockLName, setBlockLName] = useState("");
     const [blockUsername, setBlockUsername] = useState("");
     const [blockPoints, setBlockPoints] = useState("");
+    const [adminCheck, setAdminCheck] = useState(false)
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'username', headerName: 'Name', width: 130 },
-        { field: 'pwhash', headerName: 'pwhash', width: 130 },
-        {
-            field: 'points',
-            headerName: 'Points',
-            type: 'number',
-            width: 150,
-        }
-      ];
+    useEffect(()=>{
+        setAdminCheck(state.adminCheck)
+    },[state.adminCheck])
 
     useEffect(() => {
         getAllUsers()
@@ -145,10 +138,11 @@ function Leaderboard() {
                                <Table sx={[styles.table, { minWidth: 650 }]} aria-label="simple table">
                                    <TableHead>
                                    <TableRow>
-                                        {state?.auth.is_admin 
+                                        {adminCheck 
                                             && <TableCell sx={{ color: "red" }} size="small"></TableCell>
                                         }
                                         <TableCell align="left" size="small">#</TableCell>
+                                        <TableCell align="left" size="small"></TableCell>
                                         <TableCell align="left" size="small">Eesnimi</TableCell>
                                         <TableCell align="left" size="small">Perekonnanimi</TableCell>
                                         <TableCell align="left" size="small">Kasutajanimi</TableCell>
@@ -163,15 +157,18 @@ function Leaderboard() {
                                                 hover={state?.auth.id == row.id ? false : true}
                                                 
                                                 >
-                                                {state?.auth.is_admin 
-                                                    &&  <TableCell scope="row" size="small">
+                                                {adminCheck 
+                                                    &&  <TableCell scope="row" size="small" sx={{width: "30px"}}>
                                                         {state?.auth.id !== row.id &&
-                                                            <Button onClick={() => {handleDialogOpen(row.id, row.firstname, row.lastname, row.username, row.user_points)}} size="small"><BlockIcon style={{color:"red"}}/></Button>
+                                                            <BlockIcon onClick={() => {handleDialogOpen(row.id, row.firstname, row.lastname, row.username, row.user_points)}} style={{color:"red", cursor: "pointer"}}/>
                                                         }
                                                             
                                                         </TableCell>}
                                                 
                                                         <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{rowIndex+1}</TableCell>
+                                                        <TableCell align="right" scope="row" size="small" sx={[state?.auth.id == row.id ? styles.currentUser : {}, {width: "30px"}]}>
+                                                            <Avatar src={row.profile_pic} sx={{ width: 25, height: 25}} style={styles.avatarImg}/>
+                                                        </TableCell>
                                                         <TableCell scope="row" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.firstname || "-"}</TableCell>
                                                         <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.lastname || "-"}</TableCell>
                                                         <TableCell align="left" size="small" sx={state?.auth.id == row.id ? styles.currentUser : {}}>{row.username || "-"}</TableCell>
@@ -193,10 +190,12 @@ function Leaderboard() {
                                 <CardMedia
                                     component="img"
                                     alt="green iguana"
-                                    height="200"
-                                    image="https://i.pinimg.com/736x/56/6f/14/566f14057cde9bb7898d7f25d305528d.jpg"
+                                    height="800"
+                                    image="https://wallpaper.dog/large/5529248.jpg"
                                 />
-                                <CardContent>
+                                <CardContent
+                                    sx={{filter: "blur(0px)"}}
+                                >
                                     { alagrupp() }
                                 </CardContent>
                             </Card>

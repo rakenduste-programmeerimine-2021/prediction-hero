@@ -43,14 +43,23 @@
   padding-left: 25px !important;
 }
 .MuiCardMedia-img{
-  filter: blur(10px);
+  filter: blur(30px);
+  margin-bottom: -60%
 } 
 .settingsView .MuiCardMedia-img{
   filter: blur(26px);
-} 
+  margin-bottom: -10%
+}
 .matchRow .MuiOutlinedInput-input{
   padding: 1.5px!important;
   text-align: center
+}
+.MuiToolbar-root{
+  transition: .5s background-color;
+}
+
+.isAdminSelected .realScore input.MuiOutlinedInput-input{
+  color: red
 }
 
 @keyframes App-logo-spin {

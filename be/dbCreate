@@ -54,6 +54,8 @@ CREATE TABLE IF NOT EXISTS public.matches
     team2id integer,
     date timestamp without time zone,
     "time" time(6) without time zone,
+    team1score integer,
+    team2score integer,
     CONSTRAINT matches_pkey PRIMARY KEY (id)
 )
 

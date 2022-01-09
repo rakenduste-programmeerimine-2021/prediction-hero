@@ -1,14 +1,14 @@
-var express = require('express');
+import express from 'express';
 var app = express();
-var http = require('http').createServer(app);
-var cors = require('cors')
-var pool = require('./db')
-var crypto = require('crypto');
+import http from 'http';
+const appserver = http.createServer(app);
+import cors from 'cors';
+import pool from './db.js'
+import crypto from 'crypto';
 
-const port = 3001;
 
-var log = require('./log.js');
-const e = require('express');
+import log from './log.js';
+
 app.use(express.json())
 
 const corsOpts = {
@@ -29,16 +29,25 @@ const corsOpts = {
 app.use(cors(corsOpts));
 
 
+// testendpoint
+app.get('/test', async(req, res)=>{
+  try {
+      res.json("OK vastus");
+  } catch (err) {
+    console.error(err)
+  }
+})
+
 // ===========================================================================================================================================================
 
 // sign up
 app.post('/signup', async(req, res) => {
   try {
     console.log("SINGNING UP")
-    let {username="", pw, firstname="", lastname="", email="", social_id="", social_platform="", profilePic="",} = req.body;
-    console.log(req.body)
-    console.log(username)
-    console.log(firstname)
+    let {username="", pw="", firstname="", lastname="", email="", social_id="", social_platform="", profilePic="",} = req.body;
+    console.log(req.body);
+    console.log(username);
+    console.log(firstname);
 
     var hash = crypto.createHash('md5').update(pw).digest('hex');
     console.log(`${pw} - ${hash}`);
@@ -285,6 +294,129 @@ app.post('/savepredictions/:userId', async(req, res) => {
 })
 
 
+// save MATCH SCORES
+app.post('/savematchscore', async(req, res) => {
+  try {
+
+    // const { userId } = req.params;
+    // let {username="", pwhash=(new Date()).getTime().toString(15), firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
+    console.log(req.body)
+    // console.log(`userdID: ${userId}`)
+    let reqbody = req.body.matchScores
+    let matchPredictions = {}
+    let userScoreChange = {}
+    let response = {}
+    let counter = 0
+
+    Promise.all(Object.keys(reqbody).map(async(matchid, mapidx) => {
+        console.log("mapping reqbody: ")
+        console.log(reqbody[matchid])
+
+        let saveMatchScore = await pool.query(
+          "UPDATE matches SET team1score = $1, team2score = $2 WHERE id = $3",
+          [parseInt(reqbody[matchid][1]), parseInt(reqbody[matchid][2]), matchid]
+        );
+        console.log("set t1s to: "+reqbody[matchid][1]+" AND t2s to: "+reqbody[matchid][2])
+
+        let getMatchPredictions = await pool.query(
+          "SELECT * FROM predictions WHERE matchid = $1",
+          [matchid]
+        );
+        matchPredictions[matchid] = getMatchPredictions.rows
+        // console.log("got predictions for match "+matchid)
+        // console.log(getMatchPredictions.rows)
+
+    })).then(()=>{
+        console.log("FINISHED saving matches")
+        console.log(matchPredictions)
+
+        Promise.all(Object.keys(matchPredictions).map(async(matchid) => {
+            console.log("MATCHID"+matchid)
+            console.log("mapping matchPredictions id: "+ matchid)
+            Promise.all(Object.keys(matchPredictions[matchid]).map(async(prediction) => {
+              console.log(`getting user ${matchPredictions[matchid][prediction].userid} points...`)  
+              console.log(matchPredictions[matchid][prediction])
+                
+                let currentUserPointsresponse = await pool.query(
+                  "SELECT user_points FROM users WHERE id = $1",
+                  [matchPredictions[matchid][prediction].userid]
+                );
+
+                let currentUserPoints = currentUserPointsresponse.rows[0].user_points
+                console.log(`current user points: ${currentUserPoints}`)
+                console.log(`-------------------------------------------------------------`)
+                // console.log(currentUserPoints)
+
+                //POINTS CALCULATING LOGIC
+                console.log(userScoreChange)
+                console.log(`userid: ${matchPredictions[matchid][prediction].userid}`)
+                console.log(`user points atm: ${userScoreChange[matchPredictions[matchid][prediction].userid]}`)
+                console.log(`checking match: ${matchid}`)
+                if(!userScoreChange[matchPredictions[matchid][prediction].userid]){
+                  userScoreChange[matchPredictions[matchid][prediction].userid]=currentUserPoints;
+                }
+
+                console.log(userScoreChange)
+
+                if(parseInt(reqbody[matchid][1]) == parseInt(matchPredictions[matchid][prediction].team1score)
+                  && parseInt(reqbody[matchid][2]) == parseInt(matchPredictions[matchid][prediction].team2score)){
+
+                    console.log("EXACT SCORE +3")
+                    userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+3
+
+                
+                }else if((parseInt(reqbody[matchid][1]) == parseInt(matchPredictions[matchid][prediction].team1score)
+                  && parseInt(reqbody[matchid][2]) != parseInt(matchPredictions[matchid][prediction].team2score))
+                  || (parseInt(reqbody[matchid][1]) != parseInt(matchPredictions[matchid][prediction].team1score)
+                  && parseInt(reqbody[matchid][2]) == parseInt(matchPredictions[matchid][prediction].team2score))){
+
+                    console.log("NOT EXACT BUT ONE TEAM SCORE MATCHES +1")
+                    userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+1
+
+                }else if((parseInt(reqbody[matchid][1]) > parseInt(reqbody[matchid][2])
+                  &&  parseInt(matchPredictions[matchid][prediction].team1score) > parseInt(matchPredictions[matchid][prediction].team2score))
+                  || (parseInt(reqbody[matchid][1]) < parseInt(reqbody[matchid][2])
+                  &&  parseInt(matchPredictions[matchid][prediction].team1score) < parseInt(matchPredictions[matchid][prediction].team2score))
+                  || (parseInt(reqbody[matchid][1]) == parseInt(reqbody[matchid][2])
+                  &&  parseInt(matchPredictions[matchid][prediction].team1score) == parseInt(matchPredictions[matchid][prediction].team2score))){
+
+                    console.log("NOT EXACT BUT CORRECT WINNER +1")
+                    userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+1
+
+                }
+
+            })).then(()=>{
+              console.log("FINISHED calculating scores")
+              console.log(userScoreChange)
+
+              Promise.all(Object.keys(userScoreChange).map(async(userId) => {
+                console.log("need to set user:"+ userId+" points to "+userScoreChange[userId])
+
+                  const updateUserPoints = await pool.query(
+                    "UPDATE users SET user_points = $1 WHERE id = $2",
+                    [userScoreChange[userId], userId]
+                  );
+    
+              })).then(()=>{
+                counter += 1
+                if(counter == Object.keys(userScoreChange).length){
+                  console.log("ALL USERS POINTS ARE UPDATED")
+                  res.json({status: "OK", message:"Scores are saved", data: {userScoreChange}});
+                }
+              })
+            })
+    
+        })).then(()=>{
+        })
+    })
+
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+
+
 // get user predicitons
 app.get('/getuserpredictions/:userId', async(req, res)=>{
   try {
@@ -314,9 +446,4 @@ app.put('/blockuser/:id', async(req, res)=>{
 })
 
 
-
-http.listen(port, () => {
-  console.log(`HERO server jookseb pordil ${port}`);
-  log.info('SERVER_STARTED',`HERO server started on port ${port}`)
-
-});
+export default appserver

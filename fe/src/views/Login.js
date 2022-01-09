@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Context } from "../store";
 import FacebookLogin from 'react-facebook-login';
 import { useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Context } from "../store";
 import { loginUser } from "../store/actions";
 import { Snackbar, Alert } from '@mui/material';
 
@@ -14,7 +14,7 @@ function Login() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState('admin')
     const [password, setPassword] = useState('admin')
-    const [state, dispatch] = useContext(Context);
+    const [state, dispatch] = useContext(Context)
 
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
@@ -28,17 +28,13 @@ function Login() {
         setOpen(true);
     };
 
-
     const closeSnacbar = (event, reason) => {
         if (reason === 'clickaway') {
-        return;
+            return;
         }
 
         setOpen(false);
     };
-
-    
-
 
     const submit = () => {  
         closeSnacbar()
@@ -141,7 +137,7 @@ function Login() {
                     <TextField id="outlined-basic" label="Parool" variant="outlined" type="password" value={password} onChange={(v) => {setPassword(v.target.value)}}/>   
                 </div>
                 <div style={styles.buttonRow}>
-                    <Button onClick={()=>{navigate('/settings')}} disabled={loading ? true : false} variant="contained" color="info">Registreeru</Button>
+                    <Button onClick={()=>{}} disabled={loading ? true : false} variant="contained" color="info">Registreeru</Button>
                     <Button onClick={submit} disabled={loading ? true : false} variant="contained" color="success">Logi sisse</Button>
                 </div>
                 <div style={styles.row}>

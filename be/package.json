@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "description": "predicion-hero be",
   "main": "main.js",
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "pg": "^8.7.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
   },
   "author": "",
   "license": "ISC"

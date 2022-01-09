@@ -30,9 +30,16 @@ npm install nodemon -g
 nodemon ./main.js
 ```
 
-#### wireframe
+#### TESTS
+##### /fe
+```
+npm test
+```
+##### /be
+```
+npm test
+```
 
-* `täitumisel, pilt, joonistus, paint whatever`
 
 ## Funktsionaalsus
 

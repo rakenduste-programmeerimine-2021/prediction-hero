@@ -1,5 +1,16 @@
 import { POST_ADD, POST_REMOVE, USER_LOGOUT } from "./actions";
 
+const adminCheckStore = (state, action) => {
+  console.log("setting admin check?")
+  switch(action.type){
+    case "SET_ADMIN_CHECK": 
+      console.log("YES setting admin check")
+        return action.payload
+    default:
+      return state
+  }
+}
+
 const teamsReducer = (state, action) => {
 
   // console.log("HERE IN TEAMS REDUCER")
@@ -44,11 +55,12 @@ const authReducer = (state, action) => {
         lastname: "",
         email: "",
         profilePic: "",
-        id: ""
+        id: "",
+        is_admin: false
       }
     default:
       return state
   }
 }
 
-export { teamsReducer, authReducer }
+export { teamsReducer, authReducer, adminCheckStore }

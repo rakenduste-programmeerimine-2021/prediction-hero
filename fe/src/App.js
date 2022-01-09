@@ -14,9 +14,9 @@ import Predict from './views/Predict';
 import Rules from './views/Rules';
 import { useNavigate } from "react-router-dom";
 import { Context } from "./store";
-import { loginUser, logoutUser } from "./store/actions";
+import { adminCheckStore, loginUser, logoutUser } from "./store/actions";
 import { Link } from "react-router-dom";
-import { Divider, List, ListItem, ListItemIcon, ListItemText, Avatar, Grid } from '@mui/material'
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Avatar, Grid, FormControlLabel, Switch } from '@mui/material'
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -109,41 +109,67 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 function App() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [adminCheckState, setAdminCheckState] = useState(false)
   const [storeState, dispatch] = useContext(Context);
   let authUser;
   useEffect(()=>{
-      if(!storeState?.auth?.username){ 
-        authUser = JSON.parse(window.localStorage.getItem("PHsess"))
-        // console.log("LEIDSIN LOCALIST KASUTAJA:")
-        // console.log(authUser)
-        if((((new Date()).getTime() - authUser?.chk )/1000/60) < 120){ // sessioon justkui 2h (120min)
-          // console.log("leitud kasutaja sess < 60min")
-          dispatch(loginUser(authUser.data));
-        }else{
-          console.log("leitud kasutaja sess > 60min --> LOGOUT")
-          window.location.pathname !== "/settings" && logOut()
-        }
-      }else{
-        window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": storeState.auth}))
-      }
+    validateSession()
   },[])
+
+  const validateSession = () => {
+    if(!storeState?.auth?.username){ 
+      authUser = JSON.parse(window.localStorage.getItem("PHsess"))
+      // console.log("LEIDSIN LOCALIST KASUTAJA:")
+      // console.log(authUser)
+      if((((new Date()).getTime() - authUser?.chk )/1000/60) < 120){ // sessioon justkui 2h (120min)
+        // console.log("leitud kasutaja sess < 60min")
+        dispatch(loginUser(authUser.data));
+      }else{
+        console.log("leitud kasutaja sess > 60min --> LOGOUT")
+        window.location.pathname !== "/settings" && logOut()
+      }
+    }else{
+      window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": storeState.auth}))
+    }
+  }
 
   useEffect(()=>{
     // console.log(storeState.auth)
-  },[storeState.auth,window.location])
+    if(window.location.pathname.includes("/login")){
+      dispatch(adminCheckStore(false))
+    }
+    if(!storeState.auth.is_admin){
+      dispatch(adminCheckStore(false))
+    }
+    
+  },[window.location])
+
+
+  useEffect(()=>{
+    setAdminCheckState(storeState.adminCheck)
+  },[storeState.adminCheck])
 
   const logOut = () => {
     if(!window.location.pathname.includes("/login")){
       window.localStorage.setItem("PHlwp",window.location.pathname)
     }
     window.localStorage.removeItem("PHsess")
+    dispatch(adminCheckStore(false))
     dispatch(logoutUser());
     navigate('/login');
+  }
+
+
+  const handleSwitchChange = (e) => {
+    console.log(e.target.checked)
+    dispatch(adminCheckStore(e.target.checked))
   }
 
   const navigation = (to, data) => {
     if(!to.includes("/login")){
       window.localStorage.setItem("PHlwp",to)
+    }else{
+      dispatch(adminCheckStore(false))
     }
     navigate(to, data)
   }
@@ -180,10 +206,10 @@ function App() {
 
 
   return ( 
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }} className={adminCheckState?"isAdminSelected":""}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar sx={{backgroundColor: "#028288"}}>
+        <Toolbar sx={{backgroundColor: adminCheckState ? "#b34545" : "#028288"}}>
           <IconButton
               size="large"
               edge="start"
@@ -198,6 +224,11 @@ function App() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Prediction Hero
             </Typography>
+            {storeState.auth.is_admin
+              && <FormControlLabel control={<Switch checked={adminCheckState}
+              onChange={handleSwitchChange} color="default"/>} label="Admin" />
+            }
+            
             {storeState.auth?.token && 
               <div style={styles.row} onClick={() => {navigation(navigationMapping["Minu andmed"])}}>
                 <div style={styles.column}>

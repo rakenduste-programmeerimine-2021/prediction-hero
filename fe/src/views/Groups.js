@@ -109,10 +109,13 @@ function Groups() {
                         <CardMedia
                             component="img"
                             alt="green iguana"
-                            height="200"
-                            image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
+                            height="800"
+                            image={"https://png.pngtree.com/background/20210714/original/pngtree-versus-vs-battle-screen-background-picture-image_1200091.jpg"}
+                            // image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
                         />
-                        <CardContent>
+                        <CardContent
+                                    sx={{filter: "blur(0px)"}}
+                                >
                             { rows && alagrupp() }
                         </CardContent>
                     </Card>
@@ -137,6 +140,7 @@ const styles = {
     },
     tableGroupName: {
         marginTop: "30px",
+        color: "white"
     }
 }
 
