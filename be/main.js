@@ -50,8 +50,6 @@ app.post('/signup', async(req, res) => {
     console.log(firstname);
 
     var hash = crypto.createHash('md5').update(pw).digest('hex');
-    console.log(`${pw} - ${hash}`);
-    log.info('',`${pw} - ${hash}`)
 
     const resp = await pool.query(
       "SELECT * FROM users WHERE username = $1",
@@ -120,7 +118,7 @@ app.post('/login', async(req, res) => {
   try {
     log.info('login', 'user logging in')
     log.info('login', req.body)
-    const {username, pwhash} = req.body;
+    const {username="", pwhash=""} = req.body;
     console.log(req.body)
 
     var hash = crypto.createHash('md5').update(pwhash).digest('hex');
@@ -198,7 +196,7 @@ app.get('/getallusers', async(req, res)=>{
 app.put('/changepassword/:id', async(req, res)=>{
   try {
     const { id } = req.params;
-    const { newpwhash } = req.body;
+    const { newpwhash="" } = req.body;
 
     var hash = crypto.createHash('md5').update(newpwhash).digest('hex');
 
@@ -251,22 +249,21 @@ app.put('/updatepoints/:id', async(req, res)=>{
 // save PREDICTIONS
 app.post('/savepredictions/:userId', async(req, res) => {
   try {
-
     const { userId } = req.params;
     // let {username="", pwhash=(new Date()).getTime().toString(15), firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     console.log(req.body.scores)
     console.log(`userdID: ${userId}`)
-
+    console.log(`request body: ${JSON.stringify(req?.body)}`)    
+    // const { scores } = req.body;
+    // console.log(scores)
     let updatedDataArr=[]
-    Object.keys(req.body.scores).map(async(matchId, row) => {
+    Object.keys(req?.body?.scores).map(async(matchId, row) => {
       console.log("Matches row "+matchId)
       console.log(req.body.scores[matchId])
-
       const resp = await pool.query(
         "SELECT * FROM predictions WHERE userid = $1 AND matchid = $2",
         [userId, matchId]
       );
-
       if(resp.rows.length){
         console.log("peab updatema")
         console.log(`UPDATE predictions SET team1score = ${req.body.scores[matchId][1]}, team2score = ${req.body.scores[matchId][2]} WHERE userid = ${userId} AND matchid = ${matchId}`)
@@ -276,7 +273,6 @@ app.post('/savepredictions/:userId', async(req, res) => {
         );
         updatedDataArr.push("UPDATED MATCH "+matchId)
       }else{
-
         console.log("peab uue rea salvestama")
         //kasutajat ei ole veel olemas
         const newInsertion = await pool.query(
@@ -287,7 +283,6 @@ app.post('/savepredictions/:userId', async(req, res) => {
       }
     })
     res.json({status: "OK", message:"Predictions updated", data: updatedDataArr});
-
   } catch (err) {
     console.error(err)
   }
@@ -297,27 +292,24 @@ app.post('/savepredictions/:userId', async(req, res) => {
 // save MATCH SCORES
 app.post('/savematchscore', async(req, res) => {
   try {
-
     // const { userId } = req.params;
     // let {username="", pwhash=(new Date()).getTime().toString(15), firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     console.log(req.body)
     // console.log(`userdID: ${userId}`)
     let reqbody = req.body.matchScores
+    console.log(reqbody)
     let matchPredictions = {}
     let userScoreChange = {}
     let response = {}
     let counter = 0
-
     Promise.all(Object.keys(reqbody).map(async(matchid, mapidx) => {
         console.log("mapping reqbody: ")
         console.log(reqbody[matchid])
-
         let saveMatchScore = await pool.query(
           "UPDATE matches SET team1score = $1, team2score = $2 WHERE id = $3",
           [parseInt(reqbody[matchid][1]), parseInt(reqbody[matchid][2]), matchid]
         );
         console.log("set t1s to: "+reqbody[matchid][1]+" AND t2s to: "+reqbody[matchid][2])
-
         let getMatchPredictions = await pool.query(
           "SELECT * FROM predictions WHERE matchid = $1",
           [matchid]
@@ -325,28 +317,23 @@ app.post('/savematchscore', async(req, res) => {
         matchPredictions[matchid] = getMatchPredictions.rows
         // console.log("got predictions for match "+matchid)
         // console.log(getMatchPredictions.rows)
-
     })).then(()=>{
         console.log("FINISHED saving matches")
         console.log(matchPredictions)
-
         Promise.all(Object.keys(matchPredictions).map(async(matchid) => {
             console.log("MATCHID"+matchid)
             console.log("mapping matchPredictions id: "+ matchid)
             Promise.all(Object.keys(matchPredictions[matchid]).map(async(prediction) => {
               console.log(`getting user ${matchPredictions[matchid][prediction].userid} points...`)  
               console.log(matchPredictions[matchid][prediction])
-                
                 let currentUserPointsresponse = await pool.query(
                   "SELECT user_points FROM users WHERE id = $1",
                   [matchPredictions[matchid][prediction].userid]
                 );
-
                 let currentUserPoints = currentUserPointsresponse.rows[0].user_points
                 console.log(`current user points: ${currentUserPoints}`)
                 console.log(`-------------------------------------------------------------`)
                 // console.log(currentUserPoints)
-
                 //POINTS CALCULATING LOGIC
                 console.log(userScoreChange)
                 console.log(`userid: ${matchPredictions[matchid][prediction].userid}`)
@@ -355,48 +342,39 @@ app.post('/savematchscore', async(req, res) => {
                 if(!userScoreChange[matchPredictions[matchid][prediction].userid]){
                   userScoreChange[matchPredictions[matchid][prediction].userid]=currentUserPoints;
                 }
-
                 console.log(userScoreChange)
-
                 if(parseInt(reqbody[matchid][1]) == parseInt(matchPredictions[matchid][prediction].team1score)
                   && parseInt(reqbody[matchid][2]) == parseInt(matchPredictions[matchid][prediction].team2score)){
-
                     console.log("EXACT SCORE +3")
                     userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+3
-
-                
                 }else if((parseInt(reqbody[matchid][1]) == parseInt(matchPredictions[matchid][prediction].team1score)
                   && parseInt(reqbody[matchid][2]) != parseInt(matchPredictions[matchid][prediction].team2score))
                   || (parseInt(reqbody[matchid][1]) != parseInt(matchPredictions[matchid][prediction].team1score)
                   && parseInt(reqbody[matchid][2]) == parseInt(matchPredictions[matchid][prediction].team2score))){
-
                     console.log("NOT EXACT BUT ONE TEAM SCORE MATCHES +1")
                     userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+1
-
                 }else if((parseInt(reqbody[matchid][1]) > parseInt(reqbody[matchid][2])
                   &&  parseInt(matchPredictions[matchid][prediction].team1score) > parseInt(matchPredictions[matchid][prediction].team2score))
                   || (parseInt(reqbody[matchid][1]) < parseInt(reqbody[matchid][2])
                   &&  parseInt(matchPredictions[matchid][prediction].team1score) < parseInt(matchPredictions[matchid][prediction].team2score))
                   || (parseInt(reqbody[matchid][1]) == parseInt(reqbody[matchid][2])
                   &&  parseInt(matchPredictions[matchid][prediction].team1score) == parseInt(matchPredictions[matchid][prediction].team2score))){
-
                     console.log("NOT EXACT BUT CORRECT WINNER +1")
                     userScoreChange[matchPredictions[matchid][prediction].userid]=parseInt(userScoreChange[matchPredictions[matchid][prediction].userid])+1
-
                 }
-
             })).then(()=>{
               console.log("FINISHED calculating scores")
               console.log(userScoreChange)
-
               Promise.all(Object.keys(userScoreChange).map(async(userId) => {
                 console.log("need to set user:"+ userId+" points to "+userScoreChange[userId])
-
+                if(userScoreChange[userId]){
                   const updateUserPoints = await pool.query(
                     "UPDATE users SET user_points = $1 WHERE id = $2",
                     [userScoreChange[userId], userId]
                   );
-    
+                }else{
+                  console.log("skipping.")
+                }
               })).then(()=>{
                 counter += 1
                 if(counter == Object.keys(userScoreChange).length){
@@ -405,11 +383,9 @@ app.post('/savematchscore', async(req, res) => {
                 }
               })
             })
-    
         })).then(()=>{
         })
     })
-
   } catch (err) {
     console.error(err)
   }

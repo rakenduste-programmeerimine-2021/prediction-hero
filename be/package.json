@@ -15,7 +15,8 @@
     "supertest": "^6.1.6"
   },
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
+    "testleak": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage --detectOpenHandles"
   },
   "author": "",
   "license": "ISC"

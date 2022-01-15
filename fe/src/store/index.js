@@ -23,8 +23,8 @@ const [combinedReducer, initialState] = combineReducers({
   adminCheck: [adminCheckStore, initialAdminCheck]
 })
 
-// export const Context = React.createContext(initialState)
-export const Context = React.createContext([{}, function(){}])
+export const Context = React.createContext(initialState)
+// export const Context = React.createContext([{}, function(){}])
 
 function Store({ children }) {
   const [state, dispatch] = useReducer(combinedReducer, initialState)
