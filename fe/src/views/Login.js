@@ -14,7 +14,7 @@ function Login() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState('admin')
     const [password, setPassword] = useState('admin')
-    const [state, dispatch] = useContext(Context)
+    const {state, dispatch} = useContext(Context)
 
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
@@ -137,8 +137,8 @@ function Login() {
                     <TextField id="outlined-basic" label="Parool" variant="outlined" type="password" value={password} onChange={(v) => {setPassword(v.target.value)}}/>   
                 </div>
                 <div style={styles.buttonRow}>
-                    <Button onClick={()=>{}} disabled={loading ? true : false} variant="contained" color="info">Registreeru</Button>
-                    <Button onClick={submit} disabled={loading ? true : false} variant="contained" color="success">Logi sisse</Button>
+                    <Button onClick={()=>{navigate('/settings')}} disabled={loading ? true : false} variant="contained" color="info">Registreeru</Button>
+                    <Button onClick={submit} disabled={loading ? true : false} variant="contained" color="success" id="login">Logi sisse</Button>
                 </div>
                 <div style={styles.row}>
                     <FacebookLogin
