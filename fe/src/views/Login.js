@@ -19,7 +19,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false)
     const [username, setUsername] = useState('admin')
     const [password, setPassword] = useState('admin')
-    const [state, dispatch] = useContext(Context)
+    const {state, dispatch} = useContext(Context)
 
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
