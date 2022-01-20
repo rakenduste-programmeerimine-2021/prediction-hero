@@ -7,15 +7,21 @@ import Button from '@mui/material/Button';
 import { loginUser } from "../store/actions";
 import { Snackbar, Alert } from '@mui/material';
 
-
-function LoginBtn() {
-
-    const someFunc = () => {
-      console.log("in someFunc")
-    }
+export const noop = () => {}
+function LoginBtn({responseFacebook, fbLoginFail}) {
 
     return (
-       <Button onClick={someFunc} disabled={false} variant="contained" color="success" id="login">Logi sisse</Button>
+        <FacebookLogin
+            appId="289181049760112"
+            autoLoad={false}
+            fields="first_name,last_name,email,picture"
+            onClick={noop}
+            callback={responseFacebook}
+            onFailure={fbLoginFail}
+            icon="fa-facebook"
+            textButton="Logi sisse Facebookiga"
+            size="small"
+        />
     )
 }
 const styles = {

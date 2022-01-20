@@ -1,10 +1,8 @@
 import { POST_ADD, POST_REMOVE, USER_LOGOUT } from "./actions";
 
 const adminCheckStore = (state, action) => {
-  console.log("setting admin check?")
   switch(action.type){
     case "SET_ADMIN_CHECK": 
-      console.log("YES setting admin check")
         return action.payload
     default:
       return state
@@ -12,26 +10,18 @@ const adminCheckStore = (state, action) => {
 }
 
 const teamsReducer = (state, action) => {
-
-  // console.log("HERE IN TEAMS REDUCER")
-  // console.log(action.payload)
-  
   switch(action.type){
     case "TEAMS_UPDATE": 
-    // console.log("UPDATING TEAMS");
         return {
           ...state,
           data: action.payload
         }
     default:
-      // console.log("EI LEIDNUD MIDAGI.")
       return state
   }
 }
 
 const authReducer = (state, action) => {
-  // console.log("HERE IN AUTH REDUCER")
-  // console.log(action.payload)
   switch(action.type){
     case "USER_LOGIN":
       return {
@@ -44,7 +34,8 @@ const authReducer = (state, action) => {
         profilePic: action.payload.profilePic,
         id: action.payload.id,
         user_points: action.payload.user_points,
-        is_admin: action.payload.is_admin
+        is_admin: action.payload.is_admin,
+        blocked: action.payload.blocked
       }
     case USER_LOGOUT:
       return {

@@ -35,6 +35,7 @@ import TocIcon from '@mui/icons-material/Toc';
 import HomeIcon from '@mui/icons-material/Home';
 import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
 import GavelIcon from '@mui/icons-material/Gavel';
+import BlockedUser from 'views/BlockedUser';
 
 const drawerWidth = 240;
 
@@ -262,7 +263,7 @@ function App() {
         <List>
           {['Avaleht', 'Edetabel', 'Alagrupid', 'Ennusta'].map((text, index) => (
             <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} 
-              disabled={(window.location.pathname === navigationMapping[text] || !storeState.auth.id) ? true : false}>
+              disabled={(window.location.pathname === navigationMapping[text] || !storeState.auth.id || window.location.pathname === "/blocked") ? true : false}>
               <ListItemIcon style={{color: text == 'Ennusta' ? "#ff8888" : "#6f6f6f"}}>
                 {iconsMapping[text]}
               </ListItemIcon>
@@ -274,7 +275,7 @@ function App() {
         <List>
           {['Minu andmed', 'Reeglid'].map((text, index) => (
             <ListItem button key={text} onClick={() => {navigation(navigationMapping[text])}} 
-              disabled={(window.location.pathname === navigationMapping[text] || !storeState.auth.id) ? true : false}>
+              disabled={(window.location.pathname === navigationMapping[text] || !storeState.auth.id || window.location.pathname === "/blocked") ? true : false}>
               <ListItemIcon style={{color: "#6f6f6f"}}>
                 {iconsMapping[text]}
               </ListItemIcon>
@@ -295,6 +296,7 @@ function App() {
               <Route path="/predict" element={<Predict/>} />
               <Route path="/settings" element={<Settings/>} />
               <Route path="/groups" element={<Groups/>} />
+              <Route path="/blocked" element={<BlockedUser/>} />
             </Routes>
             </Grid>
           </Grid>

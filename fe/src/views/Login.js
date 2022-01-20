@@ -5,10 +5,15 @@ import { useNavigate } from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { loginUser } from "../store/actions";
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, Typography } from '@mui/material';
+import FBLoginButton from '../components/loginBtn'
 
 
-function Login() {
+export const fbLoginFail = () => {
+    console.log("FB login failed");
+}
+
+export default function Login() {
     const [loggedIn, setLoggedIn] = useState(false)
     const [logInData, setLogInData] = useState({message:""})
     const [loading, setLoading] = useState(false)
@@ -20,8 +25,8 @@ function Login() {
     const [open, setOpen] = useState(false);
 
     useEffect(()=>{
-        if(state.auth.username) navigate('/settings', {state: state.auth})
-        console.log(state.auth)
+        if(state?.auth.username) navigate('/settings', {state: state.auth})
+        console.log(state?.auth)
     },[])
 
     const openSnacbar = () => {
@@ -109,27 +114,27 @@ function Login() {
             profilePic: data.data.rows[0].profile_pic,
             id: data.data.rows[0].id,
             user_points: data.data.rows[0].user_points,
-            is_admin: data?.data.rows[0].is_admin
+            is_admin: data?.data.rows[0].is_admin,
+            blocked: data?.data.rows[0].blocked
         }
         dispatch(loginUser(user));
         window.localStorage.setItem("PHsess",JSON.stringify({"chk":(new Date()).getTime(),"data": user}))
-        const navigateTo = window.localStorage.getItem("PHlwp") || '/settings'
-        navigate(navigateTo, {state: data}) 
-    }
+        let navigateTo = (window.localStorage.getItem("PHlwp") !== '/blocked' && window.localStorage.getItem("PHlwp")) || '/settings'
 
-    const fbLoginFail = () => {
-        console.log("FB login failed");
+        user.blocked && (navigateTo = '/blocked')
+        navigate(navigateTo, {state: data}) 
     }
 
     const handleFormKeypress = (e) => {
         if (e.charCode == 13) {
             submit()
         }
-      }
+    }
 
     return (
-        <div style={styles.root}>
-            <form onKeyPress={handleFormKeypress} style={{textAlign: "center"}}>
+        <div style={styles.root} id="loginCont">
+            <form onKeyPress={handleFormKeypress} style={{textAlign: "center"}} name="loginForm">
+            <Typography variant="h2"gutterBottom={true}>Logi sisse</Typography>
                 <div style={styles.row}>
                     <TextField id="outlined-basic" label="Kasutajanimi" variant="outlined" value={username} onChange={(v) => {setUsername(v.target.value)}}/>   
                 </div>
@@ -141,20 +146,10 @@ function Login() {
                     <Button onClick={submit} disabled={loading ? true : false} variant="contained" color="success" id="login">Logi sisse</Button>
                 </div>
                 <div style={styles.row}>
-                    <FacebookLogin
-                        appId="289181049760112"
-                        autoLoad={false}
-                        fields="first_name,last_name,email,picture"
-                        onClick={() => {console.log('clicked')}}
-                        callback={responseFacebook}
-                        onFailure={fbLoginFail}
-                        icon="fa-facebook"
-                        textButton="Logi sisse Facebookiga"
-                        size="small"
-                    />
+                    <FBLoginButton responseFacebook={responseFacebook} fbLoginFail={fbLoginFail}/>
                 </div>
             </form>
-        
+            
             <Snackbar open={open} autoHideDuration={10000} onClose={closeSnacbar} anchorOrigin={{ vertical: "top", horizontal:"center" }}>
                 <Alert onClose={closeSnacbar} severity="error" sx={{ width: '100%' }}>
                     {logInData?.message}
@@ -183,4 +178,3 @@ const styles = {
     }
 }
 
-export default Login;
