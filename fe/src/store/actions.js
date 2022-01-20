@@ -1,16 +1,4 @@
-export const POST_ADD = "POST_ADD"
-export const POST_REMOVE = "POST_REMOVE"
 export const USER_LOGOUT = "USER_LOGOUT"
-
-export const addPost = post => ({
-  type: POST_ADD,
-  payload: post
-})
-
-export const removePost = id => ({
-  type: POST_REMOVE,
-  payload: id
-})
 
 // Lisada siis uus konstant selle jaoks ja muuta ka reduceris
 export const updateTeams = array => ({
@@ -41,6 +29,7 @@ export const logoutUser = () => ({
     email: "",
     profilePic: "",
     user_points: 0,
-    is_admin: false
+    is_admin: false,
+    blocked: false
   }
 })

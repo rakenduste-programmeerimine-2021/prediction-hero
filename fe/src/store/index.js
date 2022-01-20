@@ -12,7 +12,8 @@ const initialAuth = {
   email: '',
   profilePic: '',
   id: '',
-  is_admin: false
+  is_admin: false,
+  blocked: false
 }
 
 const initialAdminCheck = false
@@ -23,8 +24,8 @@ const [combinedReducer, initialState] = combineReducers({
   adminCheck: [adminCheckStore, initialAdminCheck]
 })
 
-export const Context = React.createContext(initialState)
-// export const Context = React.createContext([{}, function(){}])
+// export const Context = React.createContext(initialState)
+export const Context = React.createContext([initialState, function(){}])
 
 function Store({ children }) {
   const [state, dispatch] = useReducer(combinedReducer, initialState)

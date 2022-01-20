@@ -14,8 +14,13 @@ const log = {
     }
 }
 
+export function writeFallback(err){
+    if (err) {
+        return console.log(err);
+    }
+}
 
-function getTime(){
+export function getTime(){
     var date=new Date();
     var h=date.getHours()<10?"0"+date.getHours():date.getHours();
     var m=date.getMinutes()<10?"0"+date.getMinutes():date.getMinutes();
@@ -24,20 +29,12 @@ function getTime(){
     var time=h+":"+m+":"+s+":"+ms;
     return time;
 }
-function writeLog(type,func,data){
+export function writeLog(type,func,data){
     var time=getTime();
     if(typeof data!="string"){data=JSON.stringify(data);}
     if(func!=""){func="-"+func;}
-    fs.appendFile('./'+type+'.log', time+"\t"+type+func+"\t"+type+".log"+"\t"+data+ '\n', 'utf-8', function(err){
-        if (err) {
-            return console.log(err);
-        }
-    })
-    fs.appendFile('./main.log', time+"\t"+type+func+"\t"+type+".log"+"\t"+data+ '\n', 'utf-8', function(err){
-        if (err) {
-            return console.log(err);
-        }
-    })
+    fs.appendFile('./'+type+'.log', time+"\t"+type+func+"\t"+type+".log"+"\t"+data+ '\n', 'utf-8', writeFallback)
+    fs.appendFile('./main.log', time+"\t"+type+func+"\t"+type+".log"+"\t"+data+ '\n', 'utf-8', writeFallback)
 }
 
 export default log

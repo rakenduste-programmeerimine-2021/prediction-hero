@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1642270705759" clover="3.2.0">
-  <project timestamp="1642270705759" name="All files">
-    <metrics statements="208" coveredstatements="169" conditionals="69" coveredconditionals="55" methods="32" coveredmethods="29" elements="309" coveredelements="253" complexity="0" loc="208" ncloc="208" packages="1" files="3" classes="3"/>
+<coverage generated="1642706391489" clover="3.2.0">
+  <project timestamp="1642706391490" name="All files">
+    <metrics statements="206" coveredstatements="169" conditionals="67" coveredconditionals="53" methods="31" coveredmethods="28" elements="304" coveredelements="250" complexity="0" loc="206" ncloc="206" packages="1" files="3" classes="3"/>
     <file name="db.js" path="/Users/alari/Documents/GitHub/prediction-hero/be/db.js">
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <line num="2" count="1" type="stmt"/>
       <line num="4" count="1" type="stmt"/>
     </file>
     <file name="log.js" path="/Users/alari/Documents/GitHub/prediction-hero/be/log.js">
-      <metrics statements="21" coveredstatements="19" conditionals="18" coveredconditionals="12" methods="8" coveredmethods="8"/>
+      <metrics statements="19" coveredstatements="19" conditionals="16" coveredconditionals="10" methods="7" coveredmethods="7"/>
       <line num="2" count="2" type="stmt"/>
       <line num="4" count="1" type="stmt"/>
-      <line num="7" count="13" type="stmt"/>
+      <line num="7" count="206" type="stmt"/>
       <line num="10" count="1" type="stmt"/>
       <line num="13" count="1" type="stmt"/>
-      <line num="19" count="16" type="stmt"/>
-      <line num="20" count="16" type="cond" truecount="1" falsecount="1"/>
-      <line num="21" count="16" type="cond" truecount="1" falsecount="1"/>
-      <line num="22" count="16" type="cond" truecount="1" falsecount="1"/>
-      <line num="23" count="16" type="cond" truecount="3" falsecount="1"/>
-      <line num="24" count="16" type="stmt"/>
-      <line num="25" count="16" type="stmt"/>
-      <line num="28" count="16" type="stmt"/>
-      <line num="29" count="16" type="cond" truecount="2" falsecount="0"/>
-      <line num="30" count="16" type="cond" truecount="2" falsecount="0"/>
-      <line num="31" count="16" type="stmt"/>
-      <line num="32" count="12" type="cond" truecount="1" falsecount="1"/>
-      <line num="33" count="0" type="stmt"/>
-      <line num="36" count="16" type="stmt"/>
-      <line num="37" count="12" type="cond" truecount="1" falsecount="1"/>
-      <line num="38" count="0" type="stmt"/>
+      <line num="18" count="409" type="cond" truecount="2" falsecount="0"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="24" count="210" type="stmt"/>
+      <line num="25" count="210" type="cond" truecount="1" falsecount="1"/>
+      <line num="26" count="210" type="cond" truecount="1" falsecount="1"/>
+      <line num="27" count="210" type="cond" truecount="1" falsecount="1"/>
+      <line num="28" count="210" type="cond" truecount="1" falsecount="3"/>
+      <line num="29" count="210" type="stmt"/>
+      <line num="30" count="210" type="stmt"/>
+      <line num="33" count="209" type="stmt"/>
+      <line num="34" count="209" type="cond" truecount="2" falsecount="0"/>
+      <line num="35" count="209" type="cond" truecount="2" falsecount="0"/>
+      <line num="36" count="209" type="stmt"/>
+      <line num="37" count="209" type="stmt"/>
     </file>
     <file name="main.js" path="/Users/alari/Documents/GitHub/prediction-hero/be/main.js">
       <metrics statements="185" coveredstatements="148" conditionals="51" coveredconditionals="43" methods="24" coveredmethods="21"/>
@@ -183,7 +181,7 @@
       <line num="340" count="10" type="stmt"/>
       <line num="341" count="10" type="stmt"/>
       <line num="342" count="10" type="cond" truecount="2" falsecount="0"/>
-      <line num="343" count="6" type="stmt"/>
+      <line num="343" count="7" type="stmt"/>
       <line num="345" count="10" type="stmt"/>
       <line num="346" count="10" type="cond" truecount="2" falsecount="2"/>
       <line num="348" count="0" type="stmt"/>

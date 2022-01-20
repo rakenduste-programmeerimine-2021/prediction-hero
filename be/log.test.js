@@ -1,4 +1,4 @@
-import log from './log.js'
+import log, {getTime, writeFallback} from './log.js'
 
 
 
@@ -14,5 +14,11 @@ describe("Logging", () => {
     })
     test("should log error", async() => {
         log.error("testing ERROR")
+    })
+    test("test getTime", async() => {
+        getTime()
+    })
+    test("test writeFallback", async() => {
+        writeFallback("catastrophic error")
     })
 })
