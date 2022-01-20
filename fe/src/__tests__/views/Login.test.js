@@ -45,8 +45,6 @@ test("test fbLoginFailed", () => {
 //    inst.closeSnacbar('hello');
 // })
 
-
-
 // test("simualte login clicked", () => {
   
 //     const wrapper = mount(<Router><Login/></Router>)

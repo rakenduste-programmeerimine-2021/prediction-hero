@@ -53,6 +53,16 @@ function Groups() {
           return <div style={{whiteSpace: "nowrap"}}> <img src={url} width = "25" height="15" /> {name}</div>
       }
 
+      function stableSort(array) {
+        const stabilizedThis = array.map((el, index) => [el, index]);
+        // console.log("sorting?")
+        // console.log(stabilizedThis)
+        stabilizedThis.sort((a, b) => {
+          return b[0].points - a[0].points;
+        });
+        return stabilizedThis.map((el) => el[0]);
+    }
+
   const alagrupp = () => {
          console.log("HERR")
          console.log(teams)
@@ -74,7 +84,7 @@ function Groups() {
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {teams[element]?.data.map((row) => (
+                                {stableSort(teams[element]?.data).map((row) => (
                                     <TableRow
                                     key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -109,7 +119,7 @@ function Groups() {
                         <CardMedia
                             component="img"
                             alt="green iguana"
-                            height="800"
+                            height="200"
                             image={"https://png.pngtree.com/background/20210714/original/pngtree-versus-vs-battle-screen-background-picture-image_1200091.jpg"}
                             // image={"https://png.pngtree.com/thumb_back/fh260/background/20200701/pngtree-versus-screen-in-neon-futuristic-style-image_340535.jpg"}
                         />
@@ -140,7 +150,7 @@ const styles = {
     },
     tableGroupName: {
         marginTop: "30px",
-        color: "white"
+        color: "#b6b6b6"
     }
 }
 

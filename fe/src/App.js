@@ -248,7 +248,7 @@ function App() {
                 </div>
                 
               </div>}
-            {storeState.auth.user
+            {storeState.auth.id
                 ? <Button color="inherit" onClick={logOut}>Logi välja</Button>
                 : <Button color="inherit"><Link to="/login" style={{textDecoration:"none",color:"white"}}>Logi sisse</Link></Button>
             }
