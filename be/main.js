@@ -248,16 +248,18 @@ app.put('/updatepoints/:id', async(req, res)=>{
 
 // save PREDICTIONS
 app.post('/savepredictions/:userId', async(req, res) => {
-  try {
+  // try {
     const { userId } = req.params;
     // let {username="", pwhash=(new Date()).getTime().toString(15), firstname="", lastname="", email="", social_id="", social_platform="", profile_pic="",} = req.body;
     log.info('test',req.body.scores)
     log.info('test',`userdID: ${userId}`)
-    log.info('test',`request body: ${JSON.stringify(req?.body)}`)    
+    log.info('test',`request body: ${JSON.stringify(req?.body)}`)  
+    console.log("starting")  
     // const { scores } = req.body;
     // log.info('test',scores)
     let updatedDataArr=[]
     Object.keys(req?.body?.scores).map(async(matchId, row) => {
+      console.log("map"+matchId)  
       log.info('test',"Matches row "+matchId)
       log.info('test',req.body.scores[matchId])
       const resp = await pool.query(
@@ -283,9 +285,9 @@ app.post('/savepredictions/:userId', async(req, res) => {
       }
     })
     res.json({status: "OK", message:"Predictions updated", data: updatedDataArr});
-  } catch (err) {
-    console.error(err)
-  }
+  // } catch (err) {
+  //   console.error(err)
+  // }
 })
 
 
@@ -317,6 +319,35 @@ app.post('/savematchscore', async(req, res) => {
         matchPredictions[matchid] = getMatchPredictions.rows
         // log.info('test',"got predictions for match "+matchid)
         // log.info('test',getMatchPredictions.rows)
+          log.debug("savematchscore",`match id: ${matchid}`)
+        let teamsIds = await pool.query(
+          "SELECT team1id, team2id FROM matches WHERE id = $1",
+          [matchid]
+        );
+        const t1dif = parseInt(reqbody[matchid][1]) - parseInt(reqbody[matchid][2])
+        const t2dif = parseInt(reqbody[matchid][2]) - parseInt(reqbody[matchid][1])
+
+        Object.keys(teamsIds.rows[0]).map(async(key, mapidx) => {
+          log.debug("savematchscore",`team id: ${teamsIds.rows[0][key]}`)
+          let saveTeamData = await pool.query(
+            "UPDATE teams SET played = played + 1, difference = $1, points = points + $2 WHERE id = $3",
+            [(key == 'team1id' ? t1dif : t2dif), 
+            (key == 'team1id' 
+              ? (t1dif > 0 
+                ? 3
+                : t1dif < 0
+                  ? 0
+                  : 1) 
+              : (t2dif > 0 
+                ? 3
+                : t2dif < 0
+                  ? 0
+                  : 1)), 
+            teamsIds.rows[0][key]]
+          );
+        })
+        
+        
     })).then(()=>{
         log.info('test',"FINISHED saving matches")
         log.info('test',matchPredictions)

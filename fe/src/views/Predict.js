@@ -93,27 +93,29 @@ function Predict() {
 
             
         }).then(()=>{
-            fetch(`http://localhost:3001/getuserpredictions/${curretUserID}`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                // console.log(data.length)
-                // setAllTeams(data)
-                // dispatch(updateTeams(data))
-                
-                let tempObj={0:{1:'',2:''}}
-                Object.keys(data).map((index)=>{
-                    // console.log(data[index].matchid)
-                    tempObj[data[index].matchid] = {1: data[index].team1score, 2: data[index].team2score}
+            !!curretUserID && (
+                fetch(`http://localhost:3001/getuserpredictions/${curretUserID}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
                 })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    // console.log(data.length)
+                    // setAllTeams(data)
+                    // dispatch(updateTeams(data))
+                    
+                    let tempObj={0:{1:'',2:''}}
+                    Object.keys(data).map((index)=>{
+                        // console.log(data[index].matchid)
+                        tempObj[data[index].matchid] = {1: data[index].team1score, 2: data[index].team2score}
+                    })
 
-                setScores(tempObj)
-                setLoading(false)
-                //TODO destruct data into ROWS??? allteams????
-            })
+                    setScores(tempObj)
+                    setLoading(false)
+                    //TODO destruct data into ROWS??? allteams????
+                })
+            )
         }).then(()=>{
             // setAllTeams(state.teams.data)
             // console.log("starting to map:")

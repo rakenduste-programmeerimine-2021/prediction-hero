@@ -190,7 +190,7 @@ function Leaderboard() {
                                 <CardMedia
                                     component="img"
                                     alt="green iguana"
-                                    height="800"
+                                    height="200"
                                     image="https://wallpaper.dog/large/5529248.jpg"
                                 />
                                 <CardContent

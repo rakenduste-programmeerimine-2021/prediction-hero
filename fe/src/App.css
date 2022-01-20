@@ -44,7 +44,7 @@
 }
 .MuiCardMedia-img{
   filter: blur(30px);
-  margin-bottom: -60%
+  margin-bottom: -10%
 } 
 .settingsView .MuiCardMedia-img{
   filter: blur(26px);
