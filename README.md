@@ -27,7 +27,10 @@ node ./main.js
 npm install nodemon -g
 ```
 ```
-nodemon ./main.js
+nodemon ./server.js
+```
+```
+kui ei toimi siis igaksjuhuks npm install
 ```
 
 #### TESTS
